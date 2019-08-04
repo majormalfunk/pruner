@@ -3,11 +3,19 @@ import { Navbar, Nav, Container } from 'react-bootstrap'
 import { useQuery, useMutation, useSubscription, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import './App.css'
-import { PAGE_HOME } from './constants'
+import { PAGE_HOME, PAGE_CREATE_ACCOUNT, PAGE_LOGIN } from './constants'
 
+import CreateAccountForm from './components/CreateAccountForm'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
 
+const CREATE_ACCOUNT = gql`
+  mutation createAccount($username: String!, $password: String!, $nickname: String!) {
+    createAccount(username: $username, password: $password, nickname: $nickname) {
+      value
+    }
+  }
+`
 const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -58,10 +66,13 @@ const App = () => {
     setPage(PAGE_HOME)
   }
 
+  const createAccount = useMutation(CREATE_ACCOUNT, {
+    onError: handleError
+  })
   const login = useMutation(LOGIN, {
     onError: handleError
   })
-  const userResult = useQuery(CURRENT_USER)
+  //const userResult = useQuery(CURRENT_USER)
   const availableEvents = useQuery(AVAILABLE_EVENTS)
 
   return (
@@ -79,6 +90,12 @@ const App = () => {
                       <button onClick={() => setPage(PAGE_HOME)}>Home</button>
                     </Nav>
                     <Nav>
+                        {(!token ? <button onClick={() => setPage(PAGE_CREATE_ACCOUNT)}>Create Account</button> : null)}
+                    </Nav>
+                    <Nav>
+                        {(!token ? <button onClick={() => setPage(PAGE_LOGIN)}>Login</button> : null)}
+                    </Nav>
+                    <Nav>
                         {(token ? <button onClick={() => logout()}>Logout</button> : null)}
                     </Nav>
                   </Navbar.Collapse>
@@ -90,7 +107,7 @@ const App = () => {
         </Container>
 
       </header>
-      <body className="App-body">
+      <div className="App-body">
         <div>
           <button onClick={() => setPage(PAGE_HOME)}>Home</button>
         </div>
@@ -99,14 +116,17 @@ const App = () => {
           {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
 
+        <CreateAccountForm createAccount={createAccount} setToken={(token) => setToken(token)}
+          show={page === PAGE_CREATE_ACCOUNT} handleError={handleError} />
+
         <LoginForm login={login} setToken={(token) => setToken(token)}
-          show={!token} handleError={handleError} />
+          show={page === PAGE_LOGIN} handleError={handleError} />
 
         <Home result={availableEvents}
           show={page === PAGE_HOME} handleError={handleError}
         />
 
-      </body>
+      </div>
     </div>
   )
 }

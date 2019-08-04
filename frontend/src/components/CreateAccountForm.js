@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { USER_TOKEN } from '../constants'
 
-const LoginForm = (props) => {
+const CreateAccountForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [nickname, setNickname] = useState('')
 
   if (!props.show) {
     return null
@@ -13,21 +14,22 @@ const LoginForm = (props) => {
     event.preventDefault()
 
     try {
-      const result = await props.login[0]({
-        variables: { username, password }
+      const result = await props.createAccount[0]({
+        variables: { username, password, nickname }
       })
-
       if (result) {
-        const token = result.data.login.value
+        const token = result.data.createAccount.value
         props.setToken(token)
         localStorage.setItem(USER_TOKEN, token)
         setUsername('')
         setPassword('')
+        setNickname('')
       }
     } catch (error) {
       console.log(error.message)
       setUsername('')
       setPassword('')
+      setNickname('')
       props.handleError(error)
     }
 
@@ -39,7 +41,7 @@ const LoginForm = (props) => {
         &nbsp;
       </div>
       <div>
-        Enter username and password to log in
+        Enter username and password to create an account
       </div>
       <div>
         &nbsp;
@@ -59,12 +61,18 @@ const LoginForm = (props) => {
           />
         </div>
         <div>
+          Nickname <input
+            value={nickname}
+            onChange={({ target }) => setNickname(target.value)}
+          />
+        </div>
+        <div>
           &nbsp;
         </div>
-        <button type='submit'>Login</button>
+        <button type='submit'>Create account</button>
       </form>
     </div>
   )
 }
 
-export default LoginForm
+export default CreateAccountForm
