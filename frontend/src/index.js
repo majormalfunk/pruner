@@ -7,16 +7,15 @@ import { setContext } from 'apollo-link-context'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import './index.css'
+import { USER_TOKEN } from './constants'
 import App from './App'
-
-ReactDOM.render(<App />, document.getElementById('root'));
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('pruner-user-token')
+  const token = localStorage.getItem(USER_TOKEN)
   return {
     headers: {
       ...headers,
