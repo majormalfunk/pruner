@@ -24,6 +24,7 @@ const CreateAccountForm = (props) => {
         setUsername('')
         setPassword('')
         setNickname('')
+        props.backToPage(props.backPage)
       }
     } catch (error) {
       console.log(error.message)

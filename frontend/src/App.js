@@ -59,6 +59,9 @@ const App = () => {
       setErrorMessage(null)
     }, 5000)
   }
+  const backToPage = (page) => {
+    setPage(page)
+  }
   const logout = () => {
     setToken(null)
     localStorage.clear()
@@ -85,18 +88,18 @@ const App = () => {
                 <Navbar fixed="top" collapseOnSelect expand="md" className="App-menu" variant="dark">
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
-                  <Navbar.Brand>Pruner</Navbar.Brand>
+                  <Navbar.Brand className="Menu-brand">Pruner</Navbar.Brand>
                     <Nav>
-                      <button onClick={() => setPage(PAGE_HOME)}>Home</button>
+                      <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
                     </Nav>
                     <Nav>
-                        {(!token ? <button onClick={() => setPage(PAGE_CREATE_ACCOUNT)}>Create Account</button> : null)}
+                        {(!token ? <button className="Menu-button" onClick={() => setPage(PAGE_LOGIN)}>Login</button> : null)}
                     </Nav>
                     <Nav>
-                        {(!token ? <button onClick={() => setPage(PAGE_LOGIN)}>Login</button> : null)}
+                        {(!token ? <button className="Menu-button" onClick={() => setPage(PAGE_CREATE_ACCOUNT)}>Create Account</button> : null)}
                     </Nav>
                     <Nav>
-                        {(token ? <button onClick={() => logout()}>Logout</button> : null)}
+                        {(token ? <button className="Menu-button" onClick={() => logout()}>Logout</button> : null)}
                     </Nav>
                   </Navbar.Collapse>
                 </Navbar>
@@ -108,23 +111,19 @@ const App = () => {
 
       </header>
       <div className="App-body">
-        <div>
-          <button onClick={() => setPage(PAGE_HOME)}>Home</button>
-        </div>
 
         <div>
           {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
 
-        <CreateAccountForm createAccount={createAccount} setToken={(token) => setToken(token)}
-          show={page === PAGE_CREATE_ACCOUNT} handleError={handleError} />
+        <Home result={availableEvents}
+          show={page === PAGE_HOME} handleError={handleError} />
 
         <LoginForm login={login} setToken={(token) => setToken(token)}
-          show={page === PAGE_LOGIN} handleError={handleError} />
+          show={page === PAGE_LOGIN} backToPage={backToPage} backPage={PAGE_HOME} handleError={handleError} />
 
-        <Home result={availableEvents}
-          show={page === PAGE_HOME} handleError={handleError}
-        />
+        <CreateAccountForm createAccount={createAccount} setToken={(token) => setToken(token)}
+          show={page === PAGE_CREATE_ACCOUNT} backToPage={backToPage} backPage={PAGE_HOME} handleError={handleError} />
 
       </div>
     </div>

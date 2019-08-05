@@ -23,6 +23,7 @@ const LoginForm = (props) => {
         localStorage.setItem(USER_TOKEN, token)
         setUsername('')
         setPassword('')
+        props.backToPage(props.backPage)
       }
     } catch (error) {
       console.log(error.message)

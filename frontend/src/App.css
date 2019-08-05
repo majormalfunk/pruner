@@ -8,7 +8,7 @@
   min-height: 10vh;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 2vmin);
   align-items: left;
   justify-content: left;
   color: white;
@@ -20,7 +20,7 @@
   min-height: 10vh;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 2vmin);
   align-items: left;
   justify-content: left;
   color: white;
@@ -33,6 +33,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 2vmin);
   color: white;
+}
+
+.Menu-brand {
+  border: 0;
+  background-color: #282c34;
+  font-size: calc(10px + 1vmin);
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.Menu-button {
+  border: 0;
+  background-color: #282c34;
+  font-size: calc(10px + 1vmin);
+  font-weight: bold;
+  color: #ebc20c;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.Menu-button:hover {
+  color: #ffffff;
 }

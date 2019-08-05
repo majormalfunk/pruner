@@ -11,4 +11,6 @@
 | 03.08.2019    | Restructuring project, installs       |     1,5   |           |
 | 04.08.2019    | Menu, account and login functionality |     6,0   |           |
 | **WEEK 31**   | **TOTAL**                             |  **10,5** |  **17,0** |
+| 05.08.2019    | Navigation and appearance             |     2,5   |           |
+| **WEEK 32**   | **TOTAL**                             |   **2,5** |  **19,5** |
 
