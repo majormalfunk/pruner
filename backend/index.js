@@ -1,4 +1,6 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const User = require('./models/user')
@@ -110,6 +112,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+var port = process.env.PORT || 80
+server.listen().then(({ port, url }) => {
   console.log(`Server ready @ ${url}`)
 })
