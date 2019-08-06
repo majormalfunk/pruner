@@ -100,6 +100,8 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: false,
+  playground: false,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
@@ -112,7 +114,6 @@ const server = new ApolloServer({
   }
 })
 
-var port = process.env.PORT || 80
-server.listen().then(({ port, url }) => {
-  console.log(`Server ready @ ${url}`)
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+  console.log(`🚀 Server ready @ ${url}`);
 })
