@@ -13,5 +13,6 @@
 | **WEEK 31**   | **TOTAL**                             |  **10,5** |  **17,0** |
 | 05.08.2019    | Navigation and appearance             |     2,5   |           |
 | 06.08.2019    | Trying to push application to Heroku  |     3,5   |           |
-| **WEEK 32**   | **TOTAL**                             |   **6,0** |  **23,0** |
+| 07.08.2019    | Finally application in Heroku         |     3,0   |           |
+| **WEEK 32**   | **TOTAL**                             |   **9,0** |  **26,0** |
 

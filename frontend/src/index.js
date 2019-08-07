@@ -10,8 +10,10 @@ import './index.css'
 import { USER_TOKEN } from './constants'
 import App from './App'
 
+const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : '/graphql')
+console.log('uri:', uri)
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: uri
 })
 
 const authLink = setContext((_, { headers }) => {
