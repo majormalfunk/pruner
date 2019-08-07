@@ -11,8 +11,7 @@ import { USER_TOKEN } from './constants'
 import App from './App'
 
 const httpLink = createHttpLink({
-  //uri: 'http://localhost:4000/graphql'
-  uri: '/graphql'
+  uri: 'http://localhost:4000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {

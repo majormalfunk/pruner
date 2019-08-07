@@ -1,7 +1,10 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server')
+const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server-express')
+const express = require('express')
+const app = express()
+const cors = require('cors')
 const mongoose = require('mongoose')
 const User = require('./models/user')
 const jwt = require('jsonwebtoken')
@@ -97,6 +100,12 @@ const resolvers = {
   }
 }
 
+app.use(cors())
+app.use(express.static('public'))
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+})
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -114,6 +123,11 @@ const server = new ApolloServer({
   }
 })
 
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀 Server ready @ ${url}`);
+server.applyMiddleware({
+  path: '/graphql',
+  app,
+})
+const port = (process.env.PORT || 4000)
+app.listen({ port: port }, () => {
+  console.log(`🚀 Server ready @ ${port}${server.graphqlPath}`);
 })
