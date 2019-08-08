@@ -1,5 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
+} else {
+  console.log("This is the production environment")
 }
 const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server-express')
 const express = require('express')
@@ -100,17 +102,11 @@ const resolvers = {
   }
 }
 
-app.use(cors())
-app.use(express.static('build'))
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-})
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: false,
-  playground: false,
+  introspection: (process.env.NODE_ENV === 'development'),
+  playground: (process.env.NODE_ENV === 'development'),
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
@@ -123,6 +119,11 @@ const server = new ApolloServer({
   }
 })
 
+app.use(cors())
+app.use(express.static('build'))
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+})
 server.applyMiddleware({
   path: '/graphql',
   app,
@@ -131,3 +132,4 @@ const port = (process.env.PORT || 4000)
 app.listen({ port: port }, () => {
   console.log(`🚀 Server ready @ ${port}${server.graphqlPath}`);
 })
+
