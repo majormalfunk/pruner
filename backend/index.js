@@ -29,40 +29,43 @@ mongoose.connect(DB_URL, { useNewUrlParser: true, useCreateIndex: true })
   })
 
 const typeDefs = gql`
-  type User {
+  type CurrentUser {
     username: String!
-    passwordHash: String!
     nickname: String!
-    id: ID!
+    token: String!
   }
   type Token {
     value: String!
   }
   type Query {
-    me: User
+    hello: CurrentUser
   }
   type Mutation {
     createAccount(
       username: String!
       password: String!
       nickname: String!
-    ): Token
+    ): CurrentUser
     login(
       username: String!
       password: String!
-    ): Token
+    ): CurrentUser
+    relogin(
+      token: String!
+    ): CurrentUser
   }
 `
 
 const resolvers = {
   Query: {
-    me: (root, args, context) => {
+    hello: (root, args, context) => {
+      console.log('Current user was resolved to:', context.currentUser.username)
       return context.currentUser
     }
   },
   Mutation: {
     createAccount: async (root, args) => {
-
+      console.log('Mutation: createAccount was called')
       const saltRounds = 10
       const passwordHash = await bcrypt.hash(args.password, saltRounds)
 
@@ -81,9 +84,16 @@ const resolvers = {
         id: user._id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      const CurrentUser = {
+        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+      }
+
+      return CurrentUser
     },
     login: async (root, args) => {
+      console.log('****************************')
+      console.log('Mutation: login was called')
+      console.log('****************************')
 
       const user = await User.findOne({ username: args.username })
       const passwordCorrect = (user === null ? false : await bcrypt.compare(args.password, user.passwordHash))
@@ -97,7 +107,32 @@ const resolvers = {
         id: user._id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      const CurrentUser = {
+        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+      }
+
+      return CurrentUser
+    },
+    relogin: async (root, args) => {
+      console.log('****************************')
+      console.log('Mutation: relogin was called')
+      console.log('****************************')
+
+      const decodedToken = jwt.verify(
+        args.token, JWT_SECRET
+      )
+      const user = await User.findById(decodedToken.id)
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      const CurrentUser = {
+        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+      }
+
+      return CurrentUser
     }
   }
 }
@@ -109,12 +144,34 @@ const server = new ApolloServer({
   playground: (process.env.NODE_ENV === 'development'),
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
+    console.log("Auth is", auth)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(
-        auth.substring(7), JWT_SECRET
-      )
-      const currentUser = await User.findById(decodedToken.id)
-      return { currentUser }
+      console.log('Next we try to decode it')
+      let decodedToken = ''
+      try {
+        decodedToken = await jwt.verify(
+          auth.substring(7), JWT_SECRET
+        )
+      } catch (error) {
+        console.log('Something went wrong decoding token:')
+        console.log(error.message)
+        throw AuthenticationError(error.message)
+      }
+      console.log('Decoded token =', decodedToken)
+      const user = await User.findById(decodedToken.id)
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      const CurrentUser = {
+        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+      }
+
+      console.log("Server says current user is", CurrentUser)
+
+      return CurrentUser
     }
   }
 })

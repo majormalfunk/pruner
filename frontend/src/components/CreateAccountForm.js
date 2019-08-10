@@ -6,9 +6,9 @@ const CreateAccountForm = (props) => {
   const [password, setPassword] = useState('')
   const [nickname, setNickname] = useState('')
 
-  if (!props.show) {
-    return null
-  }
+  //if (!props.show) {
+  //  return null
+  //}
 
   const submit = async (event) => {
     event.preventDefault()
@@ -19,12 +19,14 @@ const CreateAccountForm = (props) => {
       })
       if (result) {
         const token = result.data.createAccount.value
-        props.setToken(token)
         localStorage.setItem(USER_TOKEN, token)
+        const loggedInAs = username
         setUsername('')
         setPassword('')
         setNickname('')
-        props.backToPage(props.backPage)
+        props.setToken(token)
+        props.setUser(loggedInAs)
+        return null
       }
     } catch (error) {
       console.log(error.message)

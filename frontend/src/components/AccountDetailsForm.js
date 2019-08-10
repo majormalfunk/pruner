@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { USER_TOKEN } from '../constants'
 
-const LoginForm = (props) => {
+const AccountDetailsForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -18,8 +18,8 @@ const LoginForm = (props) => {
       })
       if (result) {
         const token = result.data.login.token
-        localStorage.setItem(USER_TOKEN, token)
-        const loggedInAs = result.data.login
+        localStorage.setItem(USER_TOKEN, JSON.stringify(token))
+        const loggedInAs = result.data.login.username
         setUsername('')
         setPassword('')
         props.setToken(token)
@@ -69,4 +69,4 @@ const LoginForm = (props) => {
   )
 }
 
-export default LoginForm
+export default AccountDetailsForm

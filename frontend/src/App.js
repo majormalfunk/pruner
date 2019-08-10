@@ -1,52 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import { useQuery, useMutation, useSubscription, useApolloClient } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 import './App.css'
-import { PAGE_HOME, PAGE_CREATE_ACCOUNT, PAGE_LOGIN } from './constants'
+import { USER_TOKEN } from './constants'
+import { PAGE_HOME, PAGE_ACCOUNT } from './constants'
 
-import CreateAccountForm from './components/CreateAccountForm'
-import LoginForm from './components/LoginForm'
 import Home from './components/Home'
+import Account from './components/Account'
 
-const CREATE_ACCOUNT = gql`
-  mutation createAccount($username: String!, $password: String!, $nickname: String!) {
-    createAccount(username: $username, password: $password, nickname: $nickname) {
-      value
-    }
-  }
-`
-const LOGIN = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      value
-    }
-  }
-`
-const CURRENT_USER = gql`
-{
-  me {
-    username
-    favoriteGenre
-    id
-  }
-}
-`
-const AVAILABLE_EVENTS = gql`
-  {
-    availableEvents {
-      name
-      description
-      public
-      recurrences {
-        name
-        public
-        id
-      }
-      id
-    }
-  }
-`
+//const AVAILABLE_EVENTS = gql`
+//  {
+//    availableEvents {
+//      name
+//      description
+//      public
+//      recurrences {
+//        name
+//        public
+//        id
+//      }
+//      id
+//    }
+//  }
+//`
+
 const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
@@ -59,9 +37,15 @@ const App = () => {
       setErrorMessage(null)
     }, 5000)
   }
-  const backToPage = (page) => {
-    setPage(page)
+
+  const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
+  console.log('Token in storage was:', tokenFromStorage)
+  if (tokenFromStorage && tokenFromStorage.length > 0) {
+    if (!token || token !== tokenFromStorage) {
+      setToken(tokenFromStorage)
+    }
   }
+
   const logout = () => {
     setToken(null)
     localStorage.clear()
@@ -69,44 +53,32 @@ const App = () => {
     setPage(PAGE_HOME)
   }
 
-  const createAccount = useMutation(CREATE_ACCOUNT, {
-    onError: handleError
-  })
-  const login = useMutation(LOGIN, {
-    onError: handleError
-  })
-  //const userResult = useQuery(CURRENT_USER)
-  const availableEvents = useQuery(AVAILABLE_EVENTS)
-
   return (
     <div className="App">
       <header className="App-header">
 
         <Container>
+          <div>
             <div>
-              <div>
-                <Navbar fixed="top" collapseOnSelect expand="md" className="App-menu" variant="dark">
-                  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                  <Navbar.Collapse id="responsive-navbar-nav">
+              <Navbar fixed="top" collapseOnSelect expand="md" className="App-menu" variant="dark">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
                   <Navbar.Brand className="Menu-brand">Pruner</Navbar.Brand>
-                    <Nav>
-                      <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
-                    </Nav>
-                    <Nav>
-                        {(!token ? <button className="Menu-button" onClick={() => setPage(PAGE_LOGIN)}>Login</button> : null)}
-                    </Nav>
-                    <Nav>
-                        {(!token ? <button className="Menu-button" onClick={() => setPage(PAGE_CREATE_ACCOUNT)}>Create Account</button> : null)}
-                    </Nav>
-                    <Nav>
-                        {(token ? <button className="Menu-button" onClick={() => logout()}>Logout</button> : null)}
-                    </Nav>
-                  </Navbar.Collapse>
-                </Navbar>
-              </div>
-              <div>
-              </div>
+                  <Nav>
+                    <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
+                  </Nav>
+                  <Nav>
+                    <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>Account</button>
+                  </Nav>
+                  <Nav>
+                    {(token ? <button className="Menu-button" onClick={() => logout()}>Logout</button> : null)}
+                  </Nav>
+                </Navbar.Collapse>
+              </Navbar>
             </div>
+            <div>
+            </div>
+          </div>
         </Container>
 
       </header>
@@ -116,14 +88,10 @@ const App = () => {
           {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
 
-        <Home result={availableEvents}
-          show={page === PAGE_HOME} handleError={handleError} />
+        <Home show={page === PAGE_HOME} handleError={handleError} />
 
-        <LoginForm login={login} setToken={(token) => setToken(token)}
-          show={page === PAGE_LOGIN} backToPage={backToPage} backPage={PAGE_HOME} handleError={handleError} />
-
-        <CreateAccountForm createAccount={createAccount} setToken={(token) => setToken(token)}
-          show={page === PAGE_CREATE_ACCOUNT} backToPage={backToPage} backPage={PAGE_HOME} handleError={handleError} />
+        <Account setToken={(token) => setToken(token)} token={token}
+          show={page === PAGE_ACCOUNT} handleError={handleError} />
 
       </div>
     </div>

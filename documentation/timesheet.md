@@ -15,5 +15,7 @@
 | 06.08.2019    | Trying to push application to Heroku                           |     3,5   |           |
 | 07.08.2019    | Finally application in Heroku                                  |     3,0   |           |
 | 08.08.2019    | Planning password reset and fixing the development environment |     2,0   |           |
-| **WEEK 32**   | **TOTAL**                                                      |  **11,0** |  **28,0** |
+| 09.08.2019    | Refactoring                                                    |     3,0   |           |
+| 10.08.2019    | Refactoring + relogin with token                               |     8,0   |           |
+| **WEEK 32**   | **TOTAL**                                                      |  **22,0** |  **39,0** |
 
