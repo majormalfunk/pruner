@@ -68,8 +68,10 @@ const resolvers = {
       console.log('Mutation: createAccount was called')
       const saltRounds = 10
       const passwordHash = await bcrypt.hash(args.password, saltRounds)
+      const trimmedUsername = args.username.trim()
+      const trimmedNickname = args.nickname.trim()
 
-      const user = new User({ username: args.username, passwordHash: passwordHash, nickname: args.nickname })
+      const user = new User({ username: trimmedUsername, passwordHash: passwordHash, nickname: trimmedNickname })
 
       try {
         user.save()

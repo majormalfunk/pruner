@@ -58,3 +58,21 @@
 .Menu-button:hover {
   color: #ffffff;
 }
+
+.Component-title {
+  font-size: calc(12px + 1vmin);
+  font-weight: bold;
+  color: #ebc20c;
+}
+
+.Component-input-prompt {
+  font-size: calc(10px + 1vmin);
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.Component-expl {
+  font-size: calc(8px + 1vmin);
+  font-weight: normal;
+  color: #ffffff;
+}

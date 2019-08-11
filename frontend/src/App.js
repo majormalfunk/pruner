@@ -39,7 +39,7 @@ const App = () => {
   }
 
   const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
-  console.log('Token in storage was:', tokenFromStorage)
+  console.log('App: Token in storage was:', tokenFromStorage)
   if (tokenFromStorage && tokenFromStorage.length > 0) {
     if (!token || token !== tokenFromStorage) {
       setToken(tokenFromStorage)

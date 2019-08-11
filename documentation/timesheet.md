@@ -17,5 +17,6 @@
 | 08.08.2019    | Planning password reset and fixing the development environment |     2,0   |           |
 | 09.08.2019    | Refactoring                                                    |     3,0   |           |
 | 10.08.2019    | Refactoring + relogin with token                               |     8,0   |           |
-| **WEEK 32**   | **TOTAL**                                                      |  **22,0** |  **39,0** |
+| 11.08.2019    | Validity checks and appearance of user account forms           |     5,0   |           |
+| **WEEK 32**   | **TOTAL**                                                      |  **27,0** |  **44,0** |
 

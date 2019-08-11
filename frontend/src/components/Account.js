@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 
-//import AccountDetailsForm from './AccountDetailsForm'
-import CreateAccountForm from './CreateAccountForm'
+import AccountDetailsForm from './AccountDetailsForm'
+//import CreateAccountForm from './CreateAccountForm'
+import CreateAccount from './account/CreateAccount'
 import LoginForm from './LoginForm'
 
 const RELOGIN = gql`
@@ -52,26 +53,30 @@ const Account = (props) => {
   const tryToRelogin = async () => {
     console.log('Trying to relogin with', tokenFromProps)
     try {
-      const result = await relogin[0]({
-        variables: { tokenFromProps }
-      })
-      console.log('Tried to get a result')
-      if (result) {
-        console.log('Relogin result:', result)
-        const loggedInAs = result.data.relogin
-        props.setUser(loggedInAs)
-        return null
-      }
+         const result = await relogin[0]({
+           variables: { tokenFromProps }
+         })
+         console.log('Tried to get a result')
+    //   if (result) {
+    //     console.log('Relogin result:', result)
+    //     const loggedInAs = result.data.relogin
+    //     console.login(loggedInAs)
+    //     //props.setUser(loggedInAs)
+    //   }
     } catch (error) {
-      console.log(error.message)
-      props.handleError(error)
+      throw new Error(error.message)
+    //   console.log(error.message)
+    //   props.handleError(error)
     }
   }
 
-  if (props.token && !user) {
-    console.log('We have a token, but no user is resolved')
-    //tryToRelogin()
-  }
+  useEffect(() => {
+    console.log("Using effect...")
+    if (tokenFromProps && !user) {
+      console.log('We have a token, but no user is resolved')
+      //tryToRelogin()
+    }
+  })
 
   if (!props.show) {
     return null
@@ -83,7 +88,7 @@ const Account = (props) => {
 
     return (
       <div>
-        <span>Hello {user.nickname}!</span>
+        <AccountDetailsForm user={user} />
       </div>
     )
 
@@ -98,7 +103,7 @@ const Account = (props) => {
 
         OR
 
-        <CreateAccountForm createAccount={createAccount} setToken={(token) => props.setToken(token)}
+        <CreateAccount createAccount={createAccount} setToken={(token) => props.setToken(token)}
           setUser={(user) => setUser(user)} handleError={props.handleError} />
       </div>
     )

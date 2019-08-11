@@ -1,71 +1,35 @@
 import React, { useState } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 import { USER_TOKEN } from '../constants'
+import '../App.css'
 
-const AccountDetailsForm = (props) => {
-  const [username, setUsername] = useState('')
+const AccountDetailsForm = ({ user }) => {
+
+  const [username, setUsername] = useState(user.username)
   const [password, setPassword] = useState('')
+  const [nickname, setNickname] = useState(user.nickname)
 
   //if (!props.show) {
   //  return null
   //}
 
-  const submit = async (event) => {
-    event.preventDefault()
-
-    try {
-       const result = await props.login[0]({
-        variables: { username, password }
-      })
-      if (result) {
-        const token = result.data.login.token
-        localStorage.setItem(USER_TOKEN, JSON.stringify(token))
-        const loggedInAs = result.data.login.username
-        setUsername('')
-        setPassword('')
-        props.setToken(token)
-        props.setUser(loggedInAs)
-        return null
-      }
-    } catch (error) {
-      console.log(error.message)
-      setUsername('')
-      setPassword('')
-      props.handleError(error)
-    }
-
-  }
-
   return (
-    <div>
-      <div>
-        &nbsp;
-      </div>
-      <div>
-        Enter username and password to log in
-      </div>
-      <div>
-        &nbsp;
-      </div>
-      <form onSubmit={submit}>
-        <div>
-          Username <input
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password <input
-            type='password'
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <div>
-          &nbsp;
-        </div>
-        <button type='submit'>Login</button>
-      </form>
-    </div>
+    <Container>
+      <Row>
+        <Col className="Component-title">Here are your user account details</Col>
+      </Row>
+      <Row>
+        <span>&nbsp;</span>
+      </Row>
+      <Row>
+        <Col className="Component-input-prompt">Username</Col>
+        <Col>{username}</Col>
+      </Row>
+      <Row>
+        <Col className="Component-input-prompt">Nickname</Col>
+        <Col>{nickname}</Col>
+      </Row>
+    </Container>
   )
 }
 

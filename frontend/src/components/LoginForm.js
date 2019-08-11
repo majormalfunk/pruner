@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 import { USER_TOKEN } from '../constants'
 
 const LoginForm = (props) => {
@@ -13,7 +14,7 @@ const LoginForm = (props) => {
     event.preventDefault()
 
     try {
-       const result = await props.login[0]({
+      const result = await props.login[0]({
         variables: { username, password }
       })
       if (result) {
@@ -36,36 +37,45 @@ const LoginForm = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        &nbsp;
-      </div>
-      <div>
-        Enter username and password to log in
-      </div>
-      <div>
-        &nbsp;
-      </div>
+
+    <Container>
       <form onSubmit={submit}>
-        <div>
-          Username <input
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password <input
-            type='password'
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <div>
-          &nbsp;
-        </div>
-        <button type='submit'>Login</button>
+        <Row>
+          <Col className="Component-title">
+            Enter username and password to log in
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Component-expl">
+            You need to login only if you want to create and manage your own public or private events
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Component-input-prompt">Username</Col>
+          <Col>
+            <input value={username}
+              onChange={({ target }) => setUsername(target.value)} />
+          </Col>
+        </Row>
+        <Row>
+          <Col className="Component-input-prompt">Password</Col>
+          <Col>
+            <input type='password' value={password}
+              onChange={({ target }) => setPassword(target.value)} />
+          </Col>
+        </Row>
+        <Row>
+          <Col><button type='submit'>Login</button></Col>
+        </Row>
       </form>
-    </div>
+    </Container>
+
   )
 }
 
