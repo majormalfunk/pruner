@@ -5,8 +5,8 @@ import { gql } from 'apollo-boost'
 
 import AccountDetailsForm from './AccountDetailsForm'
 //import CreateAccountForm from './CreateAccountForm'
-import CreateAccount from './account/CreateAccount'
-import LoginForm from './LoginForm'
+import CreateAccount from './CreateAccount'
+import Login from './Login'
 
 const RELOGIN = gql`
   mutation relogin($token: String!) {
@@ -98,7 +98,7 @@ const Account = (props) => {
 
     return (
       <div>
-        <LoginForm login={login} setToken={(token) => props.setToken(token)}
+        <Login login={login} setToken={(token) => props.setToken(token)}
           setUser={(user) => setUser(user)} handleError={props.handleError} />
 
         OR

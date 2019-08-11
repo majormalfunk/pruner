@@ -1,0 +1,95 @@
+import React, { useState, useEffect } from 'react'
+import { USER_TOKEN } from '../../constants'
+import { ACTION_LOGIN } from '../../constants'
+import LoginForm from './LoginForm'
+
+const Login = (props) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const controlUsername = () => {
+    if (document.getElementById(`usernamehintlogin`)) {
+      if (username.trim() === '') {
+        document.getElementById(`usernamehintlogin`).innerHTML = 'Enter username'
+        return false
+      } else {
+        document.getElementById(`usernamehintlogin`).innerHTML = '&nbsp;'
+        return true
+      }
+    }
+  }
+  const controlPassword = () => {
+    if (document.getElementById(`passwordhintlogin`)) {
+      if (password.trim() === '') {
+        document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
+        return false
+      } else {
+        document.getElementById(`passwordhintlogin`).innerHTML = '&nbsp;'
+        return true
+      }
+    }
+  }
+
+  useEffect(() => {
+    const usernameOk = controlUsername()
+    const passwordOk = controlPassword()
+    if (document.getElementById(ACTION_LOGIN)) {
+      document.getElementById(ACTION_LOGIN).disabled = !(usernameOk && passwordOk)
+    }
+  })
+
+  const handleUsername = (event) => {
+    setUsername(event.target.value)
+  }
+  const handlePassword = (event) => {
+    setPassword(event.target.value)
+  }
+
+  const clearFields = () => {
+    setUsername('')
+    document.getElementById(`setusernamelogin`).value = ''
+    setPassword('')
+    document.getElementById(`setpasswordlogin`).value = ''
+  }
+
+  const handleLoginCancel = (event) => {
+    event.preventDefault()
+    clearFields()
+  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    try {
+      const result = await props.login[0]({
+        variables: { username, password }
+      })
+      if (result) {
+        const token = result.data.login.token
+        localStorage.setItem(USER_TOKEN, token)
+        const loggedInAs = result.data.login
+        clearFields()
+        props.setToken(token)
+        props.setUser(loggedInAs)
+        return null
+      }
+    } catch (error) {
+      console.log(error.message)
+      clearFields()
+      props.handleError(error)
+    }
+
+  }
+
+  return (
+    <LoginForm
+      username={username}
+      handleUsername={handleUsername}
+      password={password}
+      handlePassword={handlePassword}
+      handleLoginCancel={handleLoginCancel}
+      handleLogin={handleLogin} />
+  )
+}
+
+export default Login

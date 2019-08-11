@@ -7,7 +7,7 @@ import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT } from './constants'
 
 import Home from './components/Home'
-import Account from './components/Account'
+import Account from './components/account/Account'
 
 //const AVAILABLE_EVENTS = gql`
 //  {

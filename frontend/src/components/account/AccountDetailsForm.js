@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { USER_TOKEN } from '../constants'
-import '../App.css'
+import { USER_TOKEN } from '../../constants'
+//import '../App.css'
 
 const AccountDetailsForm = ({ user }) => {
 
