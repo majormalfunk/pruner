@@ -19,4 +19,6 @@
 | 10.08.2019    | Refactoring + relogin with token                                   |     8,0   |           |
 | 11.08.2019    | Refactoring + validity checks and appearance of user account forms |     6,0   |           |
 | **WEEK 32**   | **TOTAL**                                                          |  **28,0** |  **45,0** |
+| 12.08.2019    | Some more account functionality                                    |     1,5   |           |
+| **WEEK 32**   | **TOTAL**                                                          |   **1,5** |  **46,5** |
 

@@ -1,12 +1,12 @@
 import React from 'react'
-import { Form, Row, Col, Button } from 'react-bootstrap'
+import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { UsernameField, PasswordField } from './InputFields'
 import { ACTION_LOGIN, ACTION_LOGIN_CANCEL } from '../../constants'
 
 const LoginForm = (props) => {
 
   return (
-    <div>
+    <Container>
       <Form>
         <Row>
           <Col className="Component-title">
@@ -47,7 +47,7 @@ const LoginForm = (props) => {
           <Col><span>&nbsp;</span></Col>
         </Row>
       </Form>
-    </div>
+    </Container>
   )
 
 }

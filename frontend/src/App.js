@@ -90,7 +90,7 @@ const App = () => {
 
         <Home show={page === PAGE_HOME} handleError={handleError} />
 
-        <Account setToken={(token) => setToken(token)} token={token}
+        <Account setToken={(token) => setToken(token)} token={token} logout={logout}
           show={page === PAGE_ACCOUNT} handleError={handleError} />
 
       </div>

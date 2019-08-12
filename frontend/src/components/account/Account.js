@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Container } from 'react-bootstrap'
 
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
@@ -48,35 +49,40 @@ const Account = (props) => {
     onError: props.handleError
   })
 
+  const logout = () => {
+    setUser(null)
+    props.logout()
+  }
+
   let tokenFromProps = props.token
+  console.log('Token from props is', tokenFromProps)
 
   const tryToRelogin = async () => {
     console.log('Trying to relogin with', tokenFromProps)
     try {
-         const result = await relogin[0]({
-           variables: { tokenFromProps }
-         })
-         console.log('Tried to get a result')
-    //   if (result) {
-    //     console.log('Relogin result:', result)
-    //     const loggedInAs = result.data.relogin
-    //     console.login(loggedInAs)
-    //     //props.setUser(loggedInAs)
-    //   }
+      const result = await relogin[0]({
+        variables: { tokenFromProps }
+      })
+      console.log('Tried to get a result.')
+      console.log('Result was')
+      console.log(result)
+      //   if (result) {
+      //     console.log('Relogin result:', result)
+      //     const loggedInAs = result.data.relogin
+      //     console.login(loggedInAs)
+      //     //props.setUser(loggedInAs)
+      //   }
     } catch (error) {
       throw new Error(error.message)
-    //   console.log(error.message)
-    //   props.handleError(error)
+      //   console.log(error.message)
+      //   props.handleError(error)
     }
   }
 
-  useEffect(() => {
-    console.log("Using effect...")
-    if (tokenFromProps && !user) {
-      console.log('We have a token, but no user is resolved')
-      //tryToRelogin()
-    }
-  })
+  if (tokenFromProps && !user) {
+    console.log('We have a token, but no user is resolved')
+    //tryToRelogin()
+  }
 
   if (!props.show) {
     return null
@@ -88,7 +94,7 @@ const Account = (props) => {
 
     return (
       <div>
-        <AccountDetailsForm user={user} />
+        <AccountDetailsForm user={user} logout={logout} />
       </div>
     )
 
@@ -97,15 +103,15 @@ const Account = (props) => {
     console.log('Rendering Account when there is no token or token is not yet resolved')
 
     return (
-      <div>
+      <Container>
         <Login login={login} setToken={(token) => props.setToken(token)}
           setUser={(user) => setUser(user)} handleError={props.handleError} />
 
-        OR
+        <Container>OR</Container>
 
         <CreateAccount createAccount={createAccount} setToken={(token) => props.setToken(token)}
           setUser={(user) => setUser(user)} handleError={props.handleError} />
-      </div>
+      </Container>
     )
   }
 
