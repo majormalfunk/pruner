@@ -23,16 +23,13 @@ const LoginForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <UsernameField usernameField={props.usernameField} trigger={props.handleUsername}
+            <UsernameField username={props.username} trigger={props.handleUsername}
               usernamehint={`usernamehintlogin`} setusername={`setusernamelogin`} />
           </Col>
           <Col>
-            <PasswordField passwordField={props.passwordField} trigger={props.handlePassword}
+            <PasswordField password={props.password} trigger={props.handlePassword}
               passwordhint={`passwordhintlogin`} setpassword={`setpasswordlogin`} />
           </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
         </Row>
         <Row>
           <Col>

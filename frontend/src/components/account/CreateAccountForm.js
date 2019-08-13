@@ -23,26 +23,23 @@ const CreateAccountForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <UsernameField usernameField={props.usernameField} trigger={props.handleUsername}
+            <UsernameField username={props.username} trigger={props.handleUsername}
               usernamehint={`usernamehintcreate`} disabled={false} setusername={`setusernamecreate`} />
           </Col>
           <Col>
-            <NicknameField nicknameField={props.nicknameField} trigger={props.handleNickname}
+            <NicknameField nickname={props.nickname} trigger={props.handleNickname}
               nicknamehint={`nicknamehintcreate`} setnickname={`setnicknamecreate`} />
           </Col>
         </Row>
         <Row>
           <Col>
-            <PasswordField passwordField={props.passwordField} trigger={props.handlePassword}
+            <PasswordField password={props.password} trigger={props.handlePassword}
               passwordhint={`passwordhintcreate`} setpassword={`setpasswordcreate`} />
           </Col>
           <Col>
-            <VeripassField veripassField={props.veripassField} trigger={props.handleVeripass}
+            <VeripassField veripass={props.veripass} trigger={props.handleVeripass}
               veripasshint={`veripasshintcreate`} setveripass={`setveripasscreate`} />
           </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
         </Row>
         <Row>
           <Col>

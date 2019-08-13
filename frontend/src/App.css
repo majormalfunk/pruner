@@ -29,6 +29,7 @@
 .App-body {
   background-color: #222222;
   min-height: 100vh;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +41,10 @@
 .Menu-brand {
   border: 0;
   background-color: #282c34;
-  font-size: calc(10px + 1vmin);
+  padding-bottom: 7px;
+  padding-top: 5px;
+  vertical-align: middle;
+  font-size: 18px;
   font-weight: bold;
   color: #ffffff;
 }
@@ -48,7 +52,9 @@
 .Menu-button {
   border: 0;
   background-color: #282c34;
-  font-size: calc(10px + 1vmin);
+  padding-bottom: 7px;
+  padding-top: 5px;
+  font-size: 18px;
   font-weight: bold;
   color: #ebc20c;
   -webkit-transition-duration: 0.4s; /* Safari */
@@ -57,6 +63,10 @@
 
 .Menu-button:hover {
   color: #ffffff;
+}
+
+.Menu-button:focus {
+  outline: none;
 }
 
 .Component-title {

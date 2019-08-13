@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { USER_TOKEN } from '../../constants'
+import { USER_TOKEN, USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
 import LoginForm from './LoginForm'
 
@@ -12,8 +12,11 @@ const Login = (props) => {
       if (username.trim() === '') {
         document.getElementById(`usernamehintlogin`).innerHTML = 'Enter username'
         return false
+      } else if (username.trim().length < USERNAME_LENGTH) {
+        document.getElementById(`usernamehintlogin`).innerHTML = 'Enter username'
+        return false
       } else {
-        document.getElementById(`usernamehintlogin`).innerHTML = '&nbsp;'
+        document.getElementById(`usernamehintlogin`).innerHTML = 'Enter username'
         return true
       }
     }
@@ -23,8 +26,11 @@ const Login = (props) => {
       if (password.trim() === '') {
         document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
         return false
-      } else {
-        document.getElementById(`passwordhintlogin`).innerHTML = '&nbsp;'
+      } else if (password.trim().length < PASSWORD_LENGTH) {
+        document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
+        return false
+    } else {
+        document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
         return true
       }
     }

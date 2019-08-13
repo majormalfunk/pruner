@@ -8,6 +8,7 @@ export const ACTION_CREATE_ACCOUNT_CANCEL = "action-create-account-cancel"
 export const ACTION_LOGIN = "action-login"
 export const ACTION_LOGIN_CANCEL = "action-login-cancel"
 export const ACTION_LOGOUT = "action-logout"
+export const ACTION_CHANGE_NICKNAME = "action-change-nickname"
 
 // Navigation
 export const PAGE_HOME = "page-home"
