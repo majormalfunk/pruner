@@ -18,9 +18,8 @@ const httpLink = createHttpLink({
 })
 
 localStorage.removeItem(USER_TOKEN)
-const token = null // localStorage.getItem(USER_TOKEN)
-
 const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem(USER_TOKEN)
   return {
     headers: {
       ...headers,

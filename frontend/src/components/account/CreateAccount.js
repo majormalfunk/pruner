@@ -109,9 +109,9 @@ const CreateAccount = (props) => {
             variables: { username, password, nickname }
           })
           if (result) {
-            const token = result.data.createAccount.value
+            const token = result.data.createAccount.token
             localStorage.setItem(USER_TOKEN, token)
-            const loggedInAs = username
+            const loggedInAs = result.data.createAccount
             clearFields()
             props.setToken(token)
             props.setUser(loggedInAs)

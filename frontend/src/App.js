@@ -6,6 +6,7 @@ import './App.css'
 import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT } from './constants'
 
+import Notification from './components/Notification'
 import Home from './components/Home'
 import Account from './components/account/Account'
 
@@ -83,9 +84,7 @@ const App = () => {
       </header>
       <div className="App-body">
 
-        <div>
-          {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-        </div>
+        <Notification message={errorMessage} />
 
         <Home show={page === PAGE_HOME} handleError={handleError} />
 

@@ -5,14 +5,14 @@ import { NicknameField, PasswordField } from './InputFields'
 import { ACTION_LOGOUT, ACTION_CHANGE_NICKNAME } from '../../constants'
 //import '../App.css'
 
-const AccountDetailsForm = ({ user, logout }) => {
+const AccountDetailsForm = ({ user, updateNickname, logout, setUser, handleError }) => {
 
   const [username, setUsername] = useState(user.username)
   const [password, setPassword] = useState('')
   const [nickname, setNickname] = useState(user.nickname)
 
   const controlNickname = () => {
-    if (document.getElementById(`nicknamehintchange`)) {
+    if (document.getElementById(`nicknamehintchange`) && nickname) {
       if (nickname.trim() === '') {
         document.getElementById(`nicknamehintchange`).innerHTML = 'Nickname shown to other users'
         return false
@@ -43,11 +43,24 @@ const AccountDetailsForm = ({ user, logout }) => {
     event.preventDefault()
 
     try {
-      window.alert("Placeholder for changing nickname")
+      const result = await updateNickname[0]({
+        variables: { username, nickname }
+      })
+      if (result) {
+        //const token = result.data.updateNickname.token
+        //localStorage.setItem(USER_TOKEN, token)
+        const updatedUser = result.data.updateNickname
+        //props.setToken(token)
+        setUser(updatedUser)
+        let messu = `Nickname changed to ${nickname}`
+        let erro = new Error
+        erro.message = messu
+        handleError(erro)
+        return null
+      }
     } catch (error) {
       console.log(error.message)
-      //clearFields()
-      //props.handleError(error)
+      handleError(error)
     }
 
   }

@@ -21,5 +21,6 @@
 | **WEEK 32**   | **TOTAL**                                                          |  **28,0** |  **45,0** |
 | 12.08.2019    | Some more account functionality                                    |     1,5   |           |
 | 13.08.2019    | Some more account functionality                                    |     1,5   |           |
-| **WEEK 32**   | **TOTAL**                                                          |   **3,0** |  **48,0** |
+| 14.08.2019    | Account update functionality                                       |     3,0   |           |
+| **WEEK 33**   | **TOTAL**                                                          |   **6,0** |  **54,0** |
 

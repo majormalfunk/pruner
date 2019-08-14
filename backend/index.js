@@ -50,6 +50,10 @@ const typeDefs = gql`
       username: String!
       password: String!
     ): CurrentUser
+    updateNickname(
+      username: String!
+      nickname: String!
+    ): CurrentUser
     relogin(
       token: String!
     ): CurrentUser
@@ -74,23 +78,24 @@ const resolvers = {
       const user = new User({ username: trimmedUsername, passwordHash: passwordHash, nickname: trimmedNickname })
 
       try {
-        user.save()
+        const savedUser = await user.save()
+        console.log('saved user id =', savedUser._id)
+        const userForToken = {
+          username: savedUser.username,
+          id: savedUser._id,
+        }
+
+        const currentUser = {
+          username: savedUser.username, nickname: savedUser.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+        }
+
+        return currentUser
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
         })
       }
 
-      const userForToken = {
-        username: user.username,
-        id: user._id,
-      }
-
-      const CurrentUser = {
-        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
-      }
-
-      return CurrentUser
     },
     login: async (root, args) => {
       console.log('****************************')
@@ -109,11 +114,46 @@ const resolvers = {
         id: user._id,
       }
 
-      const CurrentUser = {
+      const currentUser = {
         username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
       }
 
-      return CurrentUser
+      return currentUser
+    },
+    updateNickname: async (root, args, { currentUser }) => {
+
+      console.log('currentUser is', currentUser)
+      console.log('args.username is', args.username)
+      if (!currentUser || currentUser.username !== args.username) {
+        // The call has to have had a token and the username resolved from the token
+        // must match the username in arguments i.e. only a logged in user can change
+        // only their own nickname
+        console.log('Authentication error in updateNickname')
+        throw new AuthenticationError('Authetication error while changing the nickname', {
+          invalidArgs: args
+        })
+      }
+
+      const userFromDB = await User.findOne({ username: args.username })
+      if (userFromDB) {
+        userFromDB.nickname = args.nickname
+        try {
+          const savedUser = await userFromDB.save()
+          console.log('savedUser =', savedUser)
+          const updatedUser = {
+            username: savedUser.username, nickname: savedUser.nickname, token: currentUser.token
+          }
+          return updatedUser
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
+      } else {
+        console.log('No such user:', args.username)
+        return null
+      }
+
     },
     relogin: async (root, args) => {
       console.log('****************************')
@@ -159,7 +199,7 @@ const server = new ApolloServer({
         console.log(error.message)
         throw AuthenticationError(error.message)
       }
-      console.log('Decoded token =', decodedToken)
+      //console.log('Decoded token =', decodedToken)
       const user = await User.findById(decodedToken.id)
 
       const userForToken = {
@@ -167,13 +207,13 @@ const server = new ApolloServer({
         id: user._id,
       }
 
-      const CurrentUser = {
+      const currentUser = {
         username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
       }
 
-      console.log("Server says current user is", CurrentUser)
+      console.log("Server says current user is", currentUser)
 
-      return CurrentUser
+      return { currentUser }
     }
   }
 })
