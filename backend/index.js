@@ -38,7 +38,7 @@ const typeDefs = gql`
     value: String!
   }
   type Query {
-    hello: CurrentUser
+    relogin: CurrentUser
   }
   type Mutation {
     createAccount(
@@ -54,22 +54,18 @@ const typeDefs = gql`
       username: String!
       nickname: String!
     ): CurrentUser
-    relogin(
-      token: String!
-    ): CurrentUser
   }
 `
 
 const resolvers = {
   Query: {
-    hello: (root, args, context) => {
-      console.log('Current user was resolved to:', context.currentUser.username)
-      return context.currentUser
+    relogin: async (root, args, { currentUser }) => {
+      return currentUser
     }
   },
   Mutation: {
     createAccount: async (root, args) => {
-      console.log('Mutation: createAccount was called')
+
       const saltRounds = 10
       const passwordHash = await bcrypt.hash(args.password, saltRounds)
       const trimmedUsername = args.username.trim()
@@ -79,7 +75,6 @@ const resolvers = {
 
       try {
         const savedUser = await user.save()
-        console.log('saved user id =', savedUser._id)
         const userForToken = {
           username: savedUser.username,
           id: savedUser._id,
@@ -98,9 +93,6 @@ const resolvers = {
 
     },
     login: async (root, args) => {
-      console.log('****************************')
-      console.log('Mutation: login was called')
-      console.log('****************************')
 
       const user = await User.findOne({ username: args.username })
       const passwordCorrect = (user === null ? false : await bcrypt.compare(args.password, user.passwordHash))
@@ -122,8 +114,6 @@ const resolvers = {
     },
     updateNickname: async (root, args, { currentUser }) => {
 
-      console.log('currentUser is', currentUser)
-      console.log('args.username is', args.username)
       if (!currentUser || currentUser.username !== args.username) {
         // The call has to have had a token and the username resolved from the token
         // must match the username in arguments i.e. only a logged in user can change
@@ -154,27 +144,6 @@ const resolvers = {
         return null
       }
 
-    },
-    relogin: async (root, args) => {
-      console.log('****************************')
-      console.log('Mutation: relogin was called')
-      console.log('****************************')
-
-      const decodedToken = jwt.verify(
-        args.token, JWT_SECRET
-      )
-      const user = await User.findById(decodedToken.id)
-
-      const userForToken = {
-        username: user.username,
-        id: user._id,
-      }
-
-      const CurrentUser = {
-        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
-      }
-
-      return CurrentUser
     }
   }
 }
@@ -188,7 +157,6 @@ const server = new ApolloServer({
     const auth = req ? req.headers.authorization : null
     console.log("Auth is", auth)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      console.log('Next we try to decode it')
       let decodedToken = ''
       try {
         decodedToken = await jwt.verify(
@@ -199,7 +167,7 @@ const server = new ApolloServer({
         console.log(error.message)
         throw AuthenticationError(error.message)
       }
-      //console.log('Decoded token =', decodedToken)
+
       const user = await User.findById(decodedToken.id)
 
       const userForToken = {
@@ -210,8 +178,6 @@ const server = new ApolloServer({
       const currentUser = {
         username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
       }
-
-      console.log("Server says current user is", currentUser)
 
       return { currentUser }
     }

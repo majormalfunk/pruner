@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
-import { useQuery, useMutation, useSubscription, useApolloClient } from 'react-apollo-hooks'
-import { gql } from 'apollo-boost'
+import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
 import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT } from './constants'
@@ -40,16 +39,29 @@ const App = () => {
   }
 
   const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
-  console.log('App: Token in storage was:', tokenFromStorage)
+  //console.log('App: Token in storage was:', tokenFromStorage)
   if (tokenFromStorage && tokenFromStorage.length > 0) {
     if (!token || token !== tokenFromStorage) {
       setToken(tokenFromStorage)
     }
   }
 
+  const handleSetToken = (newToken) => {
+    //console.log('App: handleSetToken to:', newToken)
+    if (newToken) {
+      window.localStorage.setItem(USER_TOKEN, newToken)
+      setToken(newToken)
+      //console.log('A new user token was set')
+    } else {
+      window.localStorage.removeItem(USER_TOKEN)
+      setToken(null)
+      //console.log('User token was cleared')
+    }
+  }
+
   const logout = () => {
     setToken(null)
-    localStorage.clear()
+    window.localStorage.clear()
     client.resetStore()
     setPage(PAGE_HOME)
   }
@@ -88,7 +100,7 @@ const App = () => {
 
         <Home show={page === PAGE_HOME} handleError={handleError} />
 
-        <Account setToken={(token) => setToken(token)} token={token} logout={logout}
+        <Account handleSetToken={handleSetToken} token={token} logout={logout}
           show={page === PAGE_ACCOUNT} handleError={handleError} />
 
       </div>

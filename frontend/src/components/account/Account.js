@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Container } from 'react-bootstrap'
 
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { gql } from 'apollo-boost'
 
 import AccountDetailsForm from './AccountDetailsForm'
-//import CreateAccountForm from './CreateAccountForm'
 import CreateAccount from './CreateAccount'
 import Login from './Login'
 
 const RELOGIN = gql`
-  mutation relogin($token: String!) {
-    relogin(token: $token) {
+  {
+    relogin {
       username
       nickname
       token
@@ -49,7 +48,7 @@ const UPDATE_NICKNAME = gql`
 const Account = (props) => {
   const [user, setUser] = useState(null)
 
-  const relogin = useMutation(RELOGIN, {
+  const relogin = useQuery(RELOGIN, {
     onError: props.handleError
   })
   const createAccount = useMutation(CREATE_ACCOUNT, {
@@ -67,34 +66,27 @@ const Account = (props) => {
     props.logout()
   }
 
-  let tokenFromProps = props.token
-  console.log('Token from props is', tokenFromProps)
-
   const tryToRelogin = async () => {
-    console.log('Trying to relogin with', tokenFromProps)
     try {
-      const result = await relogin[0]({
-        variables: { tokenFromProps }
-      })
-      console.log('Tried to get a result.')
-      console.log('Result was')
-      console.log(result)
-      //   if (result) {
-      //     console.log('Relogin result:', result)
-      //     const loggedInAs = result.data.relogin
-      //     console.login(loggedInAs)
-      //     //props.setUser(loggedInAs)
-      //   }
+      const result = await relogin
+      if (result.data) {
+        const token = result.data.relogin.token
+        const loggedInAs = result.data.relogin
+        setUser(loggedInAs)
+        props.handleSetToken(token)
+        console.log('We have a token and user was resolved')
+      }
     } catch (error) {
-      throw new Error(error.message)
-      //   console.log(error.message)
-      //   props.handleError(error)
+      console.log(error.message)
+      props.handleError(error)
+      throw new Error(error)
     }
   }
 
+  const tokenFromProps = props.token
+
   if (tokenFromProps && !user) {
-    console.log('We have a token, but no user is resolved')
-    //tryToRelogin()
+    tryToRelogin()
   }
 
   if (!props.show) {
@@ -108,7 +100,7 @@ const Account = (props) => {
     return (
       <div>
         <AccountDetailsForm user={user} updateNickname={updateNickname} logout={logout}
-        setUser={(user) => setUser(user)} handleError={props.handleError} />
+          setUser={(user) => setUser(user)} handleError={props.handleError} />
       </div>
     )
 
@@ -118,13 +110,13 @@ const Account = (props) => {
 
     return (
       <Container>
-        <Login login={login} setToken={(token) => props.setToken(token)}
-          setUser={(user) => setUser(user)} handleError={props.handleError} />
+        <Login login={login} handleSetToken={props.handleSetToken}
+          setUser={setUser} handleError={props.handleError} />
 
         <Container>OR</Container>
 
-        <CreateAccount createAccount={createAccount} setToken={(token) => props.setToken(token)}
-          setUser={(user) => setUser(user)} handleError={props.handleError} />
+        <CreateAccount createAccount={createAccount} handleSetToken={props.handleSetToken}
+          setUser={setUser} handleError={props.handleError} />
       </Container>
     )
   }

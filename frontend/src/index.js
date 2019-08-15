@@ -12,14 +12,12 @@ import { USER_TOKEN } from './constants'
 import App from './App'
 
 const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : '/graphql')
-console.log('uri:', uri)
 const httpLink = createHttpLink({
   uri: uri
 })
 
-localStorage.removeItem(USER_TOKEN)
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(USER_TOKEN)
+  const token = window.localStorage.getItem(USER_TOKEN)
   return {
     headers: {
       ...headers,

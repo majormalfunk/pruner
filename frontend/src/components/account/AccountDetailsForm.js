@@ -53,7 +53,7 @@ const AccountDetailsForm = ({ user, updateNickname, logout, setUser, handleError
         //props.setToken(token)
         setUser(updatedUser)
         let messu = `Nickname changed to ${nickname}`
-        let erro = new Error
+        let erro = new Error()
         erro.message = messu
         handleError(erro)
         return null
@@ -69,8 +69,6 @@ const AccountDetailsForm = ({ user, updateNickname, logout, setUser, handleError
     <Container>
       <Row>
         <Col className="Component-title">You are logged in as <font color='white'>{username}</font></Col>
-      </Row>
-      <Row>
         <Col>
           <Button variant="danger" type="button" value={ACTION_LOGOUT} id={ACTION_LOGOUT}
             onClick={logout}>Logout</Button>
@@ -90,9 +88,6 @@ const AccountDetailsForm = ({ user, updateNickname, logout, setUser, handleError
           <NicknameField nickname={nickname} trigger={handleNickname}
             nicknamehint={`nicknamehintchange`} setnickname={`setnicknamechange`} />
         </Col>
-      </Row>
-      <Row>
-        <Col><span>&nbsp;</span></Col>
       </Row>
       <Row>
         <Col>

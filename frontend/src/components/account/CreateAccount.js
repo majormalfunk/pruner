@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { USER_TOKEN, USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
+import { USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_ACCOUNT } from '../../constants'
 import CreateAccountForm from './CreateAccountForm'
 
@@ -110,11 +110,10 @@ const CreateAccount = (props) => {
           })
           if (result) {
             const token = result.data.createAccount.token
-            localStorage.setItem(USER_TOKEN, token)
             const loggedInAs = result.data.createAccount
             clearFields()
-            props.setToken(token)
             props.setUser(loggedInAs)
+            props.handleSetToken(token)
             return null
           }
         } catch (error) {

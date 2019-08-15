@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { USER_TOKEN, USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
+import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
 import LoginForm from './LoginForm'
 
@@ -72,11 +72,10 @@ const Login = (props) => {
       })
       if (result) {
         const token = result.data.login.token
-        localStorage.setItem(USER_TOKEN, token)
         const loggedInAs = result.data.login
         clearFields()
-        props.setToken(token)
         props.setUser(loggedInAs)
+        props.handleSetToken(token)
         return null
       }
     } catch (error) {
