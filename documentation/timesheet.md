@@ -22,5 +22,6 @@
 | 12.08.2019    | Some more account functionality                                    |     1,5   |           |
 | 13.08.2019    | Some more account functionality                                    |     1,5   |           |
 | 14.08.2019    | Account update functionality                                       |     3,0   |           |
-| **WEEK 33**   | **TOTAL**                                                          |   **6,0** |  **54,0** |
+| 15.08.2019    | Fixed relogin with stored token and some ui tweaks                 |     3,0   |           |
+| **WEEK 33**   | **TOTAL**                                                          |   **9,0** |  **54,0** |
 
