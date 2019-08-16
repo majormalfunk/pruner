@@ -44,6 +44,15 @@ const UPDATE_NICKNAME = gql`
     }
   }
 `
+const UPDATE_PASSWORD = gql`
+  mutation updatePassword($username: String!, $oldPassword: String!, $newPassword: String!) {
+    updatePassword(username: $username, oldPassword: $oldPassword, newPassword: $newPassword) {
+      username
+      nickname
+      token
+    }
+  }
+`
 
 const Account = (props) => {
   const [user, setUser] = useState(null)
@@ -58,6 +67,9 @@ const Account = (props) => {
     onError: props.handleError
   })
   const updateNickname = useMutation(UPDATE_NICKNAME, {
+    onError: props.handleError
+  })
+  const updatePassword = useMutation(UPDATE_PASSWORD, {
     onError: props.handleError
   })
 
@@ -99,8 +111,8 @@ const Account = (props) => {
 
     return (
       <div>
-        <AccountDetailsForm user={user} updateNickname={updateNickname} logout={logout}
-          setUser={(user) => setUser(user)} handleError={props.handleError} />
+        <AccountDetailsForm user={user} updateNickname={updateNickname} updatePassword={updatePassword}
+          logout={logout} setUser={setUser} handleError={props.handleError} />
       </div>
     )
 

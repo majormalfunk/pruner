@@ -11,4 +11,6 @@ In order for pruner to work it has to have the event schedule and a list of even
 A registered user can create event timetables. Timetables can be private or public. All users can prune public events.
 Registered user can also prune own private timetables.
 
+[Live app online](https://eventpruner.herokuapp.com/)
+
 [Timesheet](/documentation/timesheet.md)

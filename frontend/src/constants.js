@@ -9,6 +9,8 @@ export const ACTION_LOGIN = "action-login"
 export const ACTION_LOGIN_CANCEL = "action-login-cancel"
 export const ACTION_LOGOUT = "action-logout"
 export const ACTION_CHANGE_NICKNAME = "action-change-nickname"
+export const ACTION_CHANGE_PASSWORD = "action-change-password"
+export const ACTION_CHANGE_PASSWORD_CANCEL = "action-change-password-cancel"
 
 // Navigation
 export const PAGE_HOME = "page-home"

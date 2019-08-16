@@ -54,6 +54,11 @@ const typeDefs = gql`
       username: String!
       nickname: String!
     ): CurrentUser
+    updatePassword(
+      username: String!
+      oldPassword: String!
+      newPassword: String!
+    ): CurrentUser
   }
 `
 
@@ -129,7 +134,47 @@ const resolvers = {
         userFromDB.nickname = args.nickname
         try {
           const savedUser = await userFromDB.save()
-          console.log('savedUser =', savedUser)
+          const updatedUser = {
+            username: savedUser.username, nickname: savedUser.nickname, token: currentUser.token
+          }
+          return updatedUser
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
+      } else {
+        console.log('No such user:', args.username)
+        return null
+      }
+
+    },
+    updatePassword: async (root, args, { currentUser }) => {
+
+      if (!currentUser || currentUser.username !== args.username) {
+        // The call has to have had a token and the username resolved from the token
+        // must match the username in arguments i.e. only a logged in user can change
+        // only their own nickname
+        console.log('Authentication error in updatePassword')
+        throw new AuthenticationError('Authetication error while changing the nickname', {
+          invalidArgs: args
+        })
+      }
+
+      const user = await User.findOne({ username: args.username })
+      const passwordCorrect = (user === null ? false : await bcrypt.compare(args.oldPassword, user.passwordHash))
+
+      if (!(user && passwordCorrect)) {
+        throw new UserInputError("Wrong username or password")
+      }
+
+      const saltRounds = 10
+      const passwordHash = await bcrypt.hash(args.newPassword, saltRounds)
+
+      if (user) {
+        user.passwordHash = passwordHash
+        try {
+          const savedUser = await user.save()
           const updatedUser = {
             username: savedUser.username, nickname: savedUser.nickname, token: currentUser.token
           }
