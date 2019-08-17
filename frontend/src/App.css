@@ -1,10 +1,10 @@
 .App {
-  background-color: #282c34;
+  background-color: black;
 }
 
 .App-header {
   padding: 10px;
-  background-color: #222222;
+  background-color: #282c34;
   min-height: 10vh;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
 }
 
 .App-body {
-  background-color: #222222;
+  background-color: black;
   min-height: 50vh;
   padding-top: 30px;
   display: flex;
@@ -67,6 +67,24 @@
 
 .Menu-button:focus {
   outline: none;
+}
+
+.Home-card-large {
+  border: 0;
+  padding: 16px;
+  background-color: transparent;
+  font-size: 2.5vw;
+  font-weight: bold;
+  color: #ffffff
+}
+
+.Home-card-small {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  font-size: 3.0vw;
+  font-weight: bold;
+  color: #ffffff
 }
 
 .Component-title {
