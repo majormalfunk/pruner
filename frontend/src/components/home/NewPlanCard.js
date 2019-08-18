@@ -6,7 +6,7 @@ const NewPlanCard = ({ cardStyle, handleError }) => {
 
   return (
 
-      <Card className={cardStyle} style={{ width: '10em', height: '10em' }}>
+      <Card className={cardStyle}>
         <Card.Img src={img_new_plan} alt="Card image" />
         <Card.ImgOverlay>
           <Card.Title className="Home-card">MAKE A NEW PLAN</Card.Title>

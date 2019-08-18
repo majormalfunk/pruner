@@ -24,6 +24,7 @@
 | 14.08.2019    | Account update functionality                                       |     3,0   |           |
 | 15.08.2019    | Fixed relogin with stored token and some ui tweaks                 |     3,0   |           |
 | 16.08.2019    | Added functionality for changing password                          |     1,0   |           |
-| 17.08.2019    | Home screen for choosing use case                                  |     5,0   |           |
-| **WEEK 33**   | **TOTAL**                                                          |  **15,0** |  **60,0** |
+| 17.08.2019    | Home screen for choosing the use case                              |     5,0   |           |
+| 18.08.2019    | Home screen for choosing the use case                              |     1,0   |           |
+| **WEEK 33**   | **TOTAL**                                                          |  **16,0** |  **61,0** |
 

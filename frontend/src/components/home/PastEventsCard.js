@@ -6,7 +6,7 @@ const PastEventsCard = ({ cardStyle, handleError }) => {
 
   return (
 
-      <Card className={cardStyle} style={{ width: '10em', height: '10em' }}>
+      <Card className={cardStyle}>
         <Card.Img src={img_past_events} alt="Card image" />
         <Card.ImgOverlay>
           <Card.Title className="Home-card">BROWSE PAST EVENTS</Card.Title>

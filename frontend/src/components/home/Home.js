@@ -9,16 +9,18 @@ import MyEventsCard from './MyEventsCard'
 
 const Home = ({ show, result, handleError }) => {
 
-  const [cardColumns, setCardColumns] = useState(3)
+  const [cardColumns, setCardColumns] = useState(window.innerWidth >= 576 ? 3 : 2)
 
   useEffect(() => {
     window.addEventListener('resize', () => {
-      setCardColumns(window.innerWidth >= 576 ? 3 : 2)
-      console.log('Width:', window.innerWidth)
-      console.log('Cols:', cardColumns)
-    });
+      //throttle(() => {
+        setCardColumns(window.innerWidth >= 576 ? 3 : 2)
+      //}, 200)
+    })
 
-    // returned function will be called on component unmount 
+    // This should be called when component is unmounted 
+    // It apparently gets called when cardColumns changes
+    // Point in that?
     return () => {
       window.removeEventListener('resize', () => { })
     }

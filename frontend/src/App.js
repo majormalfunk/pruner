@@ -71,24 +71,16 @@ const App = () => {
       <header className="App-header">
 
         <Container>
-          <Navbar fixed="top" collapseOnSelect expand="md" className="App-menu" variant="dark">
+          <Navbar fixed="top" className="App-menu" variant="dark">
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-              <Row>
-                <Col className="Menu-brand">
-                  <Navbar.Brand className="Menu-brand">Pruner</Navbar.Brand>
-                </Col>
-                <Col className="Menu-button">
-                  <Nav>
-                    <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
-                  </Nav>
-                </Col>
-                <Col className="Menu-button" md="auto">
-                  <Nav>
-                    <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>{token ? 'My Account' : 'Login'}</button>
-                  </Nav>
-                </Col>
-              </Row>
+              <Navbar.Brand className="Menu-brand">Pruner</Navbar.Brand>
+              <Nav>
+                <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
+              </Nav>
+              <Nav>
+                <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>{token ? 'My Account' : 'Login'}</button>
+              </Nav>
             </Navbar.Collapse>
           </Navbar>
         </Container>

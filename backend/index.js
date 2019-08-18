@@ -200,7 +200,7 @@ const server = new ApolloServer({
   playground: (process.env.NODE_ENV === 'development'),
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
-    console.log("Auth is", auth)
+    //console.log("Auth is", auth)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       let decodedToken = ''
       try {
