@@ -25,6 +25,11 @@
 | 15.08.2019    | Fixed relogin with stored token and some ui tweaks                 |     3,0   |           |
 | 16.08.2019    | Added functionality for changing password                          |     1,0   |           |
 | 17.08.2019    | Home screen for choosing the use case                              |     5,0   |           |
-| 18.08.2019    | Home screen for choosing the use case                              |     1,0   |           |
-| **WEEK 33**   | **TOTAL**                                                          |  **16,0** |  **61,0** |
+| 18.08.2019    | Home screen for choosing the use case, scraping test data from web |     3,0   |           |
+| **WEEK 33**   | **TOTAL**                                                          |  **18,0** |  **63,0** |
+| 19.08.2019    | Scraping test data from web                                        |     1,0   |           |
+| 21.08.2019    | Parsing test data to json                                          |     3,0   |           |
+| 22.08.2019    | Parsing test data to json                                          |     1,0   |           |
+| 22.08.2019    | Started functionality for creating a new event                     |     2,0   |           |
+| **WEEK 34**   | **TOTAL**                                                          |   **7,0** |  **70,0** |
 

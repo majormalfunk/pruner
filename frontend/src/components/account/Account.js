@@ -86,7 +86,7 @@ const Account = (props) => {
         const loggedInAs = result.data.relogin
         setUser(loggedInAs)
         props.handleSetToken(token)
-        console.log('We have a token and user was resolved')
+        //console.log('We have a token and user was resolved')
       }
     } catch (error) {
       console.log(error.message)

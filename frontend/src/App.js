@@ -3,11 +3,12 @@ import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
 import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
 import { USER_TOKEN } from './constants'
-import { PAGE_HOME, PAGE_ACCOUNT } from './constants'
+import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT } from './constants'
 
 import Notification from './components/Notification'
 import Home from './components/home/Home'
 import Account from './components/account/Account'
+import Event from './components/event/Event'
 
 //const AVAILABLE_EVENTS = gql`
 //  {
@@ -59,6 +60,14 @@ const App = () => {
     }
   }
 
+  const handleSetPage = (event) => {
+    console.log('Got event in handleSetPage', event)
+    //event.preventDefault()
+    //setPage(event.target.value)
+    setPage(event)
+    console.log('Page was set to', event)
+  }
+
   const logout = () => {
     setToken(null)
     window.localStorage.clear()
@@ -90,10 +99,12 @@ const App = () => {
 
         <Notification message={errorMessage} />
 
-        <Home show={page === PAGE_HOME} handleError={handleError} />
+        <Home show={page === PAGE_HOME} handleSetPage={handleSetPage} handleError={handleError} />
 
         <Account handleSetToken={handleSetToken} token={token} logout={logout}
           show={page === PAGE_ACCOUNT} handleError={handleError} />
+
+        <Event token={token} show={page.startsWith(PAGE_EVENT)} page={page} handleError={handleError} />
 
       </div>
     </div>

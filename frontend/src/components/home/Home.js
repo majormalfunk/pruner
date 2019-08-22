@@ -7,15 +7,13 @@ import UpcomingEventsCard from './UpcomingEventsCard'
 import PastEventsCard from './PastEventsCard'
 import MyEventsCard from './MyEventsCard'
 
-const Home = ({ show, result, handleError }) => {
+const Home = ({ show, handleSetPage, handleError }) => {
 
   const [cardColumns, setCardColumns] = useState(window.innerWidth >= 576 ? 3 : 2)
 
   useEffect(() => {
     window.addEventListener('resize', () => {
-      //throttle(() => {
         setCardColumns(window.innerWidth >= 576 ? 3 : 2)
-      //}, 200)
     })
 
     // This should be called when component is unmounted 
@@ -30,31 +28,21 @@ const Home = ({ show, result, handleError }) => {
     return null
   }
 
-  //if (result.loading) {
-  //  return <div>Loading...</div>
-  //}
-
-  //if (result.data.availableEvents) {
-  //  return (
-  //    <span>Welcome!</span>
-  //  )
-  //} else {
-
   if (cardColumns === 3) {
     return (
       <Container>
         <Row>
           <CardDeck>
-            <NewPlanCard cardStyle="Home-card-large" handleError={handleError} />
-            <UpcomingEventsCard cardStyle="Home-card-large" handleError={handleError} />
-            <NewEventCard cardStyle="Home-card-large" handleError={handleError} />
+            <NewPlanCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <UpcomingEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <NewEventCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
           </CardDeck>
         </Row>
         <Row>
           <CardDeck>
-            <MyPlansCard cardStyle="Home-card-large" handleError={handleError} />
-            <PastEventsCard cardStyle="Home-card-large" handleError={handleError} />
-            <MyEventsCard cardStyle="Home-card-large" handleError={handleError} />
+            <MyPlansCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <PastEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <MyEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
           </CardDeck>
         </Row>
       </Container>
@@ -65,16 +53,16 @@ const Home = ({ show, result, handleError }) => {
         <Row>
           <Col>
             <CardColumns>
-              <NewPlanCard cardStyle="Home-card-small" handleError={handleError} />
-              <UpcomingEventsCard cardStyle="Home-card-small" handleError={handleError} />
-              <MyPlansCard cardStyle="Home-card-small" handleError={handleError} />
+              <NewPlanCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <UpcomingEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <MyPlansCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
             </CardColumns>
           </Col>
           <Col>
             <CardColumns>
-              <NewEventCard cardStyle="Home-card-small" handleError={handleError} />
-              <PastEventsCard cardStyle="Home-card-small" handleError={handleError} />
-              <MyEventsCard cardStyle="Home-card-small" handleError={handleError} />
+              <NewEventCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <PastEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <MyEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
             </CardColumns>
           </Col>
         </Row>
