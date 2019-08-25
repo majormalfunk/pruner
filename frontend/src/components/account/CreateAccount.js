@@ -52,7 +52,7 @@ const CreateAccount = (props) => {
         document.getElementById(`nicknamehintcreate`).innerHTML = 'Enter nickname shown to other users'
         return false
       } else if (nickname.trim().length < NICKNAME_LENGTH) {
-        document.getElementById(`nicknamehintcreate`).innerHTML = 'Nickname must be at least 6 characters'
+        document.getElementById(`nicknamehintcreate`).innerHTML = `Nickname must be at least ${NICKNAME_LENGTH} characters`
         return false
       } else {
         document.getElementById(`nicknamehintcreate`).innerHTML = 'Nickname is long enough'

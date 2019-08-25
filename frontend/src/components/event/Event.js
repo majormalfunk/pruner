@@ -32,7 +32,7 @@ const Event = ({ token, show, page, handleError }) => {
 
     return (
       <Container>
-        <CreateEvent token={token} show={page === PAGE_EVENT_CREATE} handleError={handleError} />
+        <CreateEvent createEvent={createEvent} token={token} show={page === PAGE_EVENT_CREATE} handleError={handleError} />
       </Container>
     )
 

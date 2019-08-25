@@ -31,5 +31,6 @@
 | 21.08.2019    | Parsing test data to json                                          |     3,0   |           |
 | 22.08.2019    | Parsing test data to json                                          |     1,0   |           |
 | 22.08.2019    | Started functionality for creating a new event                     |     2,0   |           |
-| **WEEK 34**   | **TOTAL**                                                          |   **7,0** |  **70,0** |
+| 25.08.2019    | More functionality for creating a new event                        |     0,5   |           |
+| **WEEK 34**   | **TOTAL**                                                          |   **7,5** |  **70,5** |
 
