@@ -9,6 +9,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const User = require('./models/user')
+const Event = require('./models/event')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -33,6 +34,17 @@ const typeDefs = gql`
     username: String!
     nickname: String!
     token: String!
+  }
+  type User {
+    nickname: String!
+    id: ID!
+  }
+  type Event {
+    eventname: String!
+    description: String!
+    publicevent: Boolean!
+    owner: User!
+    id: ID!
   }
   type Token {
     value: String!
@@ -59,6 +71,11 @@ const typeDefs = gql`
       oldPassword: String!
       newPassword: String!
     ): CurrentUser
+    createEvent(
+      eventname: String!
+      description: String!
+      publicevent: Boolean!
+    ): Event
   }
 `
 
@@ -154,7 +171,7 @@ const resolvers = {
       if (!currentUser || currentUser.username !== args.username) {
         // The call has to have had a token and the username resolved from the token
         // must match the username in arguments i.e. only a logged in user can change
-        // only their own nickname
+        // their own nickname
         console.log('Authentication error in updatePassword')
         throw new AuthenticationError('Authetication error while changing the nickname', {
           invalidArgs: args
@@ -187,6 +204,53 @@ const resolvers = {
       } else {
         console.log('No such user:', args.username)
         return null
+      }
+
+    },
+    createEvent: async (root, args, { currentUser }) => {
+
+      if (!currentUser) {
+        // The call has to have had a token and the username resolved from the token
+        // must match the username in arguments i.e. only a logged in user can change
+        // their own nickname
+        console.log('Not logged in when trying to create event')
+        throw new AuthenticationError('Authetication error while creating an event', {
+          invalidArgs: args
+        })
+      }
+
+      let userId = ''
+
+      try {
+        //console.log('Fishing out the user id from current user')
+        decodedToken = await jwt.verify(
+          currentUser.token, JWT_SECRET
+        )
+        //console.log('Decoded token is', decodedToken)
+        userId = decodedToken.id
+      } catch (error) {
+        console.log('Something went wrong decoding token:')
+        console.log(error.message)
+        throw AuthenticationError(error.message)
+      }
+
+      if (userId && userId !== '') {
+
+        try {
+          const newEvent = new Event({
+            eventname: args.eventname, description: args.description, publicevent: args.publicevent, owner: userId
+          })
+          const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
+          //console.log('Saved event is', savedEvent)
+          return savedEvent
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        }
+
+      } else {
+        throw AuthenticationError('Failure decoding token.')
       }
 
     }

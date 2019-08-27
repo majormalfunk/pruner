@@ -4,7 +4,7 @@ import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_EVENT } from '../../constants'
 import CreateEventForm from './CreateEventForm'
 
-const CreateEvent = ({ createEvent, token, show, handleError }) => {
+const CreateEvent = ({ createEvent, token, show, setEvent, handleError }) => {
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
@@ -38,10 +38,23 @@ const CreateEvent = ({ createEvent, token, show, handleError }) => {
       }
     }
   }
+  const controlPublicevent = () => {
+    if (document.getElementById(`publiceventhintcreate`)) {
+      console.log('Controlled public')
+      if (publicevent === false) {
+        document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event private'
+        return true
+      } else {
+        document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event visible to all'
+        return true
+      }
+    }
+  }
 
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
+    const checked = controlPublicevent()
     if (document.getElementById(ACTION_CREATE_EVENT)) {
       document.getElementById(ACTION_CREATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }
@@ -58,12 +71,18 @@ const CreateEvent = ({ createEvent, token, show, handleError }) => {
   const handleDescription = (event) => {
     setDescription(event.target.value)
   }
+  const handlePublicevent = (event) => {
+    console.log('Checkbox checked', event.target.checked)
+    setPublicevent(event.target.checked)
+  }
 
   const clearFields = () => {
     setEventname('')
     document.getElementById(`seteventnamecreate`).value = ''
     setDescription('')
     document.getElementById(`setdescriptioncreate`).value = ''
+    setPublicevent(false)
+    document.getElementById(`setpubliceventcreate`).checked = false
   }
 
   const handleCreateEventCancel = (event) => {
@@ -76,18 +95,16 @@ const CreateEvent = ({ createEvent, token, show, handleError }) => {
     console.log('Create event', eventname)
       if (eventname.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
         try {
-          window.alert(`Create event ${eventname}`)
-          // const result = await createEvent[0]({
-          //   variables: { eventname, description, publicevent }
-          // })
-          // if (result) {
-          //   const event = result.data.createEvent.event
-          //   //const loggedInAs = result.data.createAccount
-          //   //clearFields()
-          //   //props.setUser(loggedInAs)
-          //   //props.handleSetToken(token)
-          //   return null
-          // }
+          //window.alert(`Create event ${eventname}`)
+          const result = await createEvent[0]({
+            variables: { eventname, description, publicevent }
+          })
+          if (result) {
+            console.log('Result from createEvent', result.data.createEvent)
+            const event = result.data.createEvent
+            setEvent(event)
+            return null
+          }
         } catch (error) {
           console.log(error.message)
           clearFields()
@@ -106,6 +123,8 @@ const CreateEvent = ({ createEvent, token, show, handleError }) => {
       handleEventname={handleEventname}
       description={description}
       handleDescription={handleDescription}
+      publicevent={publicevent}
+      handlePublicevent={handlePublicevent}
       handleCreateEventCancel={handleCreateEventCancel}
       handleCreateEvent={handleCreateEvent} />
   )

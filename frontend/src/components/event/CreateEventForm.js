@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { EventnameField, DescriptionField } from './InputFields'
+import { EventnameField, DescriptionField, PublicEventField } from './InputFields'
 import { ACTION_CREATE_EVENT, ACTION_CREATE_EVENT_CANCEL } from '../../constants'
 
 const CreateEventForm = (props) => {
@@ -31,6 +31,15 @@ const CreateEventForm = (props) => {
             <DescriptionField description={props.description} trigger={props.handleDescription}
               descriptionhint={`descriptionhintcreate`} setdescription={`setdescriptioncreate`} />
           </Col>
+        </Row>
+        <Row>
+          <Col>
+            <PublicEventField publicevent={props.publicevent} trigger={props.handlePublicevent}
+              publiceventhint={`publiceventhintcreate`} setpublicevent={`setpubliceventcreate`} />
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
         </Row>
         <Row>
           <Col>

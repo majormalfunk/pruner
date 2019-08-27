@@ -9,7 +9,7 @@ const MyPlansCard = ({ cardStyle, handleError }) => {
       <Card className={cardStyle}>
         <Card.Img src={img_my_plans} alt="Card image" />
         <Card.ImgOverlay>
-          <Card.Title className="Home-card">VIEW SAVED PLANS</Card.Title>
+          <Card.Title className="Home-card">VIEW MY SAVED PLANS</Card.Title>
         </Card.ImgOverlay>
       </Card>
 
