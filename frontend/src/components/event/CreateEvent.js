@@ -40,7 +40,6 @@ const CreateEvent = ({ createEvent, token, show, setEvent, handleError }) => {
   }
   const controlPublicevent = () => {
     if (document.getElementById(`publiceventhintcreate`)) {
-      console.log('Controlled public')
       if (publicevent === false) {
         document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event private'
         return true
@@ -72,7 +71,6 @@ const CreateEvent = ({ createEvent, token, show, setEvent, handleError }) => {
     setDescription(event.target.value)
   }
   const handlePublicevent = (event) => {
-    console.log('Checkbox checked', event.target.checked)
     setPublicevent(event.target.checked)
   }
 

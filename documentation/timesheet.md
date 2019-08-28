@@ -33,6 +33,7 @@
 | 22.08.2019    | Started functionality for creating a new event                     |     2,0   |           |
 | 25.08.2019    | More functionality for creating a new event                        |     0,5   |           |
 | 26.08.2019    | More functionality for creating a new event                        |     1,0   |           |
-| 27.08.2019    | Inserting a new event to the db + autopopulate                     |     3,0   |           |
-| **WEEK 34**   | **TOTAL**                                                          |  **11,5** |  **74,5** |
+| 27.08.2019    | Inserting a new event to the db and autopopulate                   |     3,0   |           |
+| 28.08.2019    | Refactoring backend                                                |     1,5   |           |
+| **WEEK 34**   | **TOTAL**                                                          |  **13,0** |  **76,0** |
 
