@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongooseUniqueValidator = require('mongoose-unique-validator')
 const autopopulate = require('mongoose-autopopulate')
 
 const eventSchema = new mongoose.Schema({
@@ -19,10 +20,12 @@ const eventSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', autopopulate: { select: 'nickname' } 
+    ref: 'User',
+    autopopulate: { select: 'nickname' } 
   }
 })
 
+eventSchema.plugin(mongooseUniqueValidator)
 eventSchema.plugin(autopopulate)
 
 const Event = mongoose.model('Event', eventSchema)

@@ -67,14 +67,17 @@ const Login = (props) => {
     event.preventDefault()
 
     try {
+      console.log('Trying to login')
       const result = await props.login[0]({
         variables: { username, password }
       })
+      console.log('Past trying')
       if (result) {
         const token = result.data.login.token
         const loggedInAs = result.data.login
         clearFields()
         props.setUser(loggedInAs)
+        console.log('Logged in as', loggedInAs)
         props.handleSetToken(token)
         return null
       }

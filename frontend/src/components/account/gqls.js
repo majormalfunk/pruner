@@ -6,6 +6,11 @@ export const RELOGIN = gql`
       username
       nickname
       token
+      events {
+        eventname
+        description
+        publicevent
+      }
     }
   }
 `
@@ -15,6 +20,11 @@ export const CREATE_ACCOUNT = gql`
       username
       nickname
       token
+      events {
+        eventname
+        description
+        publicevent
+      }
     }
   }
 `
@@ -24,6 +34,11 @@ export const LOGIN = gql`
       username
       nickname
       token
+      events {
+        eventname
+        description
+        publicevent
+      }
     }
   }
 `
@@ -33,6 +48,11 @@ export const UPDATE_NICKNAME = gql`
       username
       nickname
       token
+      events {
+        eventname
+        description
+        publicevent
+      }
     }
   }
 `
@@ -42,6 +62,11 @@ export const UPDATE_PASSWORD = gql`
       username
       nickname
       token
+      events {
+        eventname
+        description
+        publicevent
+      }
     }
   }
 `

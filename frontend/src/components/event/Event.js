@@ -13,10 +13,11 @@ const Event = ({ token, show, page, handleError }) => {
   const [event, setEvent] = useState(null)
   const [dumb, setDumb] = useState([])
 
-  const ownEvents = useQuery(GET_OWN_EVENTS, {
-    variables: { token: token },
-    onError: handleError
-  })
+  // const ownEvents = useQuery(GET_OWN_EVENTS, {
+  //   variables: { token: token },
+  //   onError: handleError,
+  //   fetchPolicy: "network-only"
+  // })
 
   const createEvent = useMutation(CREATE_EVENT, {
     onError: handleError
@@ -24,35 +25,34 @@ const Event = ({ token, show, page, handleError }) => {
 
   useEffect(() => {
     console.log('Effect was used')
-  }, [])
-
-  if (show && token) {
-    console.log('Show is', show, 'token is', token)
-    const tryToGetOwnEvents = async () => {
-      console.log('Will try')
-      try {
-        const result = await ownEvents
-        if (result.data) {
-          console.log('We have some data')
-          if (result.loading) {
-            console.log('Loading...')
-          }
-          if (result.data.getOwnEvents) {
-            console.log('Data is:')
-            console.log(result.data.getOwnEvents)
-            setDumb(result.data.getOwnEvents)
-          }
-        }
-      } catch (error) {
-        console.log(error.message)
-        handleError(error)
-        throw new Error(error)
-      }
-    }
-    console.log('Now we should try')
-    tryToGetOwnEvents()
-    console.log('We have tried')
-  }
+    // if (show && token && dumb.length === 0) {
+    //   console.log('Show is', show, 'token is', token)
+    //   const tryToGetOwnEvents = async () => {
+    //     console.log('Will try')
+    //     try {
+    //       const result = await ownEvents
+    //       if (result.data) {
+    //         console.log('We have some data')
+    //         if (result.loading) {
+    //           console.log('Loading...')
+    //         }
+    //         if (result.data.getOwnEvents) {
+    //           console.log('Data is:')
+    //           console.log(result.data.getOwnEvents)
+    //           setDumb(result.data.getOwnEvents)
+    //         }
+    //       }
+    //     } catch (error) {
+    //       console.log(error.message)
+    //       handleError(error)
+    //       throw new Error(error)
+    //     }
+    //   }
+    //   console.log('Now we should try')
+    //   tryToGetOwnEvents()
+    //   console.log('We have tried')
+    // }
+  })
 
   if (!show || !token) {
     //if (!token) {

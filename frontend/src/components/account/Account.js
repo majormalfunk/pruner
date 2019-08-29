@@ -43,6 +43,7 @@ const Account = (props) => {
         const token = result.data.relogin.token
         const loggedInAs = result.data.relogin
         setUser(loggedInAs)
+        //console.log('Logged in as', loggedInAs)
         props.handleSetToken(token)
         //console.log('We have a token and user was resolved')
       }
@@ -56,7 +57,7 @@ const Account = (props) => {
   const tokenFromProps = props.token
 
   if (tokenFromProps && !user) {
-    tryToRelogin()
+    //tryToRelogin()
   }
 
   if (!props.show) {

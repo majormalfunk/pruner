@@ -105,9 +105,11 @@ const CreateAccount = (props) => {
     if (password === veripass && password.length >= PASSWORD_LENGTH) {
       if (username.trim().length >= USERNAME_LENGTH && nickname.trim().length >= NICKNAME_LENGTH) {
         try {
+          console.log('Next createAccount!')
           const result = await props.createAccount[0]({
             variables: { username, password, nickname }
           })
+          console.log('Past the call')
           if (result) {
             const token = result.data.createAccount.token
             const loggedInAs = result.data.createAccount

@@ -38,5 +38,6 @@
 | 28.08.2019    | Refactoring backend                                                |     1,5   |           |
 | 28.08.2019    | More functionality for creating a new event                        |     4,5   |           |
 | 29.08.2019    | More functionality for creating a new event                        |     1,5   |           |
-| **WEEK 35**   | **TOTAL**                                                          |  **11,5** |  **82,0** |
+| 29.08.2019    | Refactoring own events                                             |     4,0   |           |
+| **WEEK 35**   | **TOTAL**                                                          |  **15,5** |  **87,0** |
 

@@ -2,10 +2,16 @@ const { gql } = require('apollo-server')
 
 module.exports = {
   typeDef: gql`
+    type OwnEvent {
+      eventname: String!
+      description: String!
+      publicevent: Boolean!
+    }
     type CurrentUser {
       username: String!
       nickname: String!
       token: String!
+      events: [OwnEvent]
     }
     type Token {
       value: String!
