@@ -57,7 +57,9 @@ const server = new ApolloServer({
       }
 
       const currentUser = {
-        username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+        username: user.username,
+        nickname: user.nickname,
+        token: jwt.sign(userForToken, JWT_SECRET)
       }
 
       return { currentUser }

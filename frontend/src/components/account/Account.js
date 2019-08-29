@@ -1,70 +1,28 @@
 import React, { useState } from 'react'
 import { Container } from 'react-bootstrap'
-
 import { useQuery, useMutation } from 'react-apollo-hooks'
-import { gql } from 'apollo-boost'
+
+import { RELOGIN, CREATE_ACCOUNT, LOGIN, UPDATE_NICKNAME, UPDATE_PASSWORD } from './gqls'
+import { GET_OWN_EVENTS } from '../event/gqls'
 
 import AccountDetailsForm from './AccountDetailsForm'
 import CreateAccount from './CreateAccount'
 import Login from './Login'
 
-const RELOGIN = gql`
-  {
-    relogin {
-      username
-      nickname
-      token
-    }
-  }
-`
-const CREATE_ACCOUNT = gql`
-  mutation createAccount($username: String!, $password: String!, $nickname: String!) {
-    createAccount(username: $username, password: $password, nickname: $nickname) {
-      username
-      nickname
-      token
-    }
-  }
-`
-const LOGIN = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      username
-      nickname
-      token
-    }
-  }
-`
-const UPDATE_NICKNAME = gql`
-  mutation updateNickname($username: String!, $nickname: String!) {
-    updateNickname(username: $username, nickname: $nickname) {
-      username
-      nickname
-      token
-    }
-  }
-`
-const UPDATE_PASSWORD = gql`
-  mutation updatePassword($username: String!, $oldPassword: String!, $newPassword: String!) {
-    updatePassword(username: $username, oldPassword: $oldPassword, newPassword: $newPassword) {
-      username
-      nickname
-      token
-    }
-  }
-`
 
 const Account = (props) => {
   const [user, setUser] = useState(null)
 
   const relogin = useQuery(RELOGIN, {
-    onError: props.handleError
+    onError: props.handleError//,
+    //refetchQueries: [{ query: GET_OWN_EVENTS }]
   })
   const createAccount = useMutation(CREATE_ACCOUNT, {
     onError: props.handleError
   })
   const login = useMutation(LOGIN, {
-    onError: props.handleError
+    onError: props.handleError//,
+    //refetchQueries: [{ query: GET_OWN_EVENTS }]
   })
   const updateNickname = useMutation(UPDATE_NICKNAME, {
     onError: props.handleError
@@ -107,7 +65,7 @@ const Account = (props) => {
 
   if (user) {
 
-    console.log('Rendering Account when there is a user')
+    //console.log('Rendering Account when there is a user')
 
     return (
       <div>
@@ -118,7 +76,7 @@ const Account = (props) => {
 
   } else {
 
-    console.log('Rendering Account when there is no token or token is not yet resolved')
+    //console.log('Rendering Account when there is no token or token is not yet resolved')
 
     return (
       <Container>

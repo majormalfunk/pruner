@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const JWT_SECRET = process.env.JWT_SECRET
 
+const { checkCurrentUserIsCorrect } = require('../../utils')
+
 module.exports = {
   resolvers: {
     Query: {
@@ -31,7 +33,9 @@ module.exports = {
           }
   
           const currentUser = {
-            username: savedUser.username, nickname: savedUser.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+            username: savedUser.username,
+            nickname: savedUser.nickname,
+            token: jwt.sign(userForToken, JWT_SECRET)
           }
   
           return currentUser
@@ -57,30 +61,26 @@ module.exports = {
         }
   
         const currentUser = {
-          username: user.username, nickname: user.nickname, token: jwt.sign(userForToken, JWT_SECRET)
+          username: user.username,
+          nickname: user.nickname,
+          token: jwt.sign(userForToken, JWT_SECRET)
         }
 
         return currentUser
       },
       updateNickname: async (root, args, { currentUser }) => {
   
-        if (!currentUser || currentUser.username !== args.username) {
-          // The call has to have had a token and the username resolved from the token
-          // must match the username in arguments i.e. only a logged in user can change
-          // only their own nickname
-          console.log('Authentication error in updateNickname')
-          throw new AuthenticationError('Authetication error while changing the nickname', {
-            invalidArgs: args
-          })
-        }
-  
+        checkCurrentUserIsCorrect({ currentUser }, args.username, 'update nickname')
+
         const userFromDB = await User.findOne({ username: args.username })
         if (userFromDB) {
           userFromDB.nickname = args.nickname
           try {
             const savedUser = await userFromDB.save()
             const updatedUser = {
-              username: savedUser.username, nickname: savedUser.nickname, token: currentUser.token
+              username: savedUser.username,
+              nickname: savedUser.nickname,
+              token: currentUser.token
             }
             return updatedUser
           } catch (error) {
@@ -96,16 +96,8 @@ module.exports = {
       },
       updatePassword: async (root, args, { currentUser }) => {
   
-        if (!currentUser || currentUser.username !== args.username) {
-          // The call has to have had a token and the username resolved from the token
-          // must match the username in arguments i.e. only a logged in user can change
-          // their own nickname
-          console.log('Authentication error in updatePassword')
-          throw new AuthenticationError('Authetication error while changing the nickname', {
-            invalidArgs: args
-          })
-        }
-  
+        checkCurrentUserIsCorrect({ currentUser }, args.username, 'update password')
+
         const user = await User.findOne({ username: args.username })
         const passwordCorrect = (user === null ? false : await bcrypt.compare(args.oldPassword, user.passwordHash))
   
@@ -121,7 +113,9 @@ module.exports = {
           try {
             const savedUser = await user.save()
             const updatedUser = {
-              username: savedUser.username, nickname: savedUser.nickname, token: currentUser.token
+              username: savedUser.username,
+              nickname: savedUser.nickname,
+              token: currentUser.token
             }
             return updatedUser
           } catch (error) {

@@ -13,6 +13,9 @@ module.exports = {
       owner: User!
       id: ID!
     }
+    extend type Query {
+      getOwnEvents(token: String): [Event]
+    }
     extend type Mutation {
       createEvent(
         eventname: String!

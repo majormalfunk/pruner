@@ -2,26 +2,48 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const jwt = require('jsonwebtoken')
+const User = require('../../models/user')
 const Event = require('../../models/event')
 const JWT_SECRET = process.env.JWT_SECRET
 
+const { checkCurrentUser } = require('../../utils')
+
 module.exports = {
   resolvers: {
+    Query: {
+      getOwnEvents: async (root, args, { currentUser }) => {
+
+        checkCurrentUser({ currentUser }, 'get own events')
+
+        try {
+          const userFromDB = await User.findOne({ username: currentUser.username })
+          if (userFromDB) {
+            try {
+              const eventsFromDB = await Event.find({ owner: userFromDB._id })
+              //console.log('Found events', eventsFromDB)
+              return eventsFromDB
+            } catch (error) {
+              console.log('Error trying to get own events from database')
+              throw error
+            }
+          } else {
+            console.log('No such user:', currentUser.username)
+            return null
+          }
+        } catch (error) {
+          console.log('Error getting current user from database')
+          console.log(error)
+          throw error
+        }
+      }
+    },
     Mutation: {
       createEvent: async (root, args, { currentUser }) => {
 
-        if (!currentUser) {
-          // The call has to have had a token and the username resolved from the token
-          // must match the username in arguments i.e. only a logged in user can change
-          // their own nickname
-          console.log('Not logged in when trying to create event')
-          throw new AuthenticationError('Authetication error while creating an event', {
-            invalidArgs: args
-          })
-        }
-  
+        checkCurrentUser({ currentUser }, 'create an event')
+
         let userId = ''
-  
+
         try {
           //console.log('Fishing out the user id from current user')
           decodedToken = await jwt.verify(
@@ -34,9 +56,9 @@ module.exports = {
           console.log(error.message)
           throw AuthenticationError(error.message)
         }
-  
+
         if (userId && userId !== '') {
-  
+
           try {
             const newEvent = new Event({
               eventname: args.eventname, description: args.description, publicevent: args.publicevent, owner: userId
@@ -49,11 +71,11 @@ module.exports = {
               invalidArgs: args,
             })
           }
-  
+
         } else {
           throw AuthenticationError('Failure decoding token.')
         }
-  
+
       }
     }
   }
