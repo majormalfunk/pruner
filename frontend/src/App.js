@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
+import { Container, Navbar, Nav } from 'react-bootstrap'
 import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
+
 import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT } from './constants'
 
@@ -27,7 +28,6 @@ import Event from './components/event/Event'
 //`
 
 const App = () => {
-  const [token, setToken] = useState(null)
   const [user, setUser] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -40,45 +40,26 @@ const App = () => {
     }, 5000)
   }
 
-  const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
-  //console.log('App: Token in storage was:', tokenFromStorage)
-  if (tokenFromStorage && tokenFromStorage.length > 0) {
-    if (!token || token !== tokenFromStorage) {
-      setToken(tokenFromStorage)
-    }
-  }
-
   const handleSetUser = (newUser) => {
     if (newUser) {
       setUser(newUser)
+      window.localStorage.setItem(USER_TOKEN, newUser.token)
     } else {
       setUser(null)
-    }
-  }
-
-  const handleSetToken = (newToken) => {
-    //console.log('App: handleSetToken to:', newToken)
-    if (newToken) {
-      window.localStorage.setItem(USER_TOKEN, newToken)
-      setToken(newToken)
-      //console.log('A new user token was set')
-    } else {
       window.localStorage.removeItem(USER_TOKEN)
-      setToken(null)
-      //console.log('User token was cleared')
     }
   }
 
   const handleSetPage = (event) => {
-    console.log('Got event in handleSetPage', event)
+    //console.log('Got event in handleSetPage', event)
     //event.preventDefault()
     //setPage(event.target.value)
     setPage(event)
-    console.log('Page was set to', event)
+    //console.log('Page was set to', event)
   }
 
   const logout = () => {
-    setToken(null)
+  //  setToken(null)
     setUser(null)
     window.localStorage.clear()
     client.resetStore()
@@ -98,7 +79,7 @@ const App = () => {
                 <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
               </Nav>
               <Nav>
-                <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>{token ? 'My Account' : 'Login'}</button>
+                <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>{user ? 'My Account' : 'Login'}</button>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -116,11 +97,10 @@ const App = () => {
         <Account show={page === PAGE_ACCOUNT}
           logout={logout}
           user={user} handleSetUser={handleSetUser}
-          token={token} handleSetToken={handleSetToken}
           handleError={handleError} />
 
         <Event show={page.startsWith(PAGE_EVENT)} page={page}
-          user={user} token={token}
+          user={user}
           handleError={handleError} />
 
       </div>

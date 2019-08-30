@@ -4,7 +4,7 @@ import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_EVENT } from '../../constants'
 import CreateEventForm from './CreateEventForm'
 
-const CreateEvent = ({ createEvent, token, show, setEvent, handleError }) => {
+const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
@@ -59,7 +59,7 @@ const CreateEvent = ({ createEvent, token, show, setEvent, handleError }) => {
     }
   })
 
-  if (!show || !token) {
+  if (!show || !user) {
     return null
   }
 

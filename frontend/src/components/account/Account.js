@@ -1,17 +1,18 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { useMutation } from 'react-apollo-hooks'
 
 import { RELOGIN, CREATE_ACCOUNT, LOGIN, UPDATE_NICKNAME, UPDATE_PASSWORD } from './gqls'
 
 import AccountDetailsForm from './AccountDetailsForm'
 import CreateAccount from './CreateAccount'
 import Login from './Login'
+import Relogin from './Relogin'
 
 
-const Account = ({ show, user, token, handleSetUser, handleSetToken, handleError, logout}) => {
+const Account = ({ show, user, handleSetUser, handleError, logout}) => {
 
-  const relogin = useQuery(RELOGIN, {
+  const relogin = useMutation(RELOGIN, {
     onError: handleError
   })
   const createAccount = useMutation(CREATE_ACCOUNT, {
@@ -26,33 +27,6 @@ const Account = ({ show, user, token, handleSetUser, handleSetToken, handleError
   const updatePassword = useMutation(UPDATE_PASSWORD, {
     onError: handleError
   })
-
-  // const logout = () => {
-  //   setUser(null)
-  //   props.logout()
-  // }
-
-  const tryToRelogin = async () => {
-    try {
-      const result = await relogin
-      if (result.data) {
-        const token = result.data.relogin.token
-        const loggedInAs = result.data.relogin
-        handleSetUser(loggedInAs)
-        //console.log('Logged in as', loggedInAs)
-        handleSetToken(token)
-        //console.log('We have a token and user was resolved')
-      }
-    } catch (error) {
-      console.log(error.message)
-      handleError(error)
-      throw new Error(error)
-    }
-  }
-
-  if (token && !user) {
-    //tryToRelogin()
-  }
 
   if (!show) {
     return null
@@ -75,12 +49,15 @@ const Account = ({ show, user, token, handleSetUser, handleSetToken, handleError
 
     return (
       <Container>
-        <Login login={login} handleSetToken={handleSetToken}
+        <Relogin relogin={relogin}
+          handleSetUser={handleSetUser} handleError={handleError} />
+
+        <Login login={login}
           handleSetUser={handleSetUser} handleError={handleError} />
 
         <Container>OR</Container>
 
-        <CreateAccount createAccount={createAccount} handleSetToken={handleSetToken}
+        <CreateAccount createAccount={createAccount}
           handleSetUser={handleSetUser} handleError={handleError} />
       </Container>
     )

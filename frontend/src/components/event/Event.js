@@ -2,22 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 
-import { GET_OWN_EVENTS, CREATE_EVENT } from './gqls'
+import { CREATE_EVENT } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
 import CreateEvent from './CreateEvent'
 
 
-const Event = ({ user, token, show, page, handleError }) => {
+const Event = ({ user, show, page, handleError }) => {
   const [event, setEvent] = useState(null)
   const [dumb, setDumb] = useState([])
-
-  // const ownEvents = useQuery(GET_OWN_EVENTS, {
-  //   variables: { token: token },
-  //   onError: handleError,
-  //   fetchPolicy: "network-only"
-  // })
 
   const createEvent = useMutation(CREATE_EVENT, {
     onError: handleError
@@ -31,48 +25,17 @@ const Event = ({ user, token, show, page, handleError }) => {
         console.log('Event is', user.events[0])
         setEvent(user.events[0])
       }
-
-      // if (show && token && dumb.length === 0) {
-      //   console.log('Show is', show, 'token is', token)
-      //   const tryToGetOwnEvents = async () => {
-      //     console.log('Will try')
-      //     try {
-      //       const result = await ownEvents
-      //       if (result.data) {
-      //         console.log('We have some data')
-      //         if (result.loading) {
-      //           console.log('Loading...')
-      //         }
-      //         if (result.data.getOwnEvents) {
-      //           console.log('Data is:')
-      //           console.log(result.data.getOwnEvents)
-      //           setDumb(result.data.getOwnEvents)
-      //         }
-      //       }
-      //     } catch (error) {
-      //       console.log(error.message)
-      //       handleError(error)
-      //       throw new Error(error)
-      //     }
-      //   }
-      //   console.log('Now we should try')
-      //   tryToGetOwnEvents()
-      //   console.log('We have tried')
-      // }
     }
   }, [show, user])
 
   if (!show || !user) {
-    //if (!token) {
-    //  setEvent(null)
-    //}
     return null
   }
 
   if (!event) {
     return (
       <Container>
-        <CreateEvent createEvent={createEvent} token={token} show={page === PAGE_EVENT_CREATE}
+        <CreateEvent createEvent={createEvent} user={user} show={page === PAGE_EVENT_CREATE}
           setEvent={setEvent} handleError={handleError} />
       </Container>
     )

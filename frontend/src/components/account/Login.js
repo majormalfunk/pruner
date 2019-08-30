@@ -29,7 +29,7 @@ const Login = (props) => {
       } else if (password.trim().length < PASSWORD_LENGTH) {
         document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
         return false
-    } else {
+      } else {
         document.getElementById(`passwordhintlogin`).innerHTML = 'Enter password'
         return true
       }
@@ -67,18 +67,15 @@ const Login = (props) => {
     event.preventDefault()
 
     try {
-      console.log('Trying to login')
+      //console.log('Trying to login')
       const result = await props.login[0]({
         variables: { username, password }
       })
-      console.log('Past trying')
       if (result) {
-        const token = result.data.login.token
         const loggedInAs = result.data.login
         clearFields()
         props.handleSetUser(loggedInAs)
-        console.log('Logged in as', loggedInAs)
-        props.handleSetToken(token)
+        //console.log('Logged in as', loggedInAs)
         return null
       }
     } catch (error) {

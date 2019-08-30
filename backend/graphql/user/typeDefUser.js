@@ -16,9 +16,6 @@ module.exports = {
     type Token {
       value: String!
     }
-    extend type Query {
-      relogin: CurrentUser
-    }
     extend type Mutation {
       createAccount(
         username: String!
@@ -38,6 +35,7 @@ module.exports = {
         oldPassword: String!
         newPassword: String!
       ): CurrentUser
+      relogin(token: String): CurrentUser
     }
   `
 }

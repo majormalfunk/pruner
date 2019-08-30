@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const RELOGIN = gql`
-  {
-    relogin {
+  mutation relogin($token: String) {
+    relogin(token: $token) {
       username
       nickname
       token

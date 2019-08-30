@@ -11,6 +11,7 @@ export const DESCRIPTION_LENGTH = 10
 // Actions
 export const ACTION_CREATE_ACCOUNT = "action-create-account"
 export const ACTION_CREATE_ACCOUNT_CANCEL = "action-create-account-cancel"
+export const ACTION_RELOGIN = "action-relogin"
 export const ACTION_LOGIN = "action-login"
 export const ACTION_LOGIN_CANCEL = "action-login-cancel"
 export const ACTION_LOGOUT = "action-logout"

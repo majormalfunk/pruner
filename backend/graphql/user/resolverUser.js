@@ -10,14 +10,6 @@ const { checkCurrentUserIsCorrect } = require('../../utils')
 
 module.exports = {
   resolvers: {
-    Query: {
-      relogin: async (root, args, { currentUser }) => {
-
-        const userFromDB = await User.findOne({ username: currentUser.username })
-
-        return userFromDB
-      }
-    },
     Mutation: {
       createAccount: async (root, args) => {
 
@@ -79,6 +71,32 @@ module.exports = {
         }
 
         return currentUser
+      },
+      relogin: async (root, args, { currentUser }) => {
+
+        console.log('Trying to relogin')
+
+        try {
+          const userFromDB = await User.findOne({ username: currentUser.username })
+
+          const userForToken = {
+            username: userFromDB.username,
+            id: userFromDB._id,
+          }
+
+          const reloginUser = {
+            username: userFromDB.username,
+            nickname: userFromDB.nickname,
+            token: jwt.sign(userForToken, JWT_SECRET),
+            events: userFromDB.events
+          }
+
+          return reloginUser
+        } catch (error) {
+          console.log(error.message)
+          throw error
+        }
+
       },
       updateNickname: async (root, args, { currentUser }) => {
 

@@ -111,11 +111,9 @@ const CreateAccount = (props) => {
           })
           console.log('Past the call')
           if (result) {
-            const token = result.data.createAccount.token
             const loggedInAs = result.data.createAccount
             clearFields()
             props.handleSetUser(loggedInAs)
-            props.handleSetToken(token)
             return null
           }
         } catch (error) {

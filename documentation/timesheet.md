@@ -39,6 +39,6 @@
 | 28.08.2019    | More functionality for creating a new event                        |     4,5   |           |
 | 29.08.2019    | More functionality for creating a new event                        |     1,5   |           |
 | 29.08.2019    | Refactoring own events                                             |     4,0   |           |
-| 30.08.2019    | Refactoring frontend                                               |     1,0   |           |
-| **WEEK 35**   | **TOTAL**                                                          |  **16,5** |  **88,0** |
+| 30.08.2019    | Refactoring frontend                                               |     5,0   |           |
+| **WEEK 35**   | **TOTAL**                                                          |  **20,5** |  **91,0** |
 
