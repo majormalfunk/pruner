@@ -28,6 +28,7 @@ import Event from './components/event/Event'
 
 const App = () => {
   const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
@@ -44,6 +45,14 @@ const App = () => {
   if (tokenFromStorage && tokenFromStorage.length > 0) {
     if (!token || token !== tokenFromStorage) {
       setToken(tokenFromStorage)
+    }
+  }
+
+  const handleSetUser = (newUser) => {
+    if (newUser) {
+      setUser(newUser)
+    } else {
+      setUser(null)
     }
   }
 
@@ -70,6 +79,7 @@ const App = () => {
 
   const logout = () => {
     setToken(null)
+    setUser(null)
     window.localStorage.clear()
     client.resetStore()
     setPage(PAGE_HOME)
@@ -99,12 +109,19 @@ const App = () => {
 
         <Notification message={errorMessage} />
 
-        <Home show={page === PAGE_HOME} handleSetPage={handleSetPage} handleError={handleError} />
+        <Home show={page === PAGE_HOME}
+          handleSetPage={handleSetPage}
+          handleError={handleError} />
 
-        <Account handleSetToken={handleSetToken} token={token} logout={logout}
-          show={page === PAGE_ACCOUNT} handleError={handleError} />
+        <Account show={page === PAGE_ACCOUNT}
+          logout={logout}
+          user={user} handleSetUser={handleSetUser}
+          token={token} handleSetToken={handleSetToken}
+          handleError={handleError} />
 
-        <Event token={token} show={page.startsWith(PAGE_EVENT)} page={page} handleError={handleError} />
+        <Event show={page.startsWith(PAGE_EVENT)} page={page}
+          user={user} token={token}
+          handleError={handleError} />
 
       </div>
     </div>

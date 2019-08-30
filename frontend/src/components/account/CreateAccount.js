@@ -114,7 +114,7 @@ const CreateAccount = (props) => {
             const token = result.data.createAccount.token
             const loggedInAs = result.data.createAccount
             clearFields()
-            props.setUser(loggedInAs)
+            props.handleSetUser(loggedInAs)
             props.handleSetToken(token)
             return null
           }

@@ -9,7 +9,7 @@ import { PAGE_EVENT_CREATE } from '../../constants'
 import CreateEvent from './CreateEvent'
 
 
-const Event = ({ token, show, page, handleError }) => {
+const Event = ({ user, token, show, page, handleError }) => {
   const [event, setEvent] = useState(null)
   const [dumb, setDumb] = useState([])
 
@@ -24,37 +24,45 @@ const Event = ({ token, show, page, handleError }) => {
   })
 
   useEffect(() => {
-    console.log('Effect was used')
-    // if (show && token && dumb.length === 0) {
-    //   console.log('Show is', show, 'token is', token)
-    //   const tryToGetOwnEvents = async () => {
-    //     console.log('Will try')
-    //     try {
-    //       const result = await ownEvents
-    //       if (result.data) {
-    //         console.log('We have some data')
-    //         if (result.loading) {
-    //           console.log('Loading...')
-    //         }
-    //         if (result.data.getOwnEvents) {
-    //           console.log('Data is:')
-    //           console.log(result.data.getOwnEvents)
-    //           setDumb(result.data.getOwnEvents)
-    //         }
-    //       }
-    //     } catch (error) {
-    //       console.log(error.message)
-    //       handleError(error)
-    //       throw new Error(error)
-    //     }
-    //   }
-    //   console.log('Now we should try')
-    //   tryToGetOwnEvents()
-    //   console.log('We have tried')
-    // }
-  })
+    console.log('EVENT: Effect was used')
+    if (show) {
+      if (user && user.events && user.events.length > 0) {
+        console.log('We have a user and the user has events')
+        console.log('Event is', user.events[0])
+        setEvent(user.events[0])
+      }
 
-  if (!show || !token) {
+      // if (show && token && dumb.length === 0) {
+      //   console.log('Show is', show, 'token is', token)
+      //   const tryToGetOwnEvents = async () => {
+      //     console.log('Will try')
+      //     try {
+      //       const result = await ownEvents
+      //       if (result.data) {
+      //         console.log('We have some data')
+      //         if (result.loading) {
+      //           console.log('Loading...')
+      //         }
+      //         if (result.data.getOwnEvents) {
+      //           console.log('Data is:')
+      //           console.log(result.data.getOwnEvents)
+      //           setDumb(result.data.getOwnEvents)
+      //         }
+      //       }
+      //     } catch (error) {
+      //       console.log(error.message)
+      //       handleError(error)
+      //       throw new Error(error)
+      //     }
+      //   }
+      //   console.log('Now we should try')
+      //   tryToGetOwnEvents()
+      //   console.log('We have tried')
+      // }
+    }
+  }, [show, user])
+
+  if (!show || !user) {
     //if (!token) {
     //  setEvent(null)
     //}

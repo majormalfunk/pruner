@@ -5,7 +5,7 @@ import { NicknameField, PasswordField, VeripassField } from './InputFields'
 import { ACTION_LOGOUT, ACTION_CHANGE_NICKNAME, ACTION_CHANGE_PASSWORD } from '../../constants'
 //import '../App.css'
 
-const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, setUser, handleError }) => {
+const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, handleSetUser, handleError }) => {
 
   const [username, setUsername] = useState(user.username)
   const [oldPassword, setOldPassword] = useState('')
@@ -104,7 +104,7 @@ const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, setU
         //localStorage.setItem(USER_TOKEN, token)
         const updatedUser = result.data.updateNickname
         //props.setToken(token)
-        setUser(updatedUser)
+        handleSetUser(updatedUser)
         let messu = `Nickname changed to ${nickname}`
         let erro = new Error()
         erro.message = messu
@@ -146,7 +146,7 @@ const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, setU
         const updatedUser = result.data.updatePassword
         //props.setToken(token)
         clearFields()
-        setUser(updatedUser)
+        handleSetUser(updatedUser)
         window.scrollTo(0, 0)
         let messu = `Password changed`
         let erro = new Error()

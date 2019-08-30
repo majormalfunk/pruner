@@ -76,7 +76,7 @@ const Login = (props) => {
         const token = result.data.login.token
         const loggedInAs = result.data.login
         clearFields()
-        props.setUser(loggedInAs)
+        props.handleSetUser(loggedInAs)
         console.log('Logged in as', loggedInAs)
         props.handleSetToken(token)
         return null
