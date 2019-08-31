@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   events: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event',
-    autopopulate: { select: ['eventname', 'description', 'publicevent'] } }]
+    autopopulate: { select: ['eventname', 'description', 'publicevent', 'recurrences'] } }]
 })
 
 userSchema.plugin(mongooseUniqueValidator)

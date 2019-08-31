@@ -12,10 +12,11 @@ const Relogin = ({ handleSetUser, relogin, handleError }) => {
       const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
       if (tokenFromStorage && tokenFromStorage.length > 0) {
         //console.log('We have a token', tokenFromStorage)
-        //console.log('We shall try to relogin')
+        console.log('We shall try to relogin')
         const result = await relogin[0]({
           variables: { tokenFromStorage }
         })
+        console.log('Didnt crash yet')
         if (result) {
           const loggedInAs = result.data.relogin
           handleSetUser(loggedInAs)

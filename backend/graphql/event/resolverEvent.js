@@ -69,7 +69,11 @@ module.exports = {
               const userFromDB = await User.findById(userId)
               if (userFromDB) {
                 const newEvent = new Event({
-                  eventname: args.eventname, description: args.description, publicevent: args.publicevent, owner: userId
+                  eventname: args.eventname,
+                  description: args.description,
+                  publicevent: args.publicevent,
+                  recurrences: [],
+                  owner: userId
                 })
                 const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
                 //console.log('Saved event is', savedEvent)

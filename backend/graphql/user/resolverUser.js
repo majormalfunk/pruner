@@ -77,7 +77,7 @@ module.exports = {
         console.log('Trying to relogin')
 
         try {
-          const userFromDB = await User.findOne({ username: currentUser.username })
+          let userFromDB = await User.findOne({ username: currentUser.username })
 
           const userForToken = {
             username: userFromDB.username,

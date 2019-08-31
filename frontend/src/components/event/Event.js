@@ -22,6 +22,9 @@ const Event = ({ user, show, page, handleError }) => {
     if (show) {
       if (user && user.events && user.events.length > 0) {
         console.log('We have a user and the user has events')
+        //const unfinishedEvent = user.events.find(function(event) {
+        //  return event. > 10;
+        //});
         console.log('Event is', user.events[0])
         setEvent(user.events[0])
       }

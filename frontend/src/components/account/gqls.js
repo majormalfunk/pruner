@@ -1,4 +1,5 @@
 import { gql } from 'apollo-boost'
+import { EVENT_DETAILS } from '../event/gqls'
 
 export const RELOGIN = gql`
   mutation relogin($token: String) {
@@ -6,13 +7,10 @@ export const RELOGIN = gql`
       username
       nickname
       token
-      events {
-        eventname
-        description
-        publicevent
-      }
+      ...EventDetails
     }
   }
+  ${EVENT_DETAILS}
 `
 export const CREATE_ACCOUNT = gql`
   mutation createAccount($username: String!, $password: String!, $nickname: String!) {
@@ -20,13 +18,10 @@ export const CREATE_ACCOUNT = gql`
       username
       nickname
       token
-      events {
-        eventname
-        description
-        publicevent
-      }
+      ...EventDetails
     }
   }
+  ${EVENT_DETAILS}
 `
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
@@ -34,13 +29,10 @@ export const LOGIN = gql`
       username
       nickname
       token
-      events {
-        eventname
-        description
-        publicevent
-      }
+      ...EventDetails
     }
   }
+  ${EVENT_DETAILS}
 `
 export const UPDATE_NICKNAME = gql`
   mutation updateNickname($username: String!, $nickname: String!) {
@@ -48,13 +40,10 @@ export const UPDATE_NICKNAME = gql`
       username
       nickname
       token
-      events {
-        eventname
-        description
-        publicevent
-      }
+      ...EventDetails
     }
   }
+  ${EVENT_DETAILS}
 `
 export const UPDATE_PASSWORD = gql`
   mutation updatePassword($username: String!, $oldPassword: String!, $newPassword: String!) {
@@ -62,11 +51,8 @@ export const UPDATE_PASSWORD = gql`
       username
       nickname
       token
-      events {
-        eventname
-        description
-        publicevent
-      }
+      ...EventDetails
     }
   }
+  ${EVENT_DETAILS}
 `

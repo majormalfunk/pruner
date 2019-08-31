@@ -18,6 +18,10 @@ const eventSchema = new mongoose.Schema({
     type: Boolean,
     required: true
   },
+  recurrences: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EventRecurrence',
+    autopopulate: { select: ['recurrencename', 'description', 'publicrecurrence', '_id'] } }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

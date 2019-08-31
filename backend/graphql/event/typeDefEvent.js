@@ -6,10 +6,17 @@ module.exports = {
       nickname: String!
       id: ID!
     }
+    type EventRecurrence {
+      recurrencename: String!
+      description: String!
+      publicrecurrence: Boolean!
+      id: ID!
+    }
     type Event {
       eventname: String!
       description: String!
       publicevent: Boolean!
+      recurrences: [EventRecurrence]
       owner: User!
       id: ID!
     }
