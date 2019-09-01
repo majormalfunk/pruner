@@ -3,7 +3,7 @@ import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
 import LoginForm from './LoginForm'
 
-const Login = (props) => {
+const Login = ({ login, getOwnEvents, handleSetUser, handleError }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -68,20 +68,37 @@ const Login = (props) => {
 
     try {
       //console.log('Trying to login')
-      const result = await props.login[0]({
+      const result = await login[0]({
         variables: { username, password }
       })
       if (result) {
-        const loggedInAs = result.data.login
+        let loggedInAs = result.data.login
+        //const username = loggedInAs.username
+        loggedInAs.events = []
+        try {
+          console.log('Own events for', username)
+          const eventsResult = await getOwnEvents[0]({
+            variables: { username }
+          })
+          console.log('Data:', eventsResult.data)
+          if (eventsResult.data) {
+            console.log('Got something from own events')
+            console.log(eventsResult.data.getOwnEvents)
+            loggedInAs.events = eventsResult.data.getOwnEvents
+          }
+        } catch (error) {
+          console.log('Couldnt get own events in login', error.message)
+          handleError(error)
+        }
         clearFields()
-        props.handleSetUser(loggedInAs)
+        handleSetUser(loggedInAs)
         //console.log('Logged in as', loggedInAs)
         return null
       }
     } catch (error) {
       console.log(error.message)
       clearFields()
-      props.handleError(error)
+      handleError(error)
     }
 
   }

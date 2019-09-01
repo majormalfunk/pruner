@@ -23,8 +23,7 @@ module.exports = {
         const user = new User({
           username: trimmedUsername,
           passwordHash: passwordHash,
-          nickname: trimmedNickname,
-          events: []
+          nickname: trimmedNickname
         })
 
         try {
@@ -37,8 +36,7 @@ module.exports = {
           const currentUser = {
             username: savedUser.username,
             nickname: savedUser.nickname,
-            token: jwt.sign(userForToken, JWT_SECRET),
-            events: savedUser.events
+            token: jwt.sign(userForToken, JWT_SECRET)
           }
 
           return currentUser
@@ -66,8 +64,7 @@ module.exports = {
         const currentUser = {
           username: user.username,
           nickname: user.nickname,
-          token: jwt.sign(userForToken, JWT_SECRET),
-          events: user.events
+          token: jwt.sign(userForToken, JWT_SECRET)
         }
 
         return currentUser
@@ -87,8 +84,7 @@ module.exports = {
           const reloginUser = {
             username: userFromDB.username,
             nickname: userFromDB.nickname,
-            token: jwt.sign(userForToken, JWT_SECRET),
-            events: userFromDB.events
+            token: jwt.sign(userForToken, JWT_SECRET)
           }
 
           return reloginUser
@@ -110,8 +106,7 @@ module.exports = {
             const updatedUser = {
               username: savedUser.username,
               nickname: savedUser.nickname,
-              token: currentUser.token,
-              events: savedUser.events
+              token: currentUser.token
             }
             return updatedUser
           } catch (error) {
@@ -146,8 +141,7 @@ module.exports = {
             const updatedUser = {
               username: savedUser.username,
               nickname: savedUser.nickname,
-              token: currentUser.token,
-              events: savedUser.events
+              token: currentUser.token
             }
             return updatedUser
           } catch (error) {

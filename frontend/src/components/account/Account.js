@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 
 import { RELOGIN, CREATE_ACCOUNT, LOGIN, UPDATE_NICKNAME, UPDATE_PASSWORD } from './gqls'
+import { GET_OWN_EVENTS } from '../event/gqls'
 
 import AccountDetailsForm from './AccountDetailsForm'
 import CreateAccount from './CreateAccount'
@@ -27,6 +28,9 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
   const updatePassword = useMutation(UPDATE_PASSWORD, {
     onError: handleError
   })
+  const getOwnEvents = useMutation(GET_OWN_EVENTS, {
+    onError: handleError
+  })
 
   if (!show) {
     return null
@@ -49,10 +53,10 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
 
     return (
       <Container>
-        <Relogin relogin={relogin}
+        <Relogin relogin={relogin} getOwnEvents={getOwnEvents}
           handleSetUser={handleSetUser} handleError={handleError} />
 
-        <Login login={login}
+        <Login login={login} getOwnEvents={getOwnEvents}
           handleSetUser={handleSetUser} handleError={handleError} />
 
         <Container>OR</Container>

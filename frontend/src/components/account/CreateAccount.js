@@ -111,7 +111,8 @@ const CreateAccount = (props) => {
           })
           console.log('Past the call')
           if (result) {
-            const loggedInAs = result.data.createAccount
+            let loggedInAs = result.data.createAccount
+            loggedInAs.events = []
             clearFields()
             props.handleSetUser(loggedInAs)
             return null

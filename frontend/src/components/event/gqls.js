@@ -53,11 +53,17 @@ export const EVENT_DETAILS = gql`
 `
 
 export const GET_OWN_EVENTS = gql`
-  query getOwnEvents($token: String) {
-    getOwnEvents(token: $token) {
+  mutation getOwnEvents($username: String!) {
+    getOwnEvents(username: $username) {
       eventname
       description
       publicevent
+      recurrences {
+        recurrencename
+        description
+        publicrecurrence
+        id
+      }
       owner {
         nickname
         id

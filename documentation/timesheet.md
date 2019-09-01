@@ -41,5 +41,6 @@
 | 29.08.2019    | Refactoring own events                                             |     4,0   |           |
 | 30.08.2019    | Refactoring frontend                                               |     5,0   |           |
 | 31.08.2019    | Event details                                                      |     3,0   |           |
-| **WEEK 35**   | **TOTAL**                                                          |  **23,5** |  **94,0** |
+| 01.09.2019    | Event details                                                      |     2,5   |           |
+| **WEEK 35**   | **TOTAL**                                                          |  **26,0** |  **96,5** |
 

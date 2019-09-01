@@ -4,21 +4,24 @@ if (process.env.NODE_ENV !== 'production') {
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
+const EventRecurrence = require('../../models/eventRecurrence')
 const JWT_SECRET = process.env.JWT_SECRET
 
-const { checkCurrentUser } = require('../../utils')
+const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 
 module.exports = {
   resolvers: {
-    Query: {
+    Mutation: {
       getOwnEvents: async (root, args, { currentUser }) => {
+
+        //console.log('Trying to get own events for', args.username)
 
         if (currentUser) {
 
-          checkCurrentUser({ currentUser }, 'get own events')
+          checkCurrentUserIsCorrect({ currentUser }, args.username, 'get own events')
 
           try {
-            const userFromDB = await User.findOne({ username: currentUser.username })
+            const userFromDB = await User.findOne({ username: args.username })
             if (userFromDB) {
               try {
                 const eventsFromDB = await Event.find({ owner: userFromDB._id })
@@ -38,9 +41,7 @@ module.exports = {
             throw error
           }
         }
-      }
-    },
-    Mutation: {
+      },
       createEvent: async (root, args, { currentUser }) => {
 
         if (currentUser) {
@@ -78,8 +79,8 @@ module.exports = {
                 const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
                 //console.log('Saved event is', savedEvent)
 
-                userFromDB.events = userFromDB.events.concat(savedEvent.id)
-                await userFromDB.save()
+                //userFromDB.events = userFromDB.events.concat(savedEvent.id)
+                //await userFromDB.save()
 
                 return savedEvent
               }

@@ -2,7 +2,7 @@ import React from 'react'
 import { USER_TOKEN } from '../../constants'
 import ReloginForm from './ReloginForm'
 
-const Relogin = ({ handleSetUser, relogin, handleError }) => {
+const Relogin = ({ relogin, getOwnEvents, handleSetUser, handleError }) => {
 
   const handleRelogin = async (event) => {
     event.preventDefault()
@@ -18,7 +18,24 @@ const Relogin = ({ handleSetUser, relogin, handleError }) => {
         })
         console.log('Didnt crash yet')
         if (result) {
-          const loggedInAs = result.data.relogin
+          let loggedInAs = result.data.relogin
+          const username = loggedInAs.username
+          loggedInAs.events = []
+          try {
+            console.log('Own events for', username)
+            const eventsResult = await getOwnEvents[0]({
+              variables: { username }
+            })
+            console.log('Data:', eventsResult.data)
+            if (eventsResult.data) {
+              console.log('Got something from own events')
+              console.log(eventsResult.data.getOwnEvents)
+              loggedInAs.events = eventsResult.data.getOwnEvents
+            }
+          } catch (error) {
+            console.log('Couldnt get own events in relogin', error.message)
+            handleError(error)
+          }
           handleSetUser(loggedInAs)
           //console.log('Logged in as', loggedInAs)
           return null

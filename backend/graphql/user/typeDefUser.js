@@ -6,7 +6,6 @@ module.exports = {
       username: String!
       nickname: String!
       token: String!
-      events: [Event]
     }
     type Token {
       value: String!
