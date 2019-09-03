@@ -43,4 +43,6 @@
 | 31.08.2019    | Event details                                                      |     3,0   |           |
 | 01.09.2019    | Event details                                                      |     2,5   |           |
 | **WEEK 35**   | **TOTAL**                                                          |  **26,0** |  **96,5** |
+| 03.09.2019    | Event update and delete                                            |     4,0   |           |
+| **WEEK 35**   | **TOTAL**                                                          |   **4,0** | **100,5** |
 

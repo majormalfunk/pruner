@@ -37,14 +37,9 @@ const CreateEventForm = (props) => {
             <PublicEventField publicevent={props.publicevent} trigger={props.handlePublicevent}
               publiceventhint={`publiceventhintcreate`} setpublicevent={`setpubliceventcreate`} />
           </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        <Row>
           <Col>
             <Button variant="success" type="button" value={ACTION_CREATE_EVENT} id={ACTION_CREATE_EVENT}
-              onClick={props.handleCreateEvent}>Create event</Button>
+              onClick={props.handleCreateEvent}>Create new event</Button>
             &nbsp;
             <Button variant="primary" type="button" value={ACTION_CREATE_EVENT_CANCEL} id={ACTION_CREATE_EVENT_CANCEL}
               onClick={props.handleCreateEventCancel}>Cancel</Button>

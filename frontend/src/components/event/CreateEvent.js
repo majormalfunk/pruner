@@ -42,7 +42,7 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
     if (document.getElementById(`publiceventhintcreate`)) {
       if (publicevent === false) {
         document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event private'
-        return true
+        return false
       } else {
         document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event visible to all'
         return true
@@ -53,7 +53,7 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
-    const checked = controlPublicevent()
+    const visible = controlPublicevent()
     if (document.getElementById(ACTION_CREATE_EVENT)) {
       document.getElementById(ACTION_CREATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }
@@ -113,7 +113,6 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
       }
 
   }
-
 
   return (
     <CreateEventForm

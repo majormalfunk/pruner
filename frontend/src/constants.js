@@ -19,7 +19,10 @@ export const ACTION_CHANGE_NICKNAME = "action-change-nickname"
 export const ACTION_CHANGE_PASSWORD = "action-change-password"
 export const ACTION_CHANGE_PASSWORD_CANCEL = "action-change-password-cancel"
 export const ACTION_CREATE_EVENT = "action-create-event"
-export const ACTION_CREATE_EVENT_CANCEL = "action-create-event"
+export const ACTION_CREATE_EVENT_CANCEL = "action-create-event-cancel"
+export const ACTION_UPDATE_EVENT = "action-update-event"
+export const ACTION_UPDATE_EVENT_CANCEL = "action-update-event-cancel"
+export const ACTION_DELETE_EVENT = "action-delete-event"
 
 // Navigation
 export const PAGE_HOME = "page-home"

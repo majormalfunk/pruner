@@ -95,6 +95,104 @@ module.exports = {
           }
         }
 
+      },
+      updateEvent: async (root, args, { currentUser }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'update an event')
+
+          let userId = ''
+
+          try {
+            //console.log('Fishing out the user id from current user')
+            decodedToken = await jwt.verify(
+              currentUser.token, JWT_SECRET
+            )
+            //console.log('Decoded token is', decodedToken)
+            userId = decodedToken.id
+          } catch (error) {
+            console.log('Something went wrong decoding token:')
+            console.log(error.message)
+            throw AuthenticationError(error.message)
+          }
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let updatedEvent = await Event.findOneAndUpdate(
+                { _id: args.id, owner: userId },
+                {
+                  $set: {
+                    eventname: args.eventname,
+                    description: args.description,
+                    publicevent: args.publicevent
+                  }
+                },
+                {
+                  new: true
+                }
+              )
+
+              console.log('Updated event is', updatedEvent)
+
+              return updatedEvent
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
+
+      },
+      deleteEvent: async (root, args, { currentUser }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'delete an event')
+
+          let userId = ''
+
+          try {
+            //console.log('Fishing out the user id from current user')
+            decodedToken = await jwt.verify(
+              currentUser.token, JWT_SECRET
+            )
+            //console.log('Decoded token is', decodedToken)
+            userId = decodedToken.id
+          } catch (error) {
+            console.log('Something went wrong decoding token:')
+            console.log(error.message)
+            throw AuthenticationError(error.message)
+          }
+
+          if (userId && userId !== '') {
+
+            try {
+
+              const result = await Event.deleteOne(
+                { _id: args.id, owner: userId },
+              )
+
+              //console.log('Delete count is', result.deletedCount)
+
+              return result.deletedCount
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
+
       }
     }
   }

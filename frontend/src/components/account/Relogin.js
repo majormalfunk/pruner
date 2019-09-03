@@ -12,24 +12,24 @@ const Relogin = ({ relogin, getOwnEvents, handleSetUser, handleError }) => {
       const tokenFromStorage = window.localStorage.getItem(USER_TOKEN)
       if (tokenFromStorage && tokenFromStorage.length > 0) {
         //console.log('We have a token', tokenFromStorage)
-        console.log('We shall try to relogin')
+        //console.log('We shall try to relogin')
         const result = await relogin[0]({
           variables: { tokenFromStorage }
         })
-        console.log('Didnt crash yet')
+        //console.log('Didnt crash yet')
         if (result) {
           let loggedInAs = result.data.relogin
           const username = loggedInAs.username
           loggedInAs.events = []
           try {
-            console.log('Own events for', username)
+            //console.log('Own events for', username)
             const eventsResult = await getOwnEvents[0]({
               variables: { username }
             })
-            console.log('Data:', eventsResult.data)
+            //console.log('Data:', eventsResult.data)
             if (eventsResult.data) {
-              console.log('Got something from own events')
-              console.log(eventsResult.data.getOwnEvents)
+              //console.log('Got something from own events')
+              //console.log(eventsResult.data.getOwnEvents)
               loggedInAs.events = eventsResult.data.getOwnEvents
             }
           } catch (error) {

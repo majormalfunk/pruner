@@ -93,3 +93,30 @@ export const CREATE_EVENT = gql`
     }
   }
 `
+
+export const UPDATE_EVENT = gql`
+  mutation updateEvent($id: ID!, $eventname: String!, $description: String!, $publicevent: Boolean!) {
+    updateEvent(id: $id, eventname: $eventname, description: $description, publicevent: $publicevent) {
+      eventname
+      description
+      publicevent
+      recurrences {
+        recurrencename
+        description
+        publicrecurrence
+        id
+      }
+      owner {
+        nickname
+        id
+      }
+      id
+    }
+  }
+`
+
+export const DELETE_EVENT = gql`
+  mutation deleteEvent($id: ID!) {
+    deleteEvent(id: $id)
+  }
+`

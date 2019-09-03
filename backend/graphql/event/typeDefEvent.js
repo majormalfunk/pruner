@@ -32,5 +32,18 @@ module.exports = {
         publicevent: Boolean!
       ): Event
     }
+    extend type Mutation {
+      updateEvent(
+        id: ID!
+        eventname: String!
+        description: String!
+        publicevent: Boolean!
+      ): Event
+    }
+    extend type Mutation {
+      deleteEvent(
+        id: ID!
+      ): Int!
+    }
   `
 }

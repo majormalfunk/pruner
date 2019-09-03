@@ -26,7 +26,6 @@ export const DescriptionField = (props) => {
 export const PublicEventField = (props) => {
   return (
     <>
-      <Form.Label>Is this event public?</Form.Label>
       <Form.Check type="checkbox" label="Check this if your event is public to everybody" name="publiceventField"
         id={props.setpublicevent} defaultValue={props.publicevent} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.publiceventhint}></Form.Text>

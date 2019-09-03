@@ -80,9 +80,9 @@ const Login = ({ login, getOwnEvents, handleSetUser, handleError }) => {
           const eventsResult = await getOwnEvents[0]({
             variables: { username }
           })
-          console.log('Data:', eventsResult.data)
+          //console.log('Data:', eventsResult.data)
           if (eventsResult.data) {
-            console.log('Got something from own events')
+            //console.log('Got something from own events')
             console.log(eventsResult.data.getOwnEvents)
             loggedInAs.events = eventsResult.data.getOwnEvents
           }

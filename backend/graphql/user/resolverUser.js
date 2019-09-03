@@ -71,7 +71,7 @@ module.exports = {
       },
       relogin: async (root, args, { currentUser }) => {
 
-        console.log('Trying to relogin')
+        //console.log('Trying to relogin')
 
         try {
           let userFromDB = await User.findOne({ username: currentUser.username })
