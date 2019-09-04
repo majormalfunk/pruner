@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { Container, Navbar, Nav } from 'react-bootstrap'
 import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
@@ -7,6 +8,9 @@ import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT } from './constants'
 
 import Notification from './components/Notification'
+import { setNotification } from './reducers/notificationReducer'
+import { NOTIF_INFO, NOTIF_WARNING } from './constants'
+
 import Home from './components/home/Home'
 import Account from './components/account/Account'
 import Event from './components/event/Event'
@@ -27,17 +31,19 @@ import Event from './components/event/Event'
 //  }
 //`
 
-const App = () => {
+const App = (props) => {
   const [user, setUser] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
-  const [errorMessage, setErrorMessage] = useState(null)
+  //const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
 
   const handleError = (error) => {
-    setErrorMessage(error.message.replace('GraphQL error:', ''))
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
+    //setErrorMessage(error.message.replace('GraphQL error:', ''))
+    const message = error.message.replace('GraphQL error:', '')
+    props.setNotification(message, NOTIF_WARNING, 5)
+    //setTimeout(() => {
+    //  setErrorMessage(null)
+    //}, 5000)
   }
 
   const handleSetUser = (newUser) => {
@@ -64,6 +70,7 @@ const App = () => {
     window.localStorage.clear()
     client.resetStore()
     setPage(PAGE_HOME)
+    props.setNotification('Logged out', NOTIF_INFO, 5)
   }
 
   return (
@@ -88,7 +95,7 @@ const App = () => {
       </header>
       <div className="App-body">
 
-        <Notification message={errorMessage} />
+        <Notification />
 
         <Home show={page === PAGE_HOME}
           handleSetPage={handleSetPage}
@@ -100,7 +107,7 @@ const App = () => {
           handleError={handleError} />
 
         <Event show={page.startsWith(PAGE_EVENT)} page={page}
-          user={user}
+          user={user} handleSetUser={handleSetUser}
           handleError={handleError} />
 
       </div>
@@ -108,4 +115,13 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

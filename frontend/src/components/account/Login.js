@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+
+import { setNotification } from '../../reducers/notificationReducer'
+import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
+
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
 import LoginForm from './LoginForm'
 
-const Login = ({ login, getOwnEvents, handleSetUser, handleError }) => {
+const Login = (props) => {
+
+  const { setNotification, login, getOwnEvents, handleSetUser } = props
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -88,17 +96,18 @@ const Login = ({ login, getOwnEvents, handleSetUser, handleError }) => {
           }
         } catch (error) {
           console.log('Couldnt get own events in login', error.message)
-          handleError(error)
+          setNotification('Something went wrong fetching your own events', NOTIF_WARNING, 5)
         }
         clearFields()
         handleSetUser(loggedInAs)
+        setNotification(`Logged in as ${loggedInAs.username}`, NOTIF_SUCCESS, 5)
         //console.log('Logged in as', loggedInAs)
         return null
       }
     } catch (error) {
       console.log(error.message)
       clearFields()
-      handleError(error)
+      setNotification(error.message, NOTIF_WARNING, 5)
     }
 
   }
@@ -114,4 +123,13 @@ const Login = ({ login, getOwnEvents, handleSetUser, handleError }) => {
   )
 }
 
-export default Login
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

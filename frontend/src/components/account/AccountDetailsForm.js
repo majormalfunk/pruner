@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'react-bootstrap'
+
+import { setNotification } from '../../reducers/notificationReducer'
+import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
+
 import { PASSWORD_LENGTH, NICKNAME_LENGTH, ACTION_CHANGE_PASSWORD_CANCEL } from '../../constants'
 import { NicknameField, PasswordField, VeripassField } from './InputFields'
 import { ACTION_LOGOUT, ACTION_CHANGE_NICKNAME, ACTION_CHANGE_PASSWORD } from '../../constants'
 //import '../App.css'
 
-const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, handleSetUser, handleError }) => {
+const AccountDetailsForm = (props) => {
+
+  const { setNotification, user, updateNickname, updatePassword, logout, handleSetUser } = props
 
   const [username, setUsername] = useState(user.username)
   const [oldPassword, setOldPassword] = useState('')
@@ -105,15 +112,12 @@ const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, hand
         const updatedUser = result.data.updateNickname
         //props.setToken(token)
         handleSetUser(updatedUser)
-        let messu = `Nickname changed to ${nickname}`
-        let erro = new Error()
-        erro.message = messu
-        handleError(erro)
+        setNotification(`Nickname changed to ${nickname}`, NOTIF_SUCCESS, 5)
         return null
       }
     } catch (error) {
       console.log(error.message)
-      handleError(error)
+      setNotification(error.message, NOTIF_WARNING, 5)
     }
 
   }
@@ -148,15 +152,12 @@ const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, hand
         clearFields()
         handleSetUser(updatedUser)
         window.scrollTo(0, 0)
-        let messu = `Password changed`
-        let erro = new Error()
-        erro.message = messu
-        handleError(erro)
+        setNotification('Password changed', 'success', 5)
         return null
       }
     } catch (error) {
       console.log(error.message)
-      handleError(error)
+      setNotification(error.message, NOTIF_WARNING, 5)
     }
   }
 
@@ -234,4 +235,13 @@ const AccountDetailsForm = ({ user, updateNickname, updatePassword, logout, hand
   )
 }
 
-export default AccountDetailsForm
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDetailsForm)

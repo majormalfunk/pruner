@@ -12,7 +12,7 @@ import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
 
 
-const Event = ({ user, show, page, handleError }) => {
+const Event = ({ show, page, user, handleSetUser, handleError }) => {
   const [event, setEvent] = useState(null)
 
   const createEvent = useMutation(CREATE_EVENT, {

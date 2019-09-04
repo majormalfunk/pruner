@@ -1,19 +1,47 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
-
-const Notification = ({ message }) => {
+import { connect } from 'react-redux'
+import { NOTIF_INFO, NOTIF_SUCCESS, NOTIF_WARNING } from '../constants'
+ 
+const Notification = ({ message, messageClass }) => {
 
   if (message) {
 
+    let msgColor = '#ebc20c'
+    switch (messageClass) {
+      case NOTIF_WARNING:
+        msgColor = 'red'
+        break
+      case NOTIF_SUCCESS:
+        msgColor = 'green'
+        break
+      case NOTIF_INFO:
+        msgColor = '#ebc20c'
+        break
+      default:
+        msgColor = 'white'
+    }
+
     return (
-              <span style={{ color: 'red' }}>{message}</span>
+      <span style={{ color: msgColor }}>{message}</span>
     )
-  } else {
-    return (
-              <span style={{ color: 'green' }}>&nbsp;</span>
-    )
-  } 
+  }
+
+  return (
+    <span style={{ color: 'white' }}>&nbsp;</span>
+  )
+
 
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    message: state.notification.message,
+    messageClass: state.notification.messageClass
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Notification)
+

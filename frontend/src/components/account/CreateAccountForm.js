@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { UsernameField, PasswordField, VeripassField, NicknameField, EmailField } from './InputFields'
+import { UsernameField, PasswordField, VeripassField, NicknameField } from './InputFields'
 import { ACTION_CREATE_ACCOUNT, ACTION_CREATE_ACCOUNT_CANCEL } from '../../constants'
 
 const CreateAccountForm = (props) => {

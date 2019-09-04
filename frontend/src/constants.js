@@ -31,3 +31,8 @@ export const PAGE_CREATE_ACCOUNT = "page-create-account"
 export const PAGE_LOGIN = "page-login"
 export const PAGE_EVENT = "page-event"
 export const PAGE_EVENT_CREATE = "page-event-create"
+
+// Notification types
+export const NOTIF_SUCCESS = 'notif-success'
+export const NOTIF_WARNING = 'notif-warning'
+export const NOTIF_INFO = 'notif-info'

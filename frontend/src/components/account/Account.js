@@ -43,7 +43,7 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
     return (
       <div>
         <AccountDetailsForm user={user} updateNickname={updateNickname} updatePassword={updatePassword}
-          logout={logout} handleSetUser={handleSetUser} handleError={handleError} />
+          logout={logout} handleSetUser={handleSetUser} />
       </div>
     )
 
@@ -54,15 +54,14 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
     return (
       <Container>
         <Relogin relogin={relogin} getOwnEvents={getOwnEvents}
-          handleSetUser={handleSetUser} handleError={handleError} />
+          handleSetUser={handleSetUser} />
 
         <Login login={login} getOwnEvents={getOwnEvents}
-          handleSetUser={handleSetUser} handleError={handleError} />
+          handleSetUser={handleSetUser} />
 
         <Container>OR</Container>
 
-        <CreateAccount createAccount={createAccount}
-          handleSetUser={handleSetUser} handleError={handleError} />
+        <CreateAccount createAccount={createAccount} handleSetUser={handleSetUser} />
       </Container>
     )
   }

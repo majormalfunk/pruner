@@ -1,15 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 import ApolloClient from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
-import { ApolloProvider } from 'react-apollo'
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 
 import './index.css'
 import { USER_TOKEN } from './constants'
 import App from './App'
+import store from './store'
+
 
 const uri = (process.env.NODE_ENV === 'development' ? 'http://localhost:4000/graphql' : '/graphql')
 const httpLink = createHttpLink({
@@ -34,10 +36,10 @@ const client = new ApolloClient({
 })
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
+  <Provider store={store}>
     <ApolloHooksProvider client={client}>
       <App />
     </ApolloHooksProvider>
-  </ApolloProvider>,
+  </Provider>,
   document.getElementById('root')
 )
