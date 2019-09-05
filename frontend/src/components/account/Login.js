@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { setNotification } from '../../reducers/notificationReducer'
+import { setOwnEvents } from '../../reducers/ownEventsReducer'
+
 import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
@@ -11,7 +13,7 @@ import LoginForm from './LoginForm'
 
 const Login = (props) => {
 
-  const { setNotification, login, getOwnEvents, handleSetUser } = props
+  const { setNotification, login, getOwnEvents, handleSetUser, setOwnEvents } = props
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -88,7 +90,7 @@ const Login = (props) => {
         const username = loggedInAs.username
         loggedInAs.events = []
         try {
-          console.log('Own events for', username)
+          //console.log('Own events for', username)
           const eventsResult = await getOwnEvents[0]({
             variables: { username }
           })
@@ -97,6 +99,7 @@ const Login = (props) => {
             //console.log('Got something from own events')
             console.log(eventsResult.data.getOwnEvents)
             loggedInAs.events = eventsResult.data.getOwnEvents
+            setOwnEvents(eventsResult.data.getOwnEvents)
           }
         } catch (error) {
           console.log('Couldnt get own events in login', error.message)
@@ -133,7 +136,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  setNotification,
+  setOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

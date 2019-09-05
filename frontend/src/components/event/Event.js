@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+
 import { Container } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 
@@ -12,7 +14,10 @@ import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
 
 
-const Event = ({ show, page, user, handleSetUser, handleError }) => {
+const Event = (props) => {
+
+  const { show, page, user, handleError, ownEvents } = props
+
   const [event, setEvent] = useState(null)
 
   const createEvent = useMutation(CREATE_EVENT, {
@@ -27,11 +32,12 @@ const Event = ({ show, page, user, handleSetUser, handleError }) => {
 
 
   useEffect(() => {
-    console.log('EVENT: Effect was used')
+    //console.log('EVENT: Effect was used')
     if (show) {
-      if (user && user.events && user.events.length > 0) {
-        console.log('We have a user and the user has events')
-        const unfinishedEvent = user.events.find(function (event) {
+      if (ownEvents && ownEvents.length > 0) {
+        //console.log('We have events in the redux store:')
+        //console.log(ownEvents)
+        const unfinishedEvent = ownEvents.find(function (event) {
           return event.recurrences.length === 0
         });
         console.log('Unfinished event is', unfinishedEvent)
@@ -42,7 +48,7 @@ const Event = ({ show, page, user, handleSetUser, handleError }) => {
         }
       }
     }
-  }, [show, user])
+  }, [show, user, ownEvents])
 
   if (!show || !user) {
     return null
@@ -65,8 +71,16 @@ const Event = ({ show, page, user, handleSetUser, handleError }) => {
     )
   }
 
+}
 
+const mapStateToProps = (state) => {
+  return {
+    ownEvents: state.ownEvents
+  }
+}
+
+const mapDispatchToProps = {
 
 }
 
-export default Event
+export default connect(mapStateToProps, mapDispatchToProps)(Event)

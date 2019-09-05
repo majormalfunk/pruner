@@ -46,5 +46,6 @@
 | 03.09.2019    | Event update and delete                                            |     4,0   |           |
 | 04.09.2019    | Started implementing redux                                         |     3,5   |           |
 | 05.09.2019    | Some bug fixing                                                    |     1,0   |           |
-| **WEEK 36**   | **TOTAL**                                                          |   **8,0** | **104,5** |
+| 05.09.2019    | More reduxing                                                      |     1,5   |           |
+| **WEEK 36**   | **TOTAL**                                                          |   **9,5** | **106,0** |
 

@@ -25,7 +25,7 @@ module.exports = {
             if (userFromDB) {
               try {
                 const eventsFromDB = await Event.find({ owner: userFromDB._id })
-                console.log('Found events', eventsFromDB)
+                //console.log('Found events', eventsFromDB)
                 return eventsFromDB
               } catch (error) {
                 console.log('Error trying to get own events from database')

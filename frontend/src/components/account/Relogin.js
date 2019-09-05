@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { setNotification } from '../../reducers/notificationReducer'
+import { setOwnEvents } from '../../reducers/ownEventsReducer'
+
 import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
 
 import { USER_TOKEN } from '../../constants'
@@ -9,7 +11,7 @@ import ReloginForm from './ReloginForm'
 
 const Relogin = (props) => {
 
-  const { setNotification, relogin, getOwnEvents, handleSetUser } = props
+  const { setNotification, relogin, getOwnEvents, handleSetUser, setOwnEvents } = props
 
   const handleRelogin = async (event) => {
     event.preventDefault()
@@ -39,6 +41,7 @@ const Relogin = (props) => {
               //console.log('Got something from own events')
               //console.log(eventsResult.data.getOwnEvents)
               loggedInAs.events = eventsResult.data.getOwnEvents
+              setOwnEvents(eventsResult.data.getOwnEvents)
             }
           } catch (error) {
             console.log('Couldnt get own events in relogin', error.message)
@@ -69,7 +72,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  setNotification,
+  setOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Relogin)
