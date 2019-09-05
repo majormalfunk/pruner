@@ -25,7 +25,7 @@ module.exports = {
             if (userFromDB) {
               try {
                 const eventsFromDB = await Event.find({ owner: userFromDB._id })
-                //console.log('Found events', eventsFromDB)
+                console.log('Found events', eventsFromDB)
                 return eventsFromDB
               } catch (error) {
                 console.log('Error trying to get own events from database')
@@ -40,7 +40,15 @@ module.exports = {
             console.log(error)
             throw error
           }
+
+        } else {
+
+          console.log('No current user in request. This shouldnt happen.')
+          console.log('Something wrong in the frontend state.')
+          throw new Error('Token was not in request for own events when one was expected')
+
         }
+
       },
       createEvent: async (root, args, { currentUser }) => {
 

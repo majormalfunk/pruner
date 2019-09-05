@@ -6,6 +6,7 @@ import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
+import { USER_TOKEN } from '../../constants'
 import LoginForm from './LoginForm'
 
 const Login = (props) => {
@@ -81,7 +82,10 @@ const Login = (props) => {
       })
       if (result) {
         let loggedInAs = result.data.login
-        //const username = loggedInAs.username
+        // We need to set token to lacal storage before executing search for own events
+        // Otherwise it's not in the request. Maybe move it to redux store?
+        window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+        const username = loggedInAs.username
         loggedInAs.events = []
         try {
           console.log('Own events for', username)

@@ -29,7 +29,8 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
     onError: handleError
   })
   const getOwnEvents = useMutation(GET_OWN_EVENTS, {
-    onError: handleError
+    onError: handleError,
+    options: { fetchPolicy: 'network-only' }
   })
 
   if (!show) {

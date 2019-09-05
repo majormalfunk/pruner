@@ -44,6 +44,7 @@
 | 01.09.2019    | Event details                                                      |     2,5   |           |
 | **WEEK 35**   | **TOTAL**                                                          |  **26,0** |  **96,5** |
 | 03.09.2019    | Event update and delete                                            |     4,0   |           |
-| 04.09.2019    | Started implementing redux                                         |     3,0   |           |
-| **WEEK 36**   | **TOTAL**                                                          |   **7,0** | **103,5** |
+| 04.09.2019    | Started implementing redux                                         |     3,5   |           |
+| 05.09.2019    | Some bug fixing                                                    |     1,0   |           |
+| **WEEK 36**   | **TOTAL**                                                          |   **8,0** | **104,5** |
 
