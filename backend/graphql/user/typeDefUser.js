@@ -21,11 +21,9 @@ module.exports = {
         password: String!
       ): CurrentUser
       updateNickname(
-        username: String!
         nickname: String!
       ): CurrentUser
       updatePassword(
-        username: String!
         oldPassword: String!
         newPassword: String!
       ): CurrentUser

@@ -30,7 +30,6 @@ const Relogin = (props) => {
           let loggedInAs = result.data.relogin
           window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
           const username = loggedInAs.username
-          loggedInAs.events = []
           try {
             //console.log('Own events for', username)
             const eventsResult = await getOwnEvents[0]({
@@ -40,7 +39,6 @@ const Relogin = (props) => {
             if (eventsResult.data) {
               //console.log('Got something from own events')
               //console.log(eventsResult.data.getOwnEvents)
-              loggedInAs.events = eventsResult.data.getOwnEvents
               setOwnEvents(eventsResult.data.getOwnEvents)
             }
           } catch (error) {
@@ -49,7 +47,7 @@ const Relogin = (props) => {
           }
           handleSetUser(loggedInAs)
           setNotification(`Logged in as ${loggedInAs.username}`, NOTIF_SUCCESS, 5)
-        //console.log('Logged in as', loggedInAs)
+          //console.log('Logged in as', loggedInAs)
           return null
         }
       }

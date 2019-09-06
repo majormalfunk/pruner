@@ -29,18 +29,16 @@ export const LOGIN = gql`
   }
 `
 export const UPDATE_NICKNAME = gql`
-  mutation updateNickname($username: String!, $nickname: String!) {
-    updateNickname(username: $username, nickname: $nickname) {
-      username
+  mutation updateNickname($nickname: String!) {
+    updateNickname(nickname: $nickname) {
       nickname
       token
     }
   }
 `
 export const UPDATE_PASSWORD = gql`
-  mutation updatePassword($username: String!, $oldPassword: String!, $newPassword: String!) {
-    updatePassword(username: $username, oldPassword: $oldPassword, newPassword: $newPassword) {
-      username
+  mutation updatePassword($oldPassword: String!, $newPassword: String!) {
+    updatePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
       nickname
       token
     }

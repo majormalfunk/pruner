@@ -50,10 +50,11 @@ const server = new ApolloServer({
       }
 
       const user = await User.findById(decodedToken.id)
+      const userid = user._id
 
       const userForToken = {
         username: user.username,
-        id: user._id,
+        id: userid,
       }
 
       const currentUser = {
@@ -62,7 +63,7 @@ const server = new ApolloServer({
         token: jwt.sign(userForToken, JWT_SECRET)
       }
 
-      return { currentUser }
+      return { currentUser, userid }
     }
   }
 })

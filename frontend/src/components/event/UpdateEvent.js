@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
+import { setNotification } from '../../reducers/notificationReducer'
+
+import { NOTIF_SUCCESS, NOTIF_WARNING, NOTIF_INFO } from '../../constants'
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_EVENT, ACTION_DELETE_EVENT } from '../../constants'
 import UpdateEventForm from './UpdateEventForm'
 
-const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setEvent, handleError }) => {
+const UpdateEvent = (props) => {
+
+  const { setNotification, updateEvent, deleteEvent, eventToHandle, user, show, setEvent } = props
 
   const [eventname, setEventname] = useState(eventToHandle.eventname)
   const [description, setDescription] = useState(eventToHandle.description)
@@ -42,10 +48,8 @@ const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setE
     if (document.getElementById(`publiceventhintupdate`)) {
       if (publicevent === false) {
         document.getElementById(`publiceventhintupdate`).innerHTML = 'You have chosen to make the event private'
-        return false
       } else {
         document.getElementById(`publiceventhintupdate`).innerHTML = 'You have chosen to make the event visible to all'
-        return true
       }
     }
     return
@@ -54,7 +58,7 @@ const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setE
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
-    const visible = controlPublicevent()
+    controlPublicevent()
     if (document.getElementById(ACTION_UPDATE_EVENT)) {
       document.getElementById(ACTION_UPDATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }
@@ -114,12 +118,15 @@ const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setE
           console.log('Result from updateEvent', result.data.updateEvent)
           const event = result.data.updateEvent
           setEvent(event)
-          return null
+          setNotification('Event info was updated', NOTIF_SUCCESS, 5)
+        } else {
+          setNotification('Event info was not updated', NOTIF_WARNING, 5)
         }
-      } catch (error) {
+        return null
+    } catch (error) {
         console.log(error.message)
         clearFields()
-        handleError(error)
+        setNotification(error.message, NOTIF_WARNING, 5)
       }
     } else {
       console.log('Eventname or description too short')
@@ -140,19 +147,20 @@ const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setE
           //console.log('Result from deleteEvent', result.data.deleteEvent)
           if (result.data.deleteEvent && result.data.deleteEvent === 1) {
             setEvent(null)
+            setNotification('Event deleted', NOTIF_SUCCESS, 5)
             //clearFields()
+          } else {
+            setNotification('Event was not deleted', NOTIF_WARNING, 5)
           }
-          //const event = result.data.updateEvent
-          //setEvent(event)
           return null
         }
       } catch (error) {
         console.log(error.message)
         revertFields()
-        handleError(error)
+        setNotification(error.message, NOTIF_WARNING, 5)
       }
     } else {
-      handleError('You need to delete venues and recurrences before you can delete the event')
+      setNotification('You need to delete venues and recurrences before you can delete the event', NOTIF_INFO, 5)
     }
   }
 
@@ -170,4 +178,13 @@ const UpdateEvent = ({ updateEvent, deleteEvent, eventToHandle, user, show, setE
   )
 }
 
-export default UpdateEvent
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateEvent)

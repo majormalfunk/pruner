@@ -14,7 +14,6 @@ const AccountDetailsForm = (props) => {
 
   const { setNotification, user, updateNickname, updatePassword, logout, handleSetUser } = props
 
-  const [username, setUsername] = useState(user.username)
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newVeripass, setNewVeripass] = useState('')
@@ -104,7 +103,7 @@ const AccountDetailsForm = (props) => {
 
     try {
       const result = await updateNickname[0]({
-        variables: { username, nickname }
+        variables: { nickname }
       })
       if (result) {
         //const token = result.data.updateNickname.token
@@ -142,7 +141,7 @@ const AccountDetailsForm = (props) => {
     try {
 
       const result = await updatePassword[0]({
-        variables: { username, oldPassword, newPassword }
+        variables: { oldPassword, newPassword }
       })
       if (result) {
         //const token = result.data.updateNickname.token
@@ -164,7 +163,7 @@ const AccountDetailsForm = (props) => {
   return (
     <Container>
       <Row>
-        <Col className="Component-title">You are logged in as <font color='white'>{username}</font></Col>
+        <Col className="Component-title">You are logged in as <font color='white'>{user.username}</font></Col>
         <Col>
           <Button variant="danger" type="button" value={ACTION_LOGOUT} id={ACTION_LOGOUT}
             onClick={logout}>Logout</Button>

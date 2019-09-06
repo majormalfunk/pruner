@@ -42,18 +42,17 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
     if (document.getElementById(`publiceventhintcreate`)) {
       if (publicevent === false) {
         document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event private'
-        return false
       } else {
         document.getElementById(`publiceventhintcreate`).innerHTML = 'You have chosen to make the event visible to all'
-        return true
       }
     }
+    return
   }
 
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
-    const visible = controlPublicevent()
+    controlPublicevent()
     if (document.getElementById(ACTION_CREATE_EVENT)) {
       document.getElementById(ACTION_CREATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }

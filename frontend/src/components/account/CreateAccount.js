@@ -120,7 +120,6 @@ const CreateAccount = (props) => {
           //console.log('Past the call')
           if (result) {
             let loggedInAs = result.data.createAccount
-            loggedInAs.events = []
             clearFields()
             handleSetUser(loggedInAs)
             setNotification(`Account created for ${loggedInAs.nickname}`, NOTIF_SUCCESS, 5)

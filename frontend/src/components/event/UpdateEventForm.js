@@ -10,6 +10,14 @@ const UpdateEventForm = (props) => {
       <Form>
         <Row>
           <Col className="Component-title">
+            This event needs some more data before it can be used in a plan
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Component-expl">
             You can edit the name and description of your event and choose to make it public or private
           </Col>
         </Row>

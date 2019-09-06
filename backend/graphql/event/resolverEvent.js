@@ -143,7 +143,7 @@ module.exports = {
                 }
               )
 
-              console.log('Updated event is', updatedEvent)
+              //console.log('Updated event is', updatedEvent)
 
               return updatedEvent
             } catch (error) {

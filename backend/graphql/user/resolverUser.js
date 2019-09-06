@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const JWT_SECRET = process.env.JWT_SECRET
 
-const { checkCurrentUserIsCorrect } = require('../../utils')
+const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 
 module.exports = {
   resolvers: {
@@ -69,12 +69,12 @@ module.exports = {
 
         return currentUser
       },
-      relogin: async (root, args, { currentUser }) => {
+      relogin: async (root, args, { currentUser, userid }) => {
 
-        //console.log('Trying to relogin')
+        //console.log('Trying to relogin, got id', userid)
 
         try {
-          let userFromDB = await User.findOne({ username: currentUser.username })
+          let userFromDB = await User.findById(userid)
 
           const userForToken = {
             username: userFromDB.username,
@@ -94,11 +94,11 @@ module.exports = {
         }
 
       },
-      updateNickname: async (root, args, { currentUser }) => {
+      updateNickname: async (root, args, { currentUser, userid }) => {
 
-        checkCurrentUserIsCorrect({ currentUser }, args.username, 'update nickname')
+        checkCurrentUser({ currentUser }, 'update nickname')
 
-        const userFromDB = await User.findOne({ username: args.username })
+        const userFromDB = await User.findById(userid)
         if (userFromDB) {
           userFromDB.nickname = args.nickname
           try {
@@ -115,29 +115,31 @@ module.exports = {
             })
           }
         } else {
-          console.log('No such user:', args.username)
+          console.log('No such user:', currentUser.username)
           return null
         }
 
       },
-      updatePassword: async (root, args, { currentUser }) => {
+      updatePassword: async (root, args, { currentUser, userid }) => {
 
-        checkCurrentUserIsCorrect({ currentUser }, args.username, 'update password')
+        checkCurrentUser({ currentUser }, 'update password')
 
-        const user = await User.findOne({ username: args.username })
-        const passwordCorrect = (user === null ? false : await bcrypt.compare(args.oldPassword, user.passwordHash))
+        const userFromDB = await User.findById(userid)
+        //const user = await User.findOne({ username: args.username })
+        const passwordCorrect =
+          (userFromDB === null ? false : await bcrypt.compare(args.oldPassword, userFromDB.passwordHash))
 
-        if (!(user && passwordCorrect)) {
+        if (!(userFromDB && passwordCorrect)) {
           throw new UserInputError("Wrong username or password")
         }
 
         const saltRounds = 10
         const passwordHash = await bcrypt.hash(args.newPassword, saltRounds)
 
-        if (user) {
-          user.passwordHash = passwordHash
+        if (userFromDB) {
+          userFromDB.passwordHash = passwordHash
           try {
-            const savedUser = await user.save()
+            const savedUser = await userFromDB.save()
             const updatedUser = {
               username: savedUser.username,
               nickname: savedUser.nickname,
@@ -150,7 +152,7 @@ module.exports = {
             })
           }
         } else {
-          console.log('No such user:', args.username)
+          console.log('No such user:', currentUser.username)
           return null
         }
 

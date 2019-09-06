@@ -85,10 +85,9 @@ const Login = (props) => {
       if (result) {
         let loggedInAs = result.data.login
         // We need to set token to lacal storage before executing search for own events
-        // Otherwise it's not in the request. Maybe move it to redux store?
+        // Otherwise it's not in the request authentication. Maybe move it to redux store?
         window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
         const username = loggedInAs.username
-        loggedInAs.events = []
         try {
           //console.log('Own events for', username)
           const eventsResult = await getOwnEvents[0]({
@@ -97,8 +96,7 @@ const Login = (props) => {
           //console.log('Data:', eventsResult.data)
           if (eventsResult.data) {
             //console.log('Got something from own events')
-            console.log(eventsResult.data.getOwnEvents)
-            loggedInAs.events = eventsResult.data.getOwnEvents
+            //console.log(eventsResult.data.getOwnEvents)
             setOwnEvents(eventsResult.data.getOwnEvents)
           }
         } catch (error) {
