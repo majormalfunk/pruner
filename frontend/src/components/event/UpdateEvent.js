@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { setNotification } from '../../reducers/notificationReducer'
+import { updateInOwnEvents, removeFromOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { NOTIF_SUCCESS, NOTIF_WARNING, NOTIF_INFO } from '../../constants'
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
@@ -10,7 +11,8 @@ import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
 
-  const { setNotification, updateEvent, deleteEvent, eventToHandle, user, show, setEvent } = props
+  const { setNotification, removeFromOwnEvents, updateInOwnEvents,
+    updateEvent, deleteEvent, eventToHandle, user, show, setEvent } = props
 
   const [eventname, setEventname] = useState(eventToHandle.eventname)
   const [description, setDescription] = useState(eventToHandle.description)
@@ -115,9 +117,9 @@ const UpdateEvent = (props) => {
           variables: { id, eventname, description, publicevent }
         })
         if (result) {
-          console.log('Result from updateEvent', result.data.updateEvent)
           const event = result.data.updateEvent
           setEvent(event)
+          updateInOwnEvents(event)
           setNotification('Event info was updated', NOTIF_SUCCESS, 5)
         } else {
           setNotification('Event info was not updated', NOTIF_WARNING, 5)
@@ -135,7 +137,6 @@ const UpdateEvent = (props) => {
 
   const handleDeleteEvent = async (event) => {
     event.preventDefault()
-    console.log('Delete event', eventname)
     if (eventToHandle.recurrences && eventToHandle.recurrences.length === 0) {
       window.alert(`Delete event ${eventname}?`)
       try {
@@ -144,11 +145,10 @@ const UpdateEvent = (props) => {
           variables: { id }
         })
         if (result) {
-          //console.log('Result from deleteEvent', result.data.deleteEvent)
           if (result.data.deleteEvent && result.data.deleteEvent === 1) {
             setEvent(null)
+            removeFromOwnEvents(event)
             setNotification('Event deleted', NOTIF_SUCCESS, 5)
-            //clearFields()
           } else {
             setNotification('Event was not deleted', NOTIF_WARNING, 5)
           }
@@ -184,7 +184,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  setNotification,
+  updateInOwnEvents,
+  removeFromOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateEvent)

@@ -59,9 +59,7 @@ const App = (props) => {
   const handleSetPage = (event) => {
     //console.log('Got event in handleSetPage', event)
     //event.preventDefault()
-    //setPage(event.target.value)
     setPage(event)
-    //console.log('Page was set to', event)
   }
 
   const logout = () => {

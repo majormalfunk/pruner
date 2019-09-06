@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
+import { setNotification } from '../../reducers/notificationReducer'
+import { addToOwnEvents } from '../../reducers/ownEventsReducer'
+
+import { NOTIF_SUCCESS, NOTIF_WARNING, NOTIF_INFO } from '../../constants'
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_EVENT } from '../../constants'
+
 import CreateEventForm from './CreateEventForm'
 
-const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
+const CreateEvent = (props) => {
+
+  const { setNotification, addToOwnEvents, createEvent, user, show, setEvent } = props
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
@@ -97,18 +105,24 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
             variables: { eventname, description, publicevent }
           })
           if (result) {
+            console.log('Before events', props.ownEvents.length)
             console.log('Result from createEvent', result.data.createEvent)
             const event = result.data.createEvent
             setEvent(event)
-            return null
+            addToOwnEvents(event)
+            setNotification('New event created', NOTIF_SUCCESS, 5)
+          } else {
+            setNotification('Event was not created', NOTIF_WARNING, 5)
           }
+          return null
         } catch (error) {
           console.log(error.message)
           clearFields()
-          handleError(error)
+          setNotification(error.message, NOTIF_WARNING, 5)
         }
       } else {
         console.log('Eventname or description too short')
+        setNotification('Eventname or description too short', NOTIF_INFO, 5)
       }
 
   }
@@ -126,4 +140,15 @@ const CreateEvent = ({ createEvent, user, show, setEvent, handleError }) => {
   )
 }
 
-export default CreateEvent
+const mapStateToProps = (state) => {
+  return {
+    ownEvents: state.ownEvents
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification,
+  addToOwnEvents
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateEvent)

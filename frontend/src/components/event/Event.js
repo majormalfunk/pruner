@@ -30,17 +30,13 @@ const Event = (props) => {
     onError: handleError
   })
 
-
   useEffect(() => {
     //console.log('EVENT: Effect was used')
     if (show) {
       if (ownEvents && ownEvents.length > 0) {
-        //console.log('We have events in the redux store:')
-        //console.log(ownEvents)
         const unfinishedEvent = ownEvents.find(function (event) {
           return event.recurrences.length === 0
-        });
-        console.log('Unfinished event is', unfinishedEvent)
+        })
         if (unfinishedEvent) {
           setEvent(unfinishedEvent)
         } else {
@@ -58,7 +54,7 @@ const Event = (props) => {
     return (
       <Container>
         <CreateEvent createEvent={createEvent} user={user} show={page === PAGE_EVENT_CREATE}
-          setEvent={setEvent} handleError={handleError} />
+          setEvent={setEvent} />
       </Container>
     )
   } else {
@@ -66,7 +62,7 @@ const Event = (props) => {
       <Container>
         <UpdateEvent updateEvent={updateEvent} deleteEvent={deleteEvent}
           eventToHandle={event} user={user} show={page === PAGE_EVENT_CREATE}
-          setEvent={setEvent} handleError={handleError} />
+          setEvent={setEvent} />
       </Container>
     )
   }
