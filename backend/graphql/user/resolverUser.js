@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
@@ -53,7 +54,7 @@ module.exports = {
         const passwordCorrect = (user === null ? false : await bcrypt.compare(args.password, user.passwordHash))
 
         if (!(user && passwordCorrect)) {
-          throw new UserInputError("Wrong username or password")
+          throw new AuthenticationError("Wrong username or password")
         }
 
         const userForToken = {
@@ -90,7 +91,7 @@ module.exports = {
           return reloginUser
         } catch (error) {
           console.log(error.message)
-          throw error
+          throw new AuthenticationError(error.message)
         }
 
       },
@@ -115,8 +116,9 @@ module.exports = {
             })
           }
         } else {
-          console.log('No such user:', currentUser.username)
-          return null
+          const message = `No such user ${currentUser.username}`
+          console.log(message)
+          throw new AuthenticationError(message)
         }
 
       },
@@ -152,8 +154,9 @@ module.exports = {
             })
           }
         } else {
-          console.log('No such user:', currentUser.username)
-          return null
+          const message = `No such user ${currentUser.username}`
+          console.log(message)
+          throw new AuthenticationError(message)
         }
 
       }

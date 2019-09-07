@@ -8,8 +8,8 @@ import { USER_TOKEN } from './constants'
 import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT } from './constants'
 
 import Notification from './components/Notification'
-import { setNotification } from './reducers/notificationReducer'
-import { NOTIF_INFO, NOTIF_WARNING } from './constants'
+import { displayInfo } from './reducers/notificationReducer'
+import { clearOwnEvents } from './reducers/ownEventsReducer'
 
 import Home from './components/home/Home'
 import Account from './components/account/Account'
@@ -32,19 +32,12 @@ import Event from './components/event/Event'
 //`
 
 const App = (props) => {
+
+  const { displayInfo, clearOwnEvents } = props
+
   const [user, setUser] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
-  //const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
-
-  const handleError = (error) => {
-    //setErrorMessage(error.message.replace('GraphQL error:', ''))
-    const message = error.message.replace('GraphQL error:', '')
-    props.setNotification(message, NOTIF_WARNING, 5)
-    //setTimeout(() => {
-    //  setErrorMessage(null)
-    //}, 5000)
-  }
 
   const handleSetUser = (newUser) => {
     if (newUser) {
@@ -57,18 +50,16 @@ const App = (props) => {
   }
 
   const handleSetPage = (event) => {
-    //console.log('Got event in handleSetPage', event)
-    //event.preventDefault()
     setPage(event)
   }
 
   const logout = () => {
-  //  setToken(null)
+    clearOwnEvents()
     setUser(null)
     window.localStorage.clear()
     client.resetStore()
     setPage(PAGE_HOME)
-    props.setNotification('Logged out', NOTIF_INFO, 5)
+    displayInfo('Logged out')
   }
 
   return (
@@ -95,18 +86,13 @@ const App = (props) => {
 
         <Notification />
 
-        <Home show={page === PAGE_HOME}
-          handleSetPage={handleSetPage}
-          handleError={handleError} />
+        <Home show={page === PAGE_HOME} handleSetPage={handleSetPage} />
 
-        <Account show={page === PAGE_ACCOUNT}
-          logout={logout}
-          user={user} handleSetUser={handleSetUser}
-          handleError={handleError} />
+        <Account show={page === PAGE_ACCOUNT} logout={logout}
+          user={user} handleSetUser={handleSetUser} />
 
         <Event show={page.startsWith(PAGE_EVENT)} page={page}
-          user={user} handleSetUser={handleSetUser}
-          handleError={handleError} />
+          user={user} handleSetUser={handleSetUser} />
 
       </div>
     </div>
@@ -119,7 +105,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  displayInfo,
+  clearOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

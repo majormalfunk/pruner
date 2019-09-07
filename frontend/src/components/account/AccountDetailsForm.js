@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
-import { setNotification } from '../../reducers/notificationReducer'
-import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
+import { displaySuccess, displayError } from '../../reducers/notificationReducer'
 
 import { PASSWORD_LENGTH, NICKNAME_LENGTH, ACTION_CHANGE_PASSWORD_CANCEL } from '../../constants'
 import { NicknameField, PasswordField, VeripassField } from './InputFields'
@@ -12,7 +11,7 @@ import { ACTION_LOGOUT, ACTION_CHANGE_NICKNAME, ACTION_CHANGE_PASSWORD } from '.
 
 const AccountDetailsForm = (props) => {
 
-  const { setNotification, user, updateNickname, updatePassword, logout, handleSetUser } = props
+  const { displaySuccess, displayError, user, updateNickname, updatePassword, logout, handleSetUser } = props
 
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -111,12 +110,12 @@ const AccountDetailsForm = (props) => {
         const updatedUser = result.data.updateNickname
         //props.setToken(token)
         handleSetUser(updatedUser)
-        setNotification(`Nickname changed to ${nickname}`, NOTIF_SUCCESS, 5)
+        displaySuccess(`Nickname changed to ${nickname}`)
         return null
       }
     } catch (error) {
       console.log(error.message)
-      setNotification(error.message, NOTIF_WARNING, 5)
+      displayError(error)
     }
 
   }
@@ -151,12 +150,12 @@ const AccountDetailsForm = (props) => {
         clearFields()
         handleSetUser(updatedUser)
         window.scrollTo(0, 0)
-        setNotification('Password changed', 'success', 5)
+        displaySuccess('Password changed')
         return null
       }
     } catch (error) {
       console.log(error.message)
-      setNotification(error.message, NOTIF_WARNING, 5)
+      displayError(error)
     }
   }
 
@@ -240,7 +239,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  displaySuccess,
+  displayError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountDetailsForm)

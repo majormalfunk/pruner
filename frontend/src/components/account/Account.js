@@ -1,4 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
+import { displayError } from '../../reducers/notificationReducer'
+
 import { Container } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 
@@ -11,7 +15,13 @@ import Login from './Login'
 import Relogin from './Relogin'
 
 
-const Account = ({ show, user, handleSetUser, handleError, logout}) => {
+const Account = (props) => {
+
+  const { displayError, show, user, handleSetUser, logout} = props
+
+  const handleError = (error) => {
+    displayError(error)
+  }
 
   const relogin = useMutation(RELOGIN, {
     onError: handleError
@@ -50,7 +60,7 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
 
   } else {
 
-    //console.log('Rendering Account when there is no token or token is not yet resolved')
+    //console.log('Rendering Account when there is no user')
 
     return (
       <Container>
@@ -69,4 +79,13 @@ const Account = ({ show, user, handleSetUser, handleError, logout}) => {
 
 }
 
-export default Account
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  displayError
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account)

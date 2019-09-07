@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import img_my_events from './images/my_events.png'
 
-const MyEventsCard = ({ cardStyle, handleError }) => {
+const MyEventsCard = ({ cardStyle }) => {
 
   return (
 

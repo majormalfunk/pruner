@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { setNotification } from '../../reducers/notificationReducer'
+import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { addToOwnEvents } from '../../reducers/ownEventsReducer'
 
-import { NOTIF_SUCCESS, NOTIF_WARNING, NOTIF_INFO } from '../../constants'
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_EVENT } from '../../constants'
 
@@ -12,7 +11,7 @@ import CreateEventForm from './CreateEventForm'
 
 const CreateEvent = (props) => {
 
-  const { setNotification, addToOwnEvents, createEvent, user, show, setEvent } = props
+  const { displaySuccess, displayInfo, displayError, addToOwnEvents, createEvent, user, show, setEvent } = props
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
@@ -97,7 +96,7 @@ const CreateEvent = (props) => {
 
   const handleCreateEvent = async (event) => {
     event.preventDefault()
-    console.log('Create event', eventname)
+    //console.log('Create event', eventname)
       if (eventname.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
         try {
           //window.alert(`Create event ${eventname}`)
@@ -105,24 +104,20 @@ const CreateEvent = (props) => {
             variables: { eventname, description, publicevent }
           })
           if (result) {
-            console.log('Before events', props.ownEvents.length)
-            console.log('Result from createEvent', result.data.createEvent)
             const event = result.data.createEvent
             setEvent(event)
             addToOwnEvents(event)
-            setNotification('New event created', NOTIF_SUCCESS, 5)
+            displaySuccess(`New event ${event.eventname} created`)
           } else {
-            setNotification('Event was not created', NOTIF_WARNING, 5)
+            displayError('Event was not created')
           }
           return null
         } catch (error) {
-          console.log(error.message)
           clearFields()
-          setNotification(error.message, NOTIF_WARNING, 5)
+          displayError(error)
         }
       } else {
-        console.log('Eventname or description too short')
-        setNotification('Eventname or description too short', NOTIF_INFO, 5)
+        displayInfo('Eventname or description too short')
       }
 
   }
@@ -147,7 +142,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification,
+  displaySuccess,
+  displayInfo,
+  displayError,
   addToOwnEvents
 }
 

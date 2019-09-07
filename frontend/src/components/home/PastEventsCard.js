@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import img_past_events from './images/past_events.png'
 
-const PastEventsCard = ({ cardStyle, handleError }) => {
+const PastEventsCard = ({ cardStyle }) => {
 
   return (
 

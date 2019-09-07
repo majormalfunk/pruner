@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { setNotification } from '../../reducers/notificationReducer'
+import { displaySuccess, displayError } from '../../reducers/notificationReducer'
 import { setOwnEvents } from '../../reducers/ownEventsReducer'
-
-import { NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
@@ -13,7 +11,7 @@ import LoginForm from './LoginForm'
 
 const Login = (props) => {
 
-  const { setNotification, login, getOwnEvents, handleSetUser, setOwnEvents } = props
+  const { displaySuccess, displayError, login, getOwnEvents, handleSetUser, setOwnEvents } = props
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -101,18 +99,16 @@ const Login = (props) => {
           }
         } catch (error) {
           console.log('Couldnt get own events in login', error.message)
-          setNotification('Something went wrong fetching your own events', NOTIF_WARNING, 5)
+          displayError('Something went wrong fetching your own events')
         }
         clearFields()
         handleSetUser(loggedInAs)
-        setNotification(`Logged in as ${loggedInAs.username}`, NOTIF_SUCCESS, 5)
-        //console.log('Logged in as', loggedInAs)
+        displaySuccess(`Logged in as ${loggedInAs.username}`)
         return null
       }
     } catch (error) {
-      console.log(error.message)
       clearFields()
-      setNotification(error.message, NOTIF_WARNING, 5)
+      displayError(error)
     }
 
   }
@@ -134,7 +130,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification,
+  displaySuccess,
+  displayError,
   setOwnEvents
 }
 

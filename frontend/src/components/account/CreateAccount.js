@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { setNotification } from '../../reducers/notificationReducer'
-import { NOTIF_INFO, NOTIF_SUCCESS, NOTIF_WARNING } from '../../constants'
+import { displaySuccess, displayError } from '../../reducers/notificationReducer'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_ACCOUNT } from '../../constants'
@@ -10,7 +9,7 @@ import CreateAccountForm from './CreateAccountForm'
 
 const CreateAccount = (props) => {
 
-  const { setNotification, handleSetUser, createAccount } = props
+  const { displaySuccess, displayError, handleSetUser, createAccount } = props
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -122,20 +121,20 @@ const CreateAccount = (props) => {
             let loggedInAs = result.data.createAccount
             clearFields()
             handleSetUser(loggedInAs)
-            setNotification(`Account created for ${loggedInAs.nickname}`, NOTIF_SUCCESS, 5)
+            displaySuccess(`Account created for ${loggedInAs.nickname}`)
             return null
           }
         } catch (error) {
           console.log(error.message)
           clearFields()
-          setNotification(error.message, NOTIF_WARNING, 5)
+          displayError(error)
         }
       } else {
-        setNotification('Username or nickname does not comply', NOTIF_INFO, 5)
+        displayError('Username or nickname does not comply')
         console.log('Username or nickname does not comply')
       }
     } else {
-      setNotification('Password does not comply', NOTIF_INFO, 5)
+      displayError('Password does not comply')
       console.log('Password does not comply')
     }
 
@@ -162,7 +161,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  displaySuccess,
+  displayError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount)

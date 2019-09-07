@@ -4,7 +4,7 @@ import img_new_event from './images/new_event.png'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
-const NewEventCard = ({ cardStyle, handleSetPage, handleError }) => {
+const NewEventCard = ({ cardStyle, handleSetPage }) => {
 
   return (
 

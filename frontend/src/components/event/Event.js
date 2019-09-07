@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
+import { displayError } from '../../reducers/notificationReducer'
+
 import { Container } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 
@@ -16,9 +18,13 @@ import UpdateEvent from './UpdateEvent'
 
 const Event = (props) => {
 
-  const { show, page, user, handleError, ownEvents } = props
+  const { displayError, show, page, user, ownEvents } = props
 
   const [event, setEvent] = useState(null)
+
+  const handleError = (error) => {
+    displayError(error)
+  }
 
   const createEvent = useMutation(CREATE_EVENT, {
     onError: handleError
@@ -76,7 +82,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-
+  displayError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Event)

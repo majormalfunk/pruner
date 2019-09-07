@@ -7,7 +7,7 @@ import UpcomingEventsCard from './UpcomingEventsCard'
 import PastEventsCard from './PastEventsCard'
 import MyEventsCard from './MyEventsCard'
 
-const Home = ({ show, handleSetPage, handleError }) => {
+const Home = ({ show, handleSetPage }) => {
 
   const [cardColumns, setCardColumns] = useState(window.innerWidth >= 576 ? 3 : 2)
 
@@ -33,16 +33,16 @@ const Home = ({ show, handleSetPage, handleError }) => {
       <Container>
         <Row>
           <CardDeck>
-            <NewPlanCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
-            <UpcomingEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
-            <NewEventCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <NewPlanCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <UpcomingEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <NewEventCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
           </CardDeck>
         </Row>
         <Row>
           <CardDeck>
-            <MyPlansCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
-            <PastEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
-            <MyEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} handleError={handleError} />
+            <MyPlansCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <PastEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <MyEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
           </CardDeck>
         </Row>
       </Container>
@@ -53,24 +53,22 @@ const Home = ({ show, handleSetPage, handleError }) => {
         <Row>
           <Col>
             <CardColumns>
-              <NewPlanCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
-              <UpcomingEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
-              <MyPlansCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <NewPlanCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <UpcomingEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <MyPlansCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
             </CardColumns>
           </Col>
           <Col>
             <CardColumns>
-              <NewEventCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
-              <PastEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
-              <MyEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} handleError={handleError} />
+              <NewEventCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <PastEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <MyEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
             </CardColumns>
           </Col>
         </Row>
       </Container>
     )
   }
-
-  //}
 
 }
 export default Home

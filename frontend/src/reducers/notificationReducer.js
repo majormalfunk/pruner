@@ -1,18 +1,60 @@
-export const setNotification = (message, messageClass, timeout) => {
+import { NOTIF_SUCCESS, NOTIF_INFO, NOTIF_WARNING } from '../constants'
 
+export const displaySuccess = (message) => {
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
       data: {
         message: message,
-        messageClass: messageClass
-       }
+        messageClass: NOTIF_SUCCESS
+      }
     })
     await setTimeout(() => {
       dispatch({
         type: 'CLEAR_NOTIFICATION'
       })
-    }, (timeout * 1000))
+    }, (5000))
+  }
+}
+
+export const displayInfo = (message) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: {
+        message: message,
+        messageClass: NOTIF_INFO
+      }
+    })
+    await setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_NOTIFICATION'
+      })
+    }, (5000))
+  }
+}
+
+export const displayError = (error) => {
+  let message = 'Unknown error occured.'
+  if (error.message) {
+    console.log(error.message)
+    message = error.message.replace('GraphQL error:', '')
+  } else {
+    message = error
+  }
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: {
+        message: message,
+        messageClass: NOTIF_WARNING
+      }
+    })
+    await setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_NOTIFICATION'
+      })
+    }, (5000))
   }
 }
 

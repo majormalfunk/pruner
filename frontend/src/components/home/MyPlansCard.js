@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import img_my_plans from './images/my_plans.png'
 
-const MyPlansCard = ({ cardStyle, handleError }) => {
+const MyPlansCard = ({ cardStyle }) => {
 
   return (
 

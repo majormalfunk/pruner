@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { setNotification } from '../../reducers/notificationReducer'
+import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateInOwnEvents, removeFromOwnEvents } from '../../reducers/ownEventsReducer'
 
-import { NOTIF_SUCCESS, NOTIF_WARNING, NOTIF_INFO } from '../../constants'
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_EVENT, ACTION_DELETE_EVENT } from '../../constants'
 import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
 
-  const { setNotification, removeFromOwnEvents, updateInOwnEvents,
+  const { displaySuccess, displayInfo, displayError, removeFromOwnEvents, updateInOwnEvents,
     updateEvent, deleteEvent, eventToHandle, user, show, setEvent } = props
 
   const [eventname, setEventname] = useState(eventToHandle.eventname)
@@ -108,7 +107,7 @@ const UpdateEvent = (props) => {
 
   const handleUpdateEvent = async (event) => {
     event.preventDefault()
-    console.log('Update event', eventname)
+    console.log('Update event to', eventname, '(', description, ')')
     if (eventname.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
         const id = eventToHandle.id
@@ -120,18 +119,17 @@ const UpdateEvent = (props) => {
           const event = result.data.updateEvent
           setEvent(event)
           updateInOwnEvents(event)
-          setNotification('Event info was updated', NOTIF_SUCCESS, 5)
+          displaySuccess('Event info was updated')
         } else {
-          setNotification('Event info was not updated', NOTIF_WARNING, 5)
+          displayError('Event info was not updated')
         }
         return null
-    } catch (error) {
-        console.log(error.message)
+      } catch (error) {
         clearFields()
-        setNotification(error.message, NOTIF_WARNING, 5)
+        displayError(error)
       }
     } else {
-      console.log('Eventname or description too short')
+      displayInfo('Eventname or description too short')
     }
   }
 
@@ -148,19 +146,18 @@ const UpdateEvent = (props) => {
           if (result.data.deleteEvent && result.data.deleteEvent === 1) {
             setEvent(null)
             removeFromOwnEvents(event)
-            setNotification('Event deleted', NOTIF_SUCCESS, 5)
+            displaySuccess('Event deleted')
           } else {
-            setNotification('Event was not deleted', NOTIF_WARNING, 5)
+            displayError('Event was not deleted')
           }
           return null
         }
       } catch (error) {
-        console.log(error.message)
         revertFields()
-        setNotification(error.message, NOTIF_WARNING, 5)
+        displayError(error)
       }
     } else {
-      setNotification('You need to delete venues and recurrences before you can delete the event', NOTIF_INFO, 5)
+      displayInfo('You need to delete recurrences before you can delete the event')
     }
   }
 
@@ -184,7 +181,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification,
+  displaySuccess,
+  displayInfo,
+  displayError,
   updateInOwnEvents,
   removeFromOwnEvents
 }

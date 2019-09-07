@@ -48,5 +48,6 @@
 | 05.09.2019    | Some bug fixing                                                    |     1,0   |           |
 | 05.09.2019    | More reduxing                                                      |     1,5   |           |
 | 06.09.2019    | More reduxing and other refactoring                                |     4,0   |           |
-| **WEEK 36**   | **TOTAL**                                                          |  **14,0** | **110,5** |
+| 07.09.2019    | More reduxing and other refactoring                                |     2,0   |           |
+| **WEEK 36**   | **TOTAL**                                                          |  **16,0** | **112,5** |
 
