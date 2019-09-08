@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayError } from '../../reducers/notificationReducer'
+import { setCurrentUser } from '../../reducers/userReducer'
 import { setOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { USER_TOKEN } from '../../constants'
@@ -9,7 +10,7 @@ import ReloginForm from './ReloginForm'
 
 const Relogin = (props) => {
 
-  const { displaySuccess, displayError, relogin, getOwnEvents, handleSetUser, setOwnEvents } = props
+  const { displaySuccess, displayError, relogin, setCurrentUser, getOwnEvents, setOwnEvents } = props
 
   const handleRelogin = async (event) => {
     event.preventDefault()
@@ -26,7 +27,8 @@ const Relogin = (props) => {
         //console.log('Didnt crash yet')
         if (result) {
           let loggedInAs = result.data.relogin
-          window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+          //window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+          setCurrentUser(loggedInAs)
           const username = loggedInAs.username
           try {
             //console.log('Own events for', username)
@@ -43,7 +45,6 @@ const Relogin = (props) => {
             console.log('Couldnt get own events in relogin', error.message)
             displayError('Something went wrong fetching your own events')
           }
-          handleSetUser(loggedInAs)
           displaySuccess(`Logged in as ${loggedInAs.username}`)
           return null
         }
@@ -56,8 +57,7 @@ const Relogin = (props) => {
   }
 
   return (
-    <ReloginForm
-      handleRelogin={handleRelogin} />
+    <ReloginForm handleRelogin={handleRelogin} />
   )
 }
 
@@ -69,6 +69,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   displaySuccess,
   displayError,
+  setCurrentUser,
   setOwnEvents
 }
 

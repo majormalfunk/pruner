@@ -18,6 +18,10 @@ const eventRecurrenceSchema = new mongoose.Schema({
     type: Boolean,
     required: true
   },
+  liverecurrence: {
+    type: Boolean,
+    required: true
+  },
   event: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event' 

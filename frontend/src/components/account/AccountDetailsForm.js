@@ -3,20 +3,21 @@ import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import { displaySuccess, displayError } from '../../reducers/notificationReducer'
+import { setCurrentUser } from '../../reducers/userReducer'
 
 import { PASSWORD_LENGTH, NICKNAME_LENGTH, ACTION_CHANGE_PASSWORD_CANCEL } from '../../constants'
 import { NicknameField, PasswordField, VeripassField } from './InputFields'
 import { ACTION_LOGOUT, ACTION_CHANGE_NICKNAME, ACTION_CHANGE_PASSWORD } from '../../constants'
-//import '../App.css'
 
 const AccountDetailsForm = (props) => {
 
-  const { displaySuccess, displayError, user, updateNickname, updatePassword, logout, handleSetUser } = props
+  const { displaySuccess, displayError, setCurrentUser, currentUser,
+    updateNickname, updatePassword, logout } = props
 
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newVeripass, setNewVeripass] = useState('')
-  const [nickname, setNickname] = useState(user.nickname)
+  const [nickname, setNickname] = useState(currentUser.nickname)
 
   const controlNickname = () => {
     if (document.getElementById(`nicknamehintchange`) && nickname) {
@@ -109,7 +110,7 @@ const AccountDetailsForm = (props) => {
         //localStorage.setItem(USER_TOKEN, token)
         const updatedUser = result.data.updateNickname
         //props.setToken(token)
-        handleSetUser(updatedUser)
+        setCurrentUser(updatedUser)
         displaySuccess(`Nickname changed to ${nickname}`)
         return null
       }
@@ -148,7 +149,7 @@ const AccountDetailsForm = (props) => {
         const updatedUser = result.data.updatePassword
         //props.setToken(token)
         clearFields()
-        handleSetUser(updatedUser)
+        setCurrentUser(updatedUser)
         window.scrollTo(0, 0)
         displaySuccess('Password changed')
         return null
@@ -162,7 +163,9 @@ const AccountDetailsForm = (props) => {
   return (
     <Container>
       <Row>
-        <Col className="Component-title">You are logged in as <font color='white'>{user.username}</font></Col>
+        <Col className="Component-title">
+          You are logged in as <font color='white'>{currentUser.username}</font>
+        </Col>
         <Col>
           <Button variant="danger" type="button" value={ACTION_LOGOUT} id={ACTION_LOGOUT}
             onClick={logout}>Logout</Button>
@@ -193,7 +196,9 @@ const AccountDetailsForm = (props) => {
         <span>&nbsp;</span>
       </Row>
       <Row>
-        <Col className="Component-title">To change your password enter first your old password and then the new one</Col>
+        <Col className="Component-title">
+          To change your password enter first your old password and then the new one
+        </Col>
       </Row>
       <Row>
         <span>&nbsp;</span>
@@ -235,12 +240,14 @@ const AccountDetailsForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser
   }
 }
 
 const mapDispatchToProps = {
   displaySuccess,
-  displayError
+  displayError,
+  setCurrentUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountDetailsForm)

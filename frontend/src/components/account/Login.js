@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayError } from '../../reducers/notificationReducer'
+import { setCurrentUser } from '../../reducers/userReducer'
 import { setOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
-import { USER_TOKEN } from '../../constants'
 import LoginForm from './LoginForm'
 
 const Login = (props) => {
 
-  const { displaySuccess, displayError, login, getOwnEvents, handleSetUser, setOwnEvents } = props
+  const { displaySuccess, displayError, login, setCurrentUser, getOwnEvents, setOwnEvents } = props
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -76,33 +76,27 @@ const Login = (props) => {
     event.preventDefault()
 
     try {
-      //console.log('Trying to login')
       const result = await login[0]({
         variables: { username, password }
       })
       if (result) {
         let loggedInAs = result.data.login
-        // We need to set token to lacal storage before executing search for own events
-        // Otherwise it's not in the request authentication. Maybe move it to redux store?
-        window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+        clearFields()
+        // We need to set token to local storage before executing search for own events
+        // Otherwise it's not in the request authentication. It is done in the reducer.
+        await setCurrentUser(loggedInAs)
         const username = loggedInAs.username
         try {
-          //console.log('Own events for', username)
           const eventsResult = await getOwnEvents[0]({
             variables: { username }
           })
-          //console.log('Data:', eventsResult.data)
           if (eventsResult.data) {
-            //console.log('Got something from own events')
-            //console.log(eventsResult.data.getOwnEvents)
             setOwnEvents(eventsResult.data.getOwnEvents)
           }
         } catch (error) {
           console.log('Couldnt get own events in login', error.message)
           displayError('Something went wrong fetching your own events')
         }
-        clearFields()
-        handleSetUser(loggedInAs)
         displaySuccess(`Logged in as ${loggedInAs.username}`)
         return null
       }
@@ -132,6 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   displaySuccess,
   displayError,
+  setCurrentUser,
   setOwnEvents
 }
 

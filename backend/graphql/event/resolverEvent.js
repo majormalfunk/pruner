@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
@@ -12,7 +13,7 @@ const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 module.exports = {
   resolvers: {
     Mutation: {
-      getOwnEvents: async (root, args, { currentUser }) => {
+      getOwnEvents: async (root, args, { currentUser, userId }) => {
 
         //console.log('Trying to get own events for', args.username)
 
@@ -21,10 +22,9 @@ module.exports = {
           checkCurrentUserIsCorrect({ currentUser }, args.username, 'get own events')
 
           try {
-            const userFromDB = await User.findOne({ username: args.username })
-            if (userFromDB) {
+            if (userId) {
               try {
-                const eventsFromDB = await Event.find({ owner: userFromDB._id })
+                const eventsFromDB = await Event.find({ owner: userId })
                 //console.log('Found events', eventsFromDB)
                 return eventsFromDB
               } catch (error) {
@@ -45,31 +45,16 @@ module.exports = {
 
           console.log('No current user in request. This shouldnt happen.')
           console.log('Something wrong in the frontend state.')
-          throw new Error('Token was not in request for own events when one was expected')
+          throw new AuthenticationError('Token was not in request for own events when one was expected')
 
         }
 
       },
-      createEvent: async (root, args, { currentUser }) => {
+      createEvent: async (root, args, { currentUser, userId }) => {
 
         if (currentUser) {
 
           checkCurrentUser({ currentUser }, 'create an event')
-
-          let userId = ''
-
-          try {
-            //console.log('Fishing out the user id from current user')
-            decodedToken = await jwt.verify(
-              currentUser.token, JWT_SECRET
-            )
-            //console.log('Decoded token is', decodedToken)
-            userId = decodedToken.id
-          } catch (error) {
-            console.log('Something went wrong decoding token:')
-            console.log(error.message)
-            throw AuthenticationError(error.message)
-          }
 
           if (userId && userId !== '') {
 
@@ -81,14 +66,11 @@ module.exports = {
                   eventname: args.eventname,
                   description: args.description,
                   publicevent: args.publicevent,
+                  liveevent: args.liveevent,
                   recurrences: [],
                   owner: userId
                 })
                 const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
-                //console.log('Saved event is', savedEvent)
-
-                //userFromDB.events = userFromDB.events.concat(savedEvent.id)
-                //await userFromDB.save()
 
                 return savedEvent
               }
@@ -104,26 +86,11 @@ module.exports = {
         }
 
       },
-      updateEvent: async (root, args, { currentUser }) => {
+      updateEvent: async (root, args, { currentUser, userId }) => {
 
         if (currentUser) {
 
           checkCurrentUser({ currentUser }, 'update an event')
-
-          let userId = ''
-
-          try {
-            //console.log('Fishing out the user id from current user')
-            decodedToken = await jwt.verify(
-              currentUser.token, JWT_SECRET
-            )
-            //console.log('Decoded token is', decodedToken)
-            userId = decodedToken.id
-          } catch (error) {
-            console.log('Something went wrong decoding token:')
-            console.log(error.message)
-            throw AuthenticationError(error.message)
-          }
 
           if (userId && userId !== '') {
 
@@ -135,7 +102,8 @@ module.exports = {
                   $set: {
                     eventname: args.eventname,
                     description: args.description,
-                    publicevent: args.publicevent
+                    publicevent: args.publicevent,
+                    liveevent: args.liveevent
                   }
                 },
                 {
@@ -158,26 +126,11 @@ module.exports = {
         }
 
       },
-      deleteEvent: async (root, args, { currentUser }) => {
+      deleteEvent: async (root, args, { currentUser, userId }) => {
 
         if (currentUser) {
 
           checkCurrentUser({ currentUser }, 'delete an event')
-
-          let userId = ''
-
-          try {
-            //console.log('Fishing out the user id from current user')
-            decodedToken = await jwt.verify(
-              currentUser.token, JWT_SECRET
-            )
-            //console.log('Decoded token is', decodedToken)
-            userId = decodedToken.id
-          } catch (error) {
-            console.log('Something went wrong decoding token:')
-            console.log(error.message)
-            throw AuthenticationError(error.message)
-          }
 
           if (userId && userId !== '') {
 
@@ -201,6 +154,68 @@ module.exports = {
           }
         }
 
+      },
+      createEventRecurrence: async (root, args, { currentUser, userId }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'create an event recurrence')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let eventToUpdate = await Event.findOne({ _id: args.id, owner: userId })
+
+              const newRecurrence = new EventRecurrence({
+                recurrencename: args.recurrencename,
+                description: args.description,
+                publicrecurrence: args.publicrecurrence,
+                liverecurrence: args.liverecurrence,
+                event: args.id
+              })
+              const savedRecurrence = await newRecurrence.save()
+
+              let newRecurrences = eventToUpdate.recurrences.concat(savedRecurrence)
+
+              let updatedEvent = await Event.findOneAndUpdate(
+                { _id: args.id, owner: userId },
+                {
+                  $set: {
+                    recurrences: newRecurrences
+                  }
+                },
+                {
+                  new: true
+                }
+              )
+
+              console.log('Updated event is', updatedEvent)
+
+              return updatedEvent
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure recognizing user.')
+          }
+        }
+
+      },
+      updateEventRecurrence: async (root, args, { currentUser, userId }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'create an event recurrence')
+
+          if (userId && userId !== '') {
+            console.log('Here we would update the recurrence')
+          }
+        }
+        return null
       }
     }
   }

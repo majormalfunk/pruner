@@ -10,12 +10,14 @@ module.exports = {
       recurrencename: String!
       description: String!
       publicrecurrence: Boolean!
+      liverecurrence: Boolean!
       id: ID!
     }
     type Event {
       eventname: String!
       description: String!
       publicevent: Boolean!
+      liveevent: Boolean!
       recurrences: [EventRecurrence]
       owner: User!
       id: ID!
@@ -30,7 +32,8 @@ module.exports = {
         eventname: String!
         description: String!
         publicevent: Boolean!
-      ): Event
+        liveevent: Boolean!
+        ): Event
     }
     extend type Mutation {
       updateEvent(
@@ -38,12 +41,31 @@ module.exports = {
         eventname: String!
         description: String!
         publicevent: Boolean!
-      ): Event
+        liveevent: Boolean!
+        ): Event
     }
     extend type Mutation {
       deleteEvent(
         id: ID!
       ): Int!
+    }
+    extend type Mutation {
+      createEventRecurrence(
+        id: ID!
+        recurrencename: String!
+        description: String!
+        publicrecurrence: Boolean!
+        liverecurrence: Boolean!
+        ): Event
+    }
+    extend type Mutation {
+      updateEventRecurrence(
+        id: ID!
+        recurrencename: String!
+        description: String!
+        publicrecurrence: Boolean!
+        liverecurrence: Boolean!
+        ): Event
     }
   `
 }

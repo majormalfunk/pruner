@@ -9,18 +9,22 @@ import { useMutation } from 'react-apollo-hooks'
 import { CREATE_EVENT } from './gqls'
 import { UPDATE_EVENT } from './gqls'
 import { DELETE_EVENT } from './gqls'
+import { CREATE_EVENT_RECURRENCE } from './gqls'
+import { UPDATE_EVENT_RECURRENCE } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
 import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
-
+import CreateEventRecurrence from './CreateEventRecurrence'
+import UpdateEventRecurrence from './UpdateEventRecurrence'
 
 const Event = (props) => {
 
-  const { displayError, show, page, user, ownEvents } = props
+  const { displayError, currentUser, show, page, ownEvents } = props
 
   const [event, setEvent] = useState(null)
+  const [recurrence, setRecurrence] = useState(null)
 
   const handleError = (error) => {
     displayError(error)
@@ -35,48 +39,79 @@ const Event = (props) => {
   const deleteEvent = useMutation(DELETE_EVENT, {
     onError: handleError
   })
+  const createEventRecurrence = useMutation(CREATE_EVENT_RECURRENCE, {
+    onError: handleError
+  })
+  const updateEventRecurrence = useMutation(UPDATE_EVENT_RECURRENCE, {
+    onError: handleError
+  })
 
   useEffect(() => {
     //console.log('EVENT: Effect was used')
     if (show) {
       if (ownEvents && ownEvents.length > 0) {
         const unfinishedEvent = ownEvents.find(function (event) {
-          return event.recurrences.length === 0
+          return ((event.recurrences && event.recurrences.length === 0) || !event.liveevent)
         })
         if (unfinishedEvent) {
           setEvent(unfinishedEvent)
+          if (unfinishedEvent.recurrences.length > 0) {
+            const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+              return (!recurrence.liverecurrence)
+            })
+            setRecurrence(unfinishedRecurrence)
+          }
         } else {
           setEvent(null)
         }
       }
     }
-  }, [show, user, ownEvents])
+  }, [show, currentUser, ownEvents])
 
-  if (!show || !user) {
+  if (!show || !currentUser) {
     return null
   }
 
   if (!event) {
     return (
       <Container>
-        <CreateEvent createEvent={createEvent} user={user} show={page === PAGE_EVENT_CREATE}
-          setEvent={setEvent} />
+        <CreateEvent show={page === PAGE_EVENT_CREATE}
+          createEvent={createEvent} setEvent={setEvent} />
       </Container>
     )
   } else {
-    return (
-      <Container>
-        <UpdateEvent updateEvent={updateEvent} deleteEvent={deleteEvent}
-          eventToHandle={event} user={user} show={page === PAGE_EVENT_CREATE}
-          setEvent={setEvent} />
-      </Container>
-    )
+    if (event.recurrences) {
+      if (event.recurrences.length === 0) {
+        return (
+          <Container>
+            <UpdateEvent show={page === PAGE_EVENT_CREATE}
+              updateEvent={updateEvent} deleteEvent={deleteEvent}
+              unfinishedEvent={event} setEvent={setEvent} />
+            <CreateEventRecurrence show={page === PAGE_EVENT_CREATE}
+              createEventRecurrence={createEventRecurrence}
+              unfinishedEvent={event} setEvent={setEvent} />
+          </Container>
+        )
+      } else {
+        return (
+          <Container>
+            <UpdateEvent show={page === PAGE_EVENT_CREATE}
+              updateEvent={updateEvent} deleteEvent={deleteEvent}
+              unfinishedEvent={event} setEvent={setEvent} />
+            <UpdateEventRecurrence show={page === PAGE_EVENT_CREATE}
+              updateEventRecurrence={updateEventRecurrence}
+              unfinishedRecurrence={recurrence} setRecurrence={setRecurrence} />
+          </Container>
+        )
+      }
+    }
   }
 
 }
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser,
     ownEvents: state.ownEvents
   }
 }

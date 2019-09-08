@@ -23,6 +23,11 @@ export const ACTION_CREATE_EVENT_CANCEL = "action-create-event-cancel"
 export const ACTION_UPDATE_EVENT = "action-update-event"
 export const ACTION_UPDATE_EVENT_CANCEL = "action-update-event-cancel"
 export const ACTION_DELETE_EVENT = "action-delete-event"
+export const ACTION_CREATE_RECURRENCE = "action-create-recurrence"
+export const ACTION_CREATE_RECURRENCE_CANCEL = "action-create-recurrence-cancel"
+export const ACTION_UPDATE_RECURRENCE = "action-update-recurrence"
+export const ACTION_UPDATE_RECURRENCE_CANCEL = "action-update-recurrence-cancel"
+export const ACTION_DELETE_RECURRENCE = "action-delete-recurrence"
 
 // Navigation
 export const PAGE_HOME = "page-home"

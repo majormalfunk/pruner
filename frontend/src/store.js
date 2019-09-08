@@ -6,7 +6,7 @@ import notificationReducer from './reducers/notificationReducer'
 import ownEventsReducer from './reducers/ownEventsReducer'
 
 const reducer = combineReducers({
-  user: userReducer,
+  currentUser: userReducer,
   ownEvents: ownEventsReducer,
   notification: notificationReducer
 })

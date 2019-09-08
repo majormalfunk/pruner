@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { EventnameField, DescriptionField, PublicEventField } from './InputFields'
+import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_UPDATE_EVENT, ACTION_UPDATE_EVENT_CANCEL, ACTION_DELETE_EVENT } from '../../constants'
 
 const UpdateEventForm = (props) => {
@@ -17,6 +17,11 @@ const UpdateEventForm = (props) => {
           <Col><span>&nbsp;</span></Col>
         </Row>
         <Row>
+          <Col className="Component-title">
+            Your Event
+          </Col>
+        </Row>
+        <Row>
           <Col className="Component-expl">
             You can edit the name and description of your event and choose to make it public or private
           </Col>
@@ -26,8 +31,8 @@ const UpdateEventForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <EventnameField eventname={props.eventname} trigger={props.handleEventname}
-              eventnamehint={`eventnamehintupdate`} disabled={false} seteventname={`seteventnameupdate`} />
+            <NameField name={props.eventname} trigger={props.handleEventname}
+              namehint={`eventnamehintupdate`} setname={`seteventnameupdate`} />
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
@@ -36,9 +41,15 @@ const UpdateEventForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <PublicEventField publicevent={props.publicevent} trigger={props.handlePublicevent}
-              publiceventhint={`publiceventhintupdate`} setpublicevent={`setpubliceventupdate`} />
+            <IsPublicField ispublic={props.publicevent} trigger={props.handlePublicevent}
+              ispublichint={`publiceventhintupdate`} setpublic={`setpubliceventupdate`} />
           </Col>
+          <Col>
+            <IsLiveField islive={props.liveevent} trigger={props.handleLiveevent}
+              islivehint={`liveeventhintupdate`} setlive={`setliveeventupdate`} />
+          </Col>
+        </Row>
+        <Row>
           <Col>
             <Button variant="success" type="button"
               value={ACTION_UPDATE_EVENT} id={ACTION_UPDATE_EVENT}

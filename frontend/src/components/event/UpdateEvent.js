@@ -10,23 +10,25 @@ import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, removeFromOwnEvents, updateInOwnEvents,
-    updateEvent, deleteEvent, eventToHandle, user, show, setEvent } = props
+  const { displaySuccess, displayInfo, displayError, currentUser,
+    removeFromOwnEvents, updateInOwnEvents,
+    updateEvent, deleteEvent, unfinishedEvent, show, setEvent } = props
 
-  const [eventname, setEventname] = useState(eventToHandle.eventname)
-  const [description, setDescription] = useState(eventToHandle.description)
-  const [publicevent, setPublicevent] = useState(eventToHandle.publicevent)
+  const [eventname, setEventname] = useState(unfinishedEvent.eventname)
+  const [description, setDescription] = useState(unfinishedEvent.description)
+  const [publicevent, setPublicevent] = useState(unfinishedEvent.publicevent)
+  const [liveevent, setLiveevent] = useState(unfinishedEvent.liveevent)
 
   const controlEventname = () => {
     if (document.getElementById(`eventnamehintupdate`)) {
       if (eventname.trim() === '') {
-        document.getElementById(`eventnamehintupdate`).innerHTML = 'Enter eventname'
+        document.getElementById(`eventnamehintupdate`).innerHTML = 'Enter event name'
         return false
       } else if (eventname.trim().length < EVENTNAME_LENGTH) {
-        document.getElementById(`eventnamehintupdate`).innerHTML = `Eventname must be at least ${EVENTNAME_LENGTH} characters`
+        document.getElementById(`eventnamehintupdate`).innerHTML = `Event name must be at least ${EVENTNAME_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`eventnamehintupdate`).innerHTML = 'Eventname is long enough'
+        document.getElementById(`eventnamehintupdate`).innerHTML = 'Event name is long enough'
         return true
       }
     }
@@ -55,20 +57,31 @@ const UpdateEvent = (props) => {
     }
     return
   }
+  const controlLiveevent = () => {
+    if (document.getElementById(`liveeventhintupdate`)) {
+      if (liveevent === false) {
+        document.getElementById(`liveeventhintupdate`).innerHTML = 'You have chosen not to make the event live'
+      } else {
+        document.getElementById(`liveeventhintupdate`).innerHTML = 'You have chosen to make the event live'
+      }
+    }
+    return
+  }
 
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
     controlPublicevent()
+    controlLiveevent()
     if (document.getElementById(ACTION_UPDATE_EVENT)) {
       document.getElementById(ACTION_UPDATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }
     if (document.getElementById(ACTION_DELETE_EVENT)) {
-      document.getElementById(ACTION_DELETE_EVENT).disabled = (eventToHandle.recurrences.length > 0)
+      document.getElementById(ACTION_DELETE_EVENT).disabled = (unfinishedEvent.recurrences.length > 0)
     }
   })
 
-  if (!show || !user) {
+  if (!show || !currentUser) {
     return null
   }
 
@@ -81,6 +94,9 @@ const UpdateEvent = (props) => {
   const handlePublicevent = (event) => {
     setPublicevent(event.target.checked)
   }
+  const handleLiveevent = (event) => {
+    setLiveevent(event.target.checked)
+  }
 
   const clearFields = () => {
     setEventname('')
@@ -89,15 +105,19 @@ const UpdateEvent = (props) => {
     document.getElementById(`setdescriptionupdate`).value = ''
     setPublicevent(false)
     document.getElementById(`setpubliceventupdate`).checked = false
+    setLiveevent(false)
+    document.getElementById(`setliveeventupdate`).checked = false
   }
 
   const revertFields = () => {
-    setEventname(eventToHandle.eventname)
-    document.getElementById(`seteventnameupdate`).value = eventToHandle.eventname
-    setDescription(eventToHandle.description)
-    document.getElementById(`setdescriptionupdate`).value = eventToHandle.description
-    setPublicevent(eventToHandle.publicevent)
-    document.getElementById(`setpubliceventupdate`).checked = eventToHandle.publicevent
+    setEventname(unfinishedEvent.eventname)
+    document.getElementById(`seteventnameupdate`).value = unfinishedEvent.eventname
+    setDescription(unfinishedEvent.description)
+    document.getElementById(`setdescriptionupdate`).value = unfinishedEvent.description
+    setPublicevent(unfinishedEvent.publicevent)
+    document.getElementById(`setpubliceventupdate`).checked = unfinishedEvent.publicevent
+    setLiveevent(unfinishedEvent.liveevent)
+    document.getElementById(`setliveeventupdate`).checked = unfinishedEvent.liveevent
   }
 
   const handleUpdateEventCancel = (event) => {
@@ -110,15 +130,14 @@ const UpdateEvent = (props) => {
     console.log('Update event to', eventname, '(', description, ')')
     if (eventname.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
-        const id = eventToHandle.id
-        //window.alert(`Create event ${eventname}`)
+        const id = unfinishedEvent.id
         const result = await updateEvent[0]({
-          variables: { id, eventname, description, publicevent }
+          variables: { id, eventname, description, publicevent, liveevent }
         })
         if (result) {
-          const event = result.data.updateEvent
-          setEvent(event)
-          updateInOwnEvents(event)
+          const updatedEvent = result.data.updateEvent
+          setEvent(updatedEvent)
+          updateInOwnEvents(updatedEvent)
           displaySuccess('Event info was updated')
         } else {
           displayError('Event info was not updated')
@@ -135,26 +154,29 @@ const UpdateEvent = (props) => {
 
   const handleDeleteEvent = async (event) => {
     event.preventDefault()
-    if (eventToHandle.recurrences && eventToHandle.recurrences.length === 0) {
-      window.alert(`Delete event ${eventname}?`)
-      try {
-        const id = eventToHandle.id
-        const result = await deleteEvent[0]({
-          variables: { id }
-        })
-        if (result) {
-          if (result.data.deleteEvent && result.data.deleteEvent === 1) {
-            setEvent(null)
-            removeFromOwnEvents(event)
-            displaySuccess('Event deleted')
-          } else {
-            displayError('Event was not deleted')
+    if (unfinishedEvent.recurrences && unfinishedEvent.recurrences.length === 0) {
+      if (window.confirm(`Delete event ${eventname}?`)) {
+        try {
+          const id = unfinishedEvent.id
+          const result = await deleteEvent[0]({
+            variables: { id }
+          })
+          if (result) {
+            if (result.data.deleteEvent && result.data.deleteEvent === 1) {
+              setEvent(null)
+              removeFromOwnEvents(unfinishedEvent)
+              displaySuccess('Event deleted')
+            } else {
+              displayError('Event was not deleted')
+            }
+            return null
           }
-          return null
+        } catch (error) {
+          revertFields()
+          displayError(error)
         }
-      } catch (error) {
-        revertFields()
-        displayError(error)
+      } else {
+        displayInfo('Event deletion was cancelled')
       }
     } else {
       displayInfo('You need to delete recurrences before you can delete the event')
@@ -169,6 +191,8 @@ const UpdateEvent = (props) => {
       handleDescription={handleDescription}
       publicevent={publicevent}
       handlePublicevent={handlePublicevent}
+      liveevent={liveevent}
+      handleLiveevent={handleLiveevent}
       handleUpdateEventCancel={handleUpdateEventCancel}
       handleUpdateEvent={handleUpdateEvent}
       handleDeleteEvent={handleDeleteEvent} />
@@ -177,6 +201,7 @@ const UpdateEvent = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser
   }
 }
 

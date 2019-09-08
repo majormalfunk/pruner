@@ -11,22 +11,24 @@ import CreateEventForm from './CreateEventForm'
 
 const CreateEvent = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, addToOwnEvents, createEvent, user, show, setEvent } = props
+  const { displaySuccess, displayInfo, displayError, currentUser,
+    addToOwnEvents, createEvent, show, setEvent } = props
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
   const [publicevent, setPublicevent] = useState(false)
+  const [liveevent, setLiveevent] = useState(false)
 
   const controlEventname = () => {
     if (document.getElementById(`eventnamehintcreate`)) {
       if (eventname.trim() === '') {
-        document.getElementById(`eventnamehintcreate`).innerHTML = 'Enter eventname'
+        document.getElementById(`eventnamehintcreate`).innerHTML = 'Enter event name'
         return false
       } else if (eventname.trim().length < EVENTNAME_LENGTH) {
-        document.getElementById(`eventnamehintcreate`).innerHTML = `Eventname must be at least ${EVENTNAME_LENGTH} characters`
+        document.getElementById(`eventnamehintcreate`).innerHTML = `Event name must be at least ${EVENTNAME_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`eventnamehintcreate`).innerHTML = 'Eventname is long enough'
+        document.getElementById(`eventnamehintcreate`).innerHTML = 'Event name is long enough'
         return true
       }
     }
@@ -55,17 +57,28 @@ const CreateEvent = (props) => {
     }
     return
   }
+  const controlLiveevent = () => {
+    if (document.getElementById(`liveeventhintcreate`)) {
+      if (liveevent === false) {
+        document.getElementById(`liveeventhintcreate`).innerHTML = 'You have chosen not to make the event live'
+      } else {
+        document.getElementById(`liveeventhintcreate`).innerHTML = 'You have chosen to make the event live'
+      }
+    }
+    return
+  }
 
   useEffect(() => {
     const eventnameOk = controlEventname()
     const descriptionOk = controlDescription()
     controlPublicevent()
+    controlLiveevent()
     if (document.getElementById(ACTION_CREATE_EVENT)) {
       document.getElementById(ACTION_CREATE_EVENT).disabled = !(eventnameOk && descriptionOk)
     }
   })
 
-  if (!show || !user) {
+  if (!show || !currentUser) {
     return null
   }
 
@@ -79,6 +92,9 @@ const CreateEvent = (props) => {
   const handlePublicevent = (event) => {
     setPublicevent(event.target.checked)
   }
+  const handleLiveevent = (event) => {
+    setLiveevent(event.target.checked)
+  }
 
   const clearFields = () => {
     setEventname('')
@@ -87,6 +103,8 @@ const CreateEvent = (props) => {
     document.getElementById(`setdescriptioncreate`).value = ''
     setPublicevent(false)
     document.getElementById(`setpubliceventcreate`).checked = false
+    setLiveevent(false)
+    document.getElementById(`setliveeventcreate`).checked = false
   }
 
   const handleCreateEventCancel = (event) => {
@@ -101,7 +119,7 @@ const CreateEvent = (props) => {
         try {
           //window.alert(`Create event ${eventname}`)
           const result = await createEvent[0]({
-            variables: { eventname, description, publicevent }
+            variables: { eventname, description, publicevent, liveevent }
           })
           if (result) {
             const event = result.data.createEvent
@@ -117,7 +135,7 @@ const CreateEvent = (props) => {
           displayError(error)
         }
       } else {
-        displayInfo('Eventname or description too short')
+        displayInfo('Event name or description too short')
       }
 
   }
@@ -130,6 +148,8 @@ const CreateEvent = (props) => {
       handleDescription={handleDescription}
       publicevent={publicevent}
       handlePublicevent={handlePublicevent}
+      liveevent={liveevent}
+      handleLiveevent={handleLiveevent}
       handleCreateEventCancel={handleCreateEventCancel}
       handleCreateEvent={handleCreateEvent} />
   )
@@ -137,6 +157,7 @@ const CreateEvent = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser,
     ownEvents: state.ownEvents
   }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayError } from '../../reducers/notificationReducer'
+import { setCurrentUser } from '../../reducers/userReducer'
 
 import { USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_ACCOUNT } from '../../constants'
@@ -9,7 +10,7 @@ import CreateAccountForm from './CreateAccountForm'
 
 const CreateAccount = (props) => {
 
-  const { displaySuccess, displayError, handleSetUser, createAccount } = props
+  const { displaySuccess, displayError, setCurrentUser, createAccount } = props
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -120,7 +121,7 @@ const CreateAccount = (props) => {
           if (result) {
             let loggedInAs = result.data.createAccount
             clearFields()
-            handleSetUser(loggedInAs)
+            setCurrentUser(loggedInAs)
             displaySuccess(`Account created for ${loggedInAs.nickname}`)
             return null
           }
@@ -162,7 +163,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   displaySuccess,
-  displayError
+  displayError,
+  setCurrentUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount)

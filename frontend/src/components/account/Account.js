@@ -17,7 +17,7 @@ import Relogin from './Relogin'
 
 const Account = (props) => {
 
-  const { displayError, show, user, handleSetUser, logout} = props
+  const { displayError, currentUser, show, logout} = props
 
   const handleError = (error) => {
     displayError(error)
@@ -47,14 +47,13 @@ const Account = (props) => {
     return null
   }
 
-  if (user) {
+  if (currentUser && currentUser !== null) {
 
     //console.log('Rendering Account when there is a user')
 
     return (
       <div>
-        <AccountDetailsForm user={user} updateNickname={updateNickname} updatePassword={updatePassword}
-          logout={logout} handleSetUser={handleSetUser} />
+        <AccountDetailsForm updateNickname={updateNickname} updatePassword={updatePassword} logout={logout} />
       </div>
     )
 
@@ -64,15 +63,13 @@ const Account = (props) => {
 
     return (
       <Container>
-        <Relogin relogin={relogin} getOwnEvents={getOwnEvents}
-          handleSetUser={handleSetUser} />
+        <Relogin relogin={relogin} getOwnEvents={getOwnEvents} />
 
-        <Login login={login} getOwnEvents={getOwnEvents}
-          handleSetUser={handleSetUser} />
+        <Login login={login} getOwnEvents={getOwnEvents} />
 
         <Container>OR</Container>
 
-        <CreateAccount createAccount={createAccount} handleSetUser={handleSetUser} />
+        <CreateAccount createAccount={createAccount} />
       </Container>
     )
   }
@@ -81,6 +78,8 @@ const Account = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser,
+    ownEvents: state.ownEvents
   }
 }
 

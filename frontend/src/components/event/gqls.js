@@ -26,6 +26,7 @@ export const EVENT_RECURRENCE = gql`
       recurrencename
       description
       publicrecurrence
+      liverecurrence
       id
     }
   }
@@ -37,10 +38,12 @@ export const EVENT_DETAILS = gql`
       eventname
       description
       publicevent
+      liveevent
       recurrences {
         recurrencename
         description
         publicrecurrence
+        liverecurrence
         id
       }
       owner {
@@ -58,10 +61,12 @@ export const GET_OWN_EVENTS = gql`
       eventname
       description
       publicevent
+      liveevent
       recurrences {
         recurrencename
         description
         publicrecurrence
+        liverecurrence
         id
       }
       owner {
@@ -74,15 +79,21 @@ export const GET_OWN_EVENTS = gql`
 `
 
 export const CREATE_EVENT = gql`
-  mutation createEvent($eventname: String!, $description: String!, $publicevent: Boolean!) {
-    createEvent(eventname: $eventname, description: $description, publicevent: $publicevent) {
+  mutation createEvent(
+    $eventname: String!, $description: String!,
+    $publicevent: Boolean!, $liveevent: Boolean!) {
+    createEvent(
+      eventname: $eventname, description: $description,
+      publicevent: $publicevent, liveevent: $liveevent) {
       eventname
       description
       publicevent
+      liveevent
       recurrences {
         recurrencename
         description
         publicrecurrence
+        liverecurrence
         id
       }
       owner {
@@ -95,15 +106,21 @@ export const CREATE_EVENT = gql`
 `
 
 export const UPDATE_EVENT = gql`
-  mutation updateEvent($id: ID!, $eventname: String!, $description: String!, $publicevent: Boolean!) {
-    updateEvent(id: $id, eventname: $eventname, description: $description, publicevent: $publicevent) {
+  mutation updateEvent(
+    $id: ID!, $eventname: String!, $description: String!,
+    $publicevent: Boolean!, $liveevent: Boolean!) {
+    updateEvent(
+      id: $id, eventname: $eventname, description: $description,
+      publicevent: $publicevent, liveevent: $liveevent) {
       eventname
       description
       publicevent
+      liveevent
       recurrences {
         recurrencename
         description
         publicrecurrence
+        liverecurrence
         id
       }
       owner {
@@ -118,5 +135,59 @@ export const UPDATE_EVENT = gql`
 export const DELETE_EVENT = gql`
   mutation deleteEvent($id: ID!) {
     deleteEvent(id: $id)
+  }
+`
+
+export const CREATE_EVENT_RECURRENCE = gql`
+  mutation createEventRecurrence(
+    $id: ID!, $recurrencename: String!, $description: String!,
+    $publicrecurrence: Boolean!, $liverecurrence: Boolean!) {
+    createEventRecurrence(
+      id: $id, recurrencename: $recurrencename, description: $description,
+      publicrecurrence: $publicrecurrence, liverecurrence: $liverecurrence) {
+      eventname
+      description
+      publicevent
+      liveevent
+      recurrences {
+        recurrencename
+        description
+        publicrecurrence
+        liverecurrence
+        id
+      }
+      owner {
+        nickname
+        id
+      }
+      id
+    }
+  }
+`
+
+export const UPDATE_EVENT_RECURRENCE = gql`
+  mutation updateEventRecurrence(
+    $id: ID!, $recurrencename: String!, $description: String!,
+    $publicrecurrence: Boolean!, $liverecurrence: Boolean!) {
+    updateEventRecurrence(
+      id: $id, recurrencename: $recurrencename, description: $description,
+      publicrecurrence: $publicrecurrence, liverecurrence: $liverecurrence) {
+      eventname
+      description
+      publicevent
+      liveevent
+      recurrences {
+        recurrencename
+        description
+        publicrecurrence
+        liverecurrence
+        id
+      }
+      owner {
+        nickname
+        id
+      }
+      id
+    }
   }
 `

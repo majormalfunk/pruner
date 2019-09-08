@@ -70,12 +70,12 @@ module.exports = {
 
         return currentUser
       },
-      relogin: async (root, args, { currentUser, userid }) => {
+      relogin: async (root, args, { currentUser, userId }) => {
 
-        //console.log('Trying to relogin, got id', userid)
+        //console.log('Trying to relogin, got id', userId)
 
         try {
-          let userFromDB = await User.findById(userid)
+          let userFromDB = await User.findById(userId)
 
           const userForToken = {
             username: userFromDB.username,
@@ -95,11 +95,11 @@ module.exports = {
         }
 
       },
-      updateNickname: async (root, args, { currentUser, userid }) => {
+      updateNickname: async (root, args, { currentUser, userId }) => {
 
         checkCurrentUser({ currentUser }, 'update nickname')
 
-        const userFromDB = await User.findById(userid)
+        const userFromDB = await User.findById(userId)
         if (userFromDB) {
           userFromDB.nickname = args.nickname
           try {
@@ -122,11 +122,11 @@ module.exports = {
         }
 
       },
-      updatePassword: async (root, args, { currentUser, userid }) => {
+      updatePassword: async (root, args, { currentUser, userId }) => {
 
         checkCurrentUser({ currentUser }, 'update password')
 
-        const userFromDB = await User.findById(userid)
+        const userFromDB = await User.findById(userId)
         //const user = await User.findOne({ username: args.username })
         const passwordCorrect =
           (userFromDB === null ? false : await bcrypt.compare(args.oldPassword, userFromDB.passwordHash))
