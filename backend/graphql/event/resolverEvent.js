@@ -209,13 +209,91 @@ module.exports = {
 
         if (currentUser) {
 
-          checkCurrentUser({ currentUser }, 'create an event recurrence')
+          checkCurrentUser({ currentUser }, 'update an event recurrence')
 
           if (userId && userId !== '') {
-            console.log('Here we would update the recurrence')
+
+            try {
+
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: args.id })
+              let eventToUpdate = await Event.findOne({ _id: recurrenceToUpdate.event, owner: userId })
+
+              if (eventToUpdate && recurrenceToUpdate) {
+
+                recurrenceToUpdate.recurrencename = args.recurrencename
+                recurrenceToUpdate.description = args.description
+                recurrenceToUpdate.publicrecurrence = args.publicrecurrence
+                recurrenceToUpdate.liverecurrence = args.liverecurrence
+
+                const updatedRecurrence = await recurrenceToUpdate.save()
+
+                const updatedEvent = await Event.findOne({ _id: eventToUpdate._id })
+
+                //console.log('Updated event is', updatedEvent)
+
+                return updatedEvent
+
+              } else {
+
+                throw new AuthenticationError('The event is not yours to update')
+
+              }
+
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
           }
         }
-        return null
+
+      },
+      deleteEventRecurrence: async (root, args, { currentUser, userId }) => {
+
+        console.log('Deleting an event recurrence')
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'delete an event recurrence')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let recurrenceToDelete = await EventRecurrence.findOne({ _id: args.id })
+              let eventToUpdate = await Event.findOne({ _id: recurrenceToDelete.event, owner: userId })
+
+              if (eventToUpdate && recurrenceToDelete) {
+
+                const result = await EventRecurrence.deleteOne(
+                  { _id: args.id },
+                )
+
+                console.log('Delete count is', result.deletedCount)
+
+                const updatedEvent = await Event.findOne({ _id: eventToUpdate._id })
+
+                return updatedEvent
+
+              } else {
+
+                throw new AuthenticationError('The event is not yours to update')
+
+              }
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
+
       }
     }
   }

@@ -27,7 +27,7 @@ export const IsPublicField = (props) => {
   return (
     <>
       <Form.Check type="checkbox" label="Check this if you want to make it public to everybody" name="isPublicField"
-        id={props.setpublic} defaultValue={props.ispublic} onChange={props.trigger} />
+        id={props.setpublic} defaultChecked={props.ispublic} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.ispublichint}></Form.Text>
     </>
   )
@@ -37,7 +37,7 @@ export const IsLiveField = (props) => {
   return (
     <>
       <Form.Check type="checkbox" label="Check this if you want to make it live" name="isLiveField"
-        id={props.setlive} defaultValue={props.islive} onChange={props.trigger} />
+        id={props.setlive} defaultChecked={props.islive} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.islivehint}></Form.Text>
     </>
   )

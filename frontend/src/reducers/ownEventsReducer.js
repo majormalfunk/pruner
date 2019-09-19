@@ -94,7 +94,9 @@ const ownEventsReducer = (state = [], action) => {
         if (event.id !== action.data.eventId) {
           return event
         }
-        return event.recurrences.filter(recurrence => recurrence.id !== action.data.updatedRecurrence.id)
+        const newRecurrences = event.recurrences.filter(recurrence => recurrence.id !== action.data.removableRecurrence.id)
+        event.recurrences = newRecurrences
+        return event
       })
     default:
       return state

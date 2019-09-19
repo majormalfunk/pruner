@@ -67,5 +67,10 @@ module.exports = {
         liverecurrence: Boolean!
         ): Event
     }
+    extend type Mutation {
+      deleteEventRecurrence(
+        id: ID!
+      ): Event
+    }
   `
 }

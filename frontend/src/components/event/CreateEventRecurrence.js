@@ -20,52 +20,60 @@ const CreateEventRecurrence = (props) => {
   const [liverecurrence, setLiverecurrence] = useState(false)
 
   const controlRecurrencename = () => {
-    if (document.getElementById(`recurrencenamehintcreate`)) {
-      if (recurrencename.trim() === '') {
-        document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Enter recurrence name'
-        return false
-      } else if (recurrencename.trim().length < EVENTNAME_LENGTH) {
-        document.getElementById(`recurrencenamehintcreate`).innerHTML = `Recurrence name must be at least ${EVENTNAME_LENGTH} characters`
-        return false
-      } else {
-        document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Recurrence name is long enough'
-        return true
+    if (recurrencename) {
+      if (document.getElementById(`recurrencenamehintcreate`)) {
+        if (recurrencename.trim() === '') {
+          document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Enter recurrence name'
+          return false
+        } else if (recurrencename.trim().length < EVENTNAME_LENGTH) {
+          document.getElementById(`recurrencenamehintcreate`).innerHTML = `Recurrence name must be at least ${EVENTNAME_LENGTH} characters`
+          return false
+        } else {
+          document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Recurrence name is long enough'
+          return true
+        }
       }
     }
   }
   const controlDescription = () => {
-    if (document.getElementById(`descriptionhintcreate`)) {
-      if (description.trim() === '') {
-        document.getElementById(`descriptionhintcreate`).innerHTML = 'Enter description of recurrence'
-        return false
-      } else if (description.trim().length < DESCRIPTION_LENGTH) {
-        document.getElementById(`descriptionhintcreate`).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
-        return false
-      } else {
-        document.getElementById(`descriptionhintcreate`).innerHTML = 'Description is long enough'
-        return true
+    if (description) {
+      if (document.getElementById(`descriptionhintcreate`)) {
+        if (description.trim() === '') {
+          document.getElementById(`descriptionhintcreate`).innerHTML = 'Enter description of recurrence'
+          return false
+        } else if (description.trim().length < DESCRIPTION_LENGTH) {
+          document.getElementById(`descriptionhintcreate`).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
+          return false
+        } else {
+          document.getElementById(`descriptionhintcreate`).innerHTML = 'Description is long enough'
+          return true
+        }
       }
     }
   }
   const controlPublicrecurrence = () => {
-    if (document.getElementById(`publicrecurrencehintcreate`)) {
-      if (publicrecurrence === false) {
-        document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence private'
-      } else {
-        document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence visible to all'
+    if (publicrecurrence) {
+      if (document.getElementById(`publicrecurrencehintcreate`)) {
+        if (publicrecurrence === false) {
+          document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence private'
+        } else {
+          document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence visible to all'
+        }
       }
+      return
     }
-    return
   }
   const controlLiverecurrence = () => {
-    if (document.getElementById(`liverecurrencehintcreate`)) {
-      if (liverecurrence === false) {
-        document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen not to make the recurrence live'
-      } else {
-        document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence live'
+    if (liverecurrence) {
+      if (document.getElementById(`liverecurrencehintcreate`)) {
+        if (liverecurrence === false) {
+          document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen not to make the recurrence live'
+        } else {
+          document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence live'
+        }
       }
+      return
     }
-    return
   }
 
   useEffect(() => {
@@ -114,30 +122,33 @@ const CreateEventRecurrence = (props) => {
   const handleCreateRecurrence = async (event) => {
     event.preventDefault()
     console.log('Create recurrence', recurrencename)
-      if (recurrencename.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
-        try {
-          //window.alert(`Create event ${eventname}`)
-          const id = unfinishedEvent.id
-          const result = await createEventRecurrence[0]({
-            variables: { id, recurrencename, description, publicrecurrence, liverecurrence }
-          })
-          if (result) {
-            const updatedEvent = result.data.createRecurrence
-            setEvent(updatedEvent)
-            updateInOwnEvents(updatedEvent)
-            console.log('Recurrence was added:', updatedEvent)
-            displaySuccess(`New recurrence ${recurrencename} created`)
-          } else {
-            displayError('Recurrence was not created')
-          }
-          return null
-        } catch (error) {
-          clearFields()
-          displayError(error)
+    if (recurrencename.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
+      try {
+        //window.alert(`Create event ${eventname}`)
+        const id = unfinishedEvent.id
+        const result = await createEventRecurrence[0]({
+          variables: { id, recurrencename, description, publicrecurrence, liverecurrence }
+        })
+        if (result) {
+          const updatedEvent = result.data.createEventRecurrence
+          console.log('Created recurrence, event is', updatedEvent)
+          console.log('Event was set')
+          updateInOwnEvents(updatedEvent)
+          console.log('Recurrence was added:', updatedEvent)
+          displaySuccess(`New recurrence created`)
+          setEvent(updatedEvent)
+        } else {
+          displayError('Recurrence was not created')
         }
-      } else {
-        displayInfo('Recurrence name or description too short')
+        return null
+      } catch (error) {
+        //clearFields()
+        console.log(error.message)
+        displayError(error)
       }
+    } else {
+      displayInfo('Recurrence name or description too short')
+    }
 
   }
 

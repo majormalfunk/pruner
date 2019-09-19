@@ -27,7 +27,7 @@ const Relogin = (props) => {
         //console.log('Didnt crash yet')
         if (result) {
           let loggedInAs = result.data.relogin
-          //window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+          window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
           setCurrentUser(loggedInAs)
           const username = loggedInAs.username
           try {

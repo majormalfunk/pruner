@@ -5,6 +5,7 @@ import { displaySuccess, displayError } from '../../reducers/notificationReducer
 import { setCurrentUser } from '../../reducers/userReducer'
 import { setOwnEvents } from '../../reducers/ownEventsReducer'
 
+import { USER_TOKEN } from '../../constants'
 import { USERNAME_LENGTH, PASSWORD_LENGTH } from '../../constants'
 import { ACTION_LOGIN } from '../../constants'
 import LoginForm from './LoginForm'
@@ -84,6 +85,7 @@ const Login = (props) => {
         clearFields()
         // We need to set token to local storage before executing search for own events
         // Otherwise it's not in the request authentication. It is done in the reducer.
+        window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
         await setCurrentUser(loggedInAs)
         const username = loggedInAs.username
         try {

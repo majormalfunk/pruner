@@ -52,4 +52,6 @@
 | 07.09.2019    | Event recurrences                                                  |     8,0   |           |
 | 08.09.2019    | Event recurrences                                                  |     2,0   |           |
 | **WEEK 36**   | **TOTAL**                                                          |  **26,0** | **122,5** |
+| 19.09.2019    | Event recurrence update and delete                                 |     4,0   |           |
+| **WEEK 36**   | **TOTAL**                                                          |   **4,0** | **126,5** |
 

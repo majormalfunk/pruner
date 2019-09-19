@@ -191,3 +191,26 @@ export const UPDATE_EVENT_RECURRENCE = gql`
     }
   }
 `
+
+export const DELETE_EVENT_RECURRENCE = gql`
+  mutation deleteEventRecurrence($id: ID!) {
+    deleteEventRecurrence(id: $id) {
+      eventname
+      description
+      publicevent
+      liveevent
+      recurrences {
+        recurrencename
+        description
+        publicrecurrence
+        liverecurrence
+        id
+      }
+      owner {
+        nickname
+        id
+      }
+      id
+    }
+  }
+`

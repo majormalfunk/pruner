@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { displaySuccess, displayError } from '../../reducers/notificationReducer'
 import { setCurrentUser } from '../../reducers/userReducer'
 
+import { USER_TOKEN } from '../../constants'
 import { USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_ACCOUNT } from '../../constants'
 import CreateAccountForm from './CreateAccountForm'
@@ -121,6 +122,7 @@ const CreateAccount = (props) => {
           if (result) {
             let loggedInAs = result.data.createAccount
             clearFields()
+            window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
             setCurrentUser(loggedInAs)
             displaySuccess(`Account created for ${loggedInAs.nickname}`)
             return null
