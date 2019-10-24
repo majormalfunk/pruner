@@ -12,6 +12,7 @@ import { DELETE_EVENT } from './gqls'
 import { CREATE_EVENT_RECURRENCE } from './gqls'
 import { UPDATE_EVENT_RECURRENCE } from './gqls'
 import { DELETE_EVENT_RECURRENCE } from './gqls'
+//import { CREATE_RECURRENCE_VENUE } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
@@ -19,6 +20,7 @@ import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
 import CreateEventRecurrence from './CreateEventRecurrence'
 import UpdateEventRecurrence from './UpdateEventRecurrence'
+import CreateRecurrenceVenue from './CreateRecurrenceVenue'
 
 const Event = (props) => {
 
@@ -49,6 +51,9 @@ const Event = (props) => {
   const deleteEventRecurrence = useMutation(DELETE_EVENT_RECURRENCE, {
     onError: handleError
   })
+  //const createRecurrenceVenue = useMutation(CREATE_RECURRENCE_VENUE, {
+  //  onError: handleError
+  //})
 
   useEffect(() => {
     //console.log('EVENT: Effect was used')
@@ -108,11 +113,14 @@ const Event = (props) => {
               deleteEventRecurrence={deleteEventRecurrence}
               unfinishedRecurrence={recurrence} setRecurrence={setRecurrence}
               setEvent={setEvent} />
+            <CreateRecurrenceVenue show={page === PAGE_EVENT_CREATE}
+              unfinishedRecurrence={recurrence} setEvent={setEvent} />
           </Container>
         )
       }
     }
   }
+//              createRecurrenceVenue={createRecurrenceVenue}
 
 }
 

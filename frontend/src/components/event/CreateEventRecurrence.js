@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateInOwnEvents } from '../../reducers/ownEventsReducer'
 
-import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
+import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_RECURRENCE } from '../../constants'
 
 import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
@@ -25,8 +25,8 @@ const CreateEventRecurrence = (props) => {
         if (recurrencename.trim() === '') {
           document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Enter recurrence name'
           return false
-        } else if (recurrencename.trim().length < EVENTNAME_LENGTH) {
-          document.getElementById(`recurrencenamehintcreate`).innerHTML = `Recurrence name must be at least ${EVENTNAME_LENGTH} characters`
+        } else if (recurrencename.trim().length < RECURRENCENAME_LENGTH) {
+          document.getElementById(`recurrencenamehintcreate`).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
           return false
         } else {
           document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Recurrence name is long enough'
@@ -122,7 +122,7 @@ const CreateEventRecurrence = (props) => {
   const handleCreateRecurrence = async (event) => {
     event.preventDefault()
     console.log('Create recurrence', recurrencename)
-    if (recurrencename.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
+    if (recurrencename.trim().length >= RECURRENCENAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
         //window.alert(`Create event ${eventname}`)
         const id = unfinishedEvent.id

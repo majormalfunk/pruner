@@ -76,10 +76,10 @@ const UpdateEventRecurrence = (props) => {
     if (document.getElementById(ACTION_UPDATE_RECURRENCE)) {
       document.getElementById(ACTION_UPDATE_RECURRENCE).disabled = !(nameOk && descriptionOk)
     }
-    // if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
-    //   document.getElementById(ACTION_DELETE_RECURRENCE).disabled = (unfinishedRecurrence. ???? )
-    // }
+    //if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
+    //  document.getElementById(ACTION_DELETE_RECURRENCE).disabled = (unfinishedRecurrence.venues.length > 0)
     //}
+    
   })
 
   if (!show || !currentUser) {

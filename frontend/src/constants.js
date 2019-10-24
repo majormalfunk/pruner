@@ -7,6 +7,8 @@ export const PASSWORD_LENGTH = 8
 export const NICKNAME_LENGTH = 6
 export const EVENTNAME_LENGTH = 10
 export const DESCRIPTION_LENGTH = 10
+export const RECURRENCENAME_LENGTH = 10
+export const VENUENAME_LENGTH = 10
 
 // Actions
 export const ACTION_CREATE_ACCOUNT = "action-create-account"
@@ -28,6 +30,11 @@ export const ACTION_CREATE_RECURRENCE_CANCEL = "action-create-recurrence-cancel"
 export const ACTION_UPDATE_RECURRENCE = "action-update-recurrence"
 export const ACTION_UPDATE_RECURRENCE_CANCEL = "action-update-recurrence-cancel"
 export const ACTION_DELETE_RECURRENCE = "action-delete-recurrence"
+export const ACTION_CREATE_VENUE = "action-create-venue"
+export const ACTION_CREATE_VENUE_CANCEL = "action-create-venue-cancel"
+export const ACTION_UPDATE_VENUE = "action-update-venue"
+export const ACTION_UPDATE_VENUE_CANCEL = "action-update-venue-cancel"
+export const ACTION_DELETE_VENUE = "action-delete-venue"
 
 // Navigation
 export const PAGE_HOME = "page-home"

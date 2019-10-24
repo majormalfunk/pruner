@@ -54,4 +54,9 @@
 | **WEEK 36**   | **TOTAL**                                                          |  **26,0** | **122,5** |
 | 19.09.2019    | Event recurrence update and delete                                 |     4,0   |           |
 | **WEEK 36**   | **TOTAL**                                                          |   **4,0** | **126,5** |
+| 20.10.2019    | Some more test data from the web                                   |     0,5   |           |
+| **WEEK 42**   | **TOTAL**                                                          |   **0,5** | **127,0** |
+| 23.10.2019    | Parsing the test data                                              |     0,5   |           |
+| 24.10.2019    | Event recurrence venues                                            |     1,5   |           |
+| **WEEK 43**   | **TOTAL**                                                          |   **2,0** | **129,0** |
 
