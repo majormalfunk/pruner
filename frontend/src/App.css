@@ -1,20 +1,8 @@
 .App {
-  background-color: #282c34;
+  background-color: black;
 }
 
 .App-header {
-  padding: 10px;
-  background-color: #222222;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(8px + 2vmin);
-  align-items: left;
-  justify-content: left;
-  color: white;
-}
-
-.App-menu {
   padding: 10px;
   background-color: #282c34;
   min-height: 10vh;
@@ -27,20 +15,34 @@
 }
 
 .App-body {
-  background-color: #222222;
-  min-height: 100vh;
+  background-color: black;
+  min-height: 50vh;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(8px + 2vmin);
+  color: white;
+}
+
+.App-menu {
+  padding: 10px;
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
   color: white;
 }
 
 .Menu-brand {
   border: 0;
   background-color: #282c34;
-  font-size: calc(10px + 1vmin);
+  padding-bottom: 7px;
+  padding-top: 5px;
+  vertical-align: middle;
+  font-size: calc(8px + 1vw + .5vmin);
   font-weight: bold;
   color: #ffffff;
 }
@@ -48,7 +50,9 @@
 .Menu-button {
   border: 0;
   background-color: #282c34;
-  font-size: calc(10px + 1vmin);
+  padding-bottom: 7px;
+  padding-top: 5px;
+  font-size: calc(8px + 1vw + .5vmin);
   font-weight: bold;
   color: #ebc20c;
   -webkit-transition-duration: 0.4s; /* Safari */
@@ -59,20 +63,41 @@
   color: #ffffff;
 }
 
+.Menu-button:focus {
+  outline: none;
+}
+
+.Home-card-large {
+  border: 0;
+  padding: 16px;
+  background-color: transparent;
+  font-size: 2.5vw;
+  font-weight: bold;
+  color: #ffffff
+}
+
+.Home-card-small {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  font-size: 3.0vw;
+  font-weight: bold;
+  color: #ffffff
+}
+
 .Component-title {
-  font-size: calc(12px + 1vmin);
+  padding-top: 7px;
+  font-size: 16px;
   font-weight: bold;
   color: #ebc20c;
 }
 
-.Component-input-prompt {
-  font-size: calc(10px + 1vmin);
+.Component-expl {
+  font-size: 14px;
   font-weight: normal;
   color: #ffffff;
 }
 
-.Component-expl {
-  font-size: calc(8px + 1vmin);
-  font-weight: normal;
-  color: #ffffff;
+.FormAlignedBtn {
+  margin-top: 32px;
 }

@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { USER_TOKEN, USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
+import { connect } from 'react-redux'
+
+import { displaySuccess, displayError } from '../../reducers/notificationReducer'
+import { setCurrentUser } from '../../reducers/userReducer'
+
+import { USER_TOKEN } from '../../constants'
+import { USERNAME_LENGTH, PASSWORD_LENGTH, NICKNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_ACCOUNT } from '../../constants'
 import CreateAccountForm from './CreateAccountForm'
 
 const CreateAccount = (props) => {
+
+  const { displaySuccess, displayError, setCurrentUser, createAccount } = props
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [veripass, setVeripass] = useState('')
@@ -52,7 +61,7 @@ const CreateAccount = (props) => {
         document.getElementById(`nicknamehintcreate`).innerHTML = 'Enter nickname shown to other users'
         return false
       } else if (nickname.trim().length < NICKNAME_LENGTH) {
-        document.getElementById(`nicknamehintcreate`).innerHTML = 'Nickname must be at least 6 characters'
+        document.getElementById(`nicknamehintcreate`).innerHTML = `Nickname must be at least ${NICKNAME_LENGTH} characters`
         return false
       } else {
         document.getElementById(`nicknamehintcreate`).innerHTML = 'Nickname is long enough'
@@ -105,27 +114,30 @@ const CreateAccount = (props) => {
     if (password === veripass && password.length >= PASSWORD_LENGTH) {
       if (username.trim().length >= USERNAME_LENGTH && nickname.trim().length >= NICKNAME_LENGTH) {
         try {
-          const result = await props.createAccount[0]({
+          //console.log('Next createAccount!')
+          const result = await createAccount[0]({
             variables: { username, password, nickname }
           })
+          //console.log('Past the call')
           if (result) {
-            const token = result.data.createAccount.value
-            localStorage.setItem(USER_TOKEN, token)
-            const loggedInAs = username
+            let loggedInAs = result.data.createAccount
             clearFields()
-            props.setToken(token)
-            props.setUser(loggedInAs)
+            window.localStorage.setItem(USER_TOKEN, loggedInAs.token)
+            setCurrentUser(loggedInAs)
+            displaySuccess(`Account created for ${loggedInAs.nickname}`)
             return null
           }
         } catch (error) {
           console.log(error.message)
           clearFields()
-          props.handleError(error)
+          displayError(error)
         }
       } else {
+        displayError('Username or nickname does not comply')
         console.log('Username or nickname does not comply')
       }
     } else {
+      displayError('Password does not comply')
       console.log('Password does not comply')
     }
 
@@ -146,4 +158,15 @@ const CreateAccount = (props) => {
   )
 }
 
-export default CreateAccount
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = {
+  displaySuccess,
+  displayError,
+  setCurrentUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount)

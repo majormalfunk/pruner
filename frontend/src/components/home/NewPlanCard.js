@@ -1,0 +1,19 @@
+import React from 'react'
+import { Card } from 'react-bootstrap'
+import img_new_plan from './images/new_plan.png'
+
+const NewPlanCard = ({ cardStyle }) => {
+
+  return (
+
+      <Card className={cardStyle}>
+        <Card.Img src={img_new_plan} alt="Card image" />
+        <Card.ImgOverlay>
+          <Card.Title className="Home-card">MAKE A NEW PLAN</Card.Title>
+        </Card.ImgOverlay>
+      </Card>
+
+  )
+
+}
+export default NewPlanCard
