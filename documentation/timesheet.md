@@ -59,4 +59,12 @@
 | 23.10.2019    | Parsing the test data                                              |     0,5   |           |
 | 24.10.2019    | Event recurrence venues                                            |     1,5   |           |
 | **WEEK 43**   | **TOTAL**                                                          |   **2,0** | **129,0** |
+| 21.12.2019    | Recover after incident with storage                                |     1,0   |           |
+| **WEEK 51**   | **TOTAL**                                                          |   **1,0** | **130,0** |
+| 27.12.2019    | Event recurrence venues                                            |     1,0   |           |
+| 29.12.2019    | Event recurrence venues                                            |     2,0   |           |
+| **WEEK 52**   | **TOTAL**                                                          |   **3,0** | **133,0** |
+| 30.12.2019    | Event recurrence venues                                            |     2,0   |           |
+| **WEEK  1**   | **TOTAL**                                                          |   **2,0** | **135,0** |
+
 

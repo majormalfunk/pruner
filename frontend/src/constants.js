@@ -8,7 +8,7 @@ export const NICKNAME_LENGTH = 6
 export const EVENTNAME_LENGTH = 10
 export const DESCRIPTION_LENGTH = 10
 export const RECURRENCENAME_LENGTH = 10
-export const VENUENAME_LENGTH = 10
+export const VENUENAME_LENGTH = 4
 
 // Actions
 export const ACTION_CREATE_ACCOUNT = "action-create-account"

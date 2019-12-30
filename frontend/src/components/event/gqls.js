@@ -27,7 +27,7 @@ export const EVENT_RECURRENCE = gql`
       description
       publicrecurrence
       liverecurrence
-      id
+    id
     }
   }
 `
@@ -44,6 +44,16 @@ export const EVENT_DETAILS = gql`
         description
         publicrecurrence
         liverecurrence
+        venues {
+          venuename
+          recurrence
+          id
+        }
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -67,6 +77,12 @@ export const GET_OWN_EVENTS = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -94,6 +110,12 @@ export const CREATE_EVENT = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -121,6 +143,12 @@ export const UPDATE_EVENT = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -154,6 +182,12 @@ export const CREATE_EVENT_RECURRENCE = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -181,6 +215,12 @@ export const UPDATE_EVENT_RECURRENCE = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
@@ -204,12 +244,30 @@ export const DELETE_EVENT_RECURRENCE = gql`
         description
         publicrecurrence
         liverecurrence
+        event
+        id
+      }
+      venues {
+        venuename
+        recurrence
         id
       }
       owner {
         nickname
         id
       }
+      id
+    }
+  }
+`
+
+export const CREATE_RECURRENCE_VENUE = gql`
+  mutation createRecurrenceVenue(
+    $recurrenceId: ID!, $venuename: String!) {
+    createRecurrenceVenue(
+      recurrenceId: $recurrenceId, venuename: $venuename) {
+      venuename
+      recurrence
       id
     }
   }

@@ -25,7 +25,12 @@ const eventSchema = new mongoose.Schema({
   recurrences: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventRecurrence',
-    autopopulate: { select: ['recurrencename', 'description', 'publicrecurrence', 'liverecurrence', '_id'] } }],
+    autopopulate: { select: [ 'recurrencename', 'description', 'publicrecurrence', 'liverecurrence', 'event', '_id'] }
+  }],
+  venues: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RecurrenceVenue',
+    autopopulate: { select: ['venuename', 'recurrence', '_id'] } }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

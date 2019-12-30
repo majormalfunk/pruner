@@ -64,6 +64,32 @@ export const removeRecurrenceFromOwnEvents = (removebaleRecurrence, eventId) => 
   }
 }
 
+export const addVenueToOwnEvents = (eventId, recurrenceId, createdVenue) => {
+  return async dispatch => {
+    dispatch({
+      type: 'ADD_VENUE_TO_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        recurrenceId: recurrenceId,
+        createdVenue: createdVenue
+      }
+    })
+  }
+}
+
+export const updateVenuesInOwnEvents = (eventId, recurrenceId, updatedVenue) => {
+  return async dispatch => {
+    dispatch({
+      type: 'UPDATE_VENUE_IN_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        recurrenceId: recurrenceId,
+        updatedVenue: updatedVenue
+      }
+    })
+  }
+}
+
 const ownEventsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_OWN_EVENTS':
@@ -97,6 +123,29 @@ const ownEventsReducer = (state = [], action) => {
         const newRecurrences = event.recurrences.filter(recurrence => recurrence.id !== action.data.removableRecurrence.id)
         event.recurrences = newRecurrences
         return event
+      })
+    case 'ADD_VENUE_TO_OWN_EVENTS':
+      console.log('eventId:', action.data.eventId)
+      console.log('recurrenceId:', action.data.recurrenceId)
+      console.log('updatedVenue', action.data.createdVenue)
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        event.venues.push(action.data.createdVenue)
+        return event
+      })
+    case 'UPDATE_VENUE_IN_OWN_EVENTS':
+      console.log('eventId:', action.data.eventId)
+      console.log('recurrenceId:', action.data.recurrenceId)
+      console.log('updatedVenue', action.data.updatedVenue)
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        return event.venues.map((venue) => {
+          return (venue.id === action.data.updatedVenue.id ? action.data.updatedVenue : venue)
+        })
       })
     default:
       return state

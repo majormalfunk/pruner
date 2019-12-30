@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
 const EventRecurrence = require('../../models/eventRecurrence')
+const RecurrenceVenue = require('../../models/RecurrenceVenue')
 const JWT_SECRET = process.env.JWT_SECRET
 
 const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
@@ -25,7 +26,8 @@ module.exports = {
             if (userId) {
               try {
                 const eventsFromDB = await Event.find({ owner: userId })
-                //console.log('Found events', eventsFromDB)
+                console.log('Found events', eventsFromDB)
+                //console.log('With recurrs', eventsFromDB.recurrences)
                 return eventsFromDB
               } catch (error) {
                 console.log('Error trying to get own events from database')
@@ -172,6 +174,7 @@ module.exports = {
                 description: args.description,
                 publicrecurrence: args.publicrecurrence,
                 liverecurrence: args.liverecurrence,
+                venues: [],
                 event: args.id
               })
               const savedRecurrence = await newRecurrence.save()
@@ -291,6 +294,66 @@ module.exports = {
 
           } else {
             throw AuthenticationError('Failure decoding token.')
+          }
+        }
+
+      },
+      createRecurrenceVenue: async (root, args, { currentUser, userId }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'create a recurrence venue')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              console.log('Create venue for recurrence', args.recurrenceId)
+
+              let recurrence = await EventRecurrence.findOne({ _id: args.recurrenceId })
+              console.log('Recurrence is', recurrence)
+              let eventId = recurrence.event
+              console.log('Event Id is', eventId)
+              let eventToUpdate = await Event.findOne({ _id: eventId, owner: userId })
+              console.log('Event is', eventToUpdate)
+
+              if (eventToUpdate && eventToUpdate !== null) {
+
+                const newVenue = new RecurrenceVenue({
+                  venuename: args.venuename,
+                  recurrence: args.recurrenceId
+                })
+                const savedVenue = await newVenue.save()
+
+                let newVenues = eventToUpdate.venues.concat(savedVenue)
+
+                let updatedEvent = await Event.findOneAndUpdate(
+                  { _id: eventId },
+                  {
+                    $set: {
+                      venues: newVenues
+                    }
+                  },
+                  {
+                    new: true
+                  }
+                )
+
+                console.log('Updated event is', updatedEvent)
+
+                return newVenue
+              }
+
+              return null
+
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure recognizing user.')
           }
         }
 

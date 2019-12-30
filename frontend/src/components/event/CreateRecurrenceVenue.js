@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
-import { updateInOwnEvents } from '../../reducers/ownEventsReducer'
+import { addVenueToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { VENUENAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_VENUE } from '../../constants'
@@ -12,7 +12,7 @@ import CreateRecurrenceVenueForm from './CreateRecurrenceVenueForm'
 const CreateRecurrenceVenue = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, unfinishedRecurrence,
-    updateInOwnEvents, createRecurrenceVenue, show, setEvent } = props
+    addVenueToOwnEvents, createRecurrenceVenue, show, setEvent } = props
 
   const [venuename, setVenuename] = useState('')
 
@@ -63,19 +63,20 @@ const CreateRecurrenceVenue = (props) => {
     console.log('Create venue', venuename)
     if (venuename.trim().length >= VENUENAME_LENGTH) {
       try {
-        //window.alert(`Create venue ${venuename}`)
-        const id = unfinishedRecurrence.id
+        window.alert(`Create venue ${venuename}`)
+        const recurrenceId = unfinishedRecurrence.id
         const result = await createRecurrenceVenue[0]({
-          variables: { id, venuename }
+          variables: { recurrenceId, venuename }
         })
         if (result) {
-          const updatedEvent = result.data.createRecurrenceVenue
-          console.log('Created venue, event is', updatedEvent)
-          console.log('Event was set')
-          updateInOwnEvents(updatedEvent)
-          console.log('Venue was added:', updatedEvent)
+          const createdVenue = result.data.createRecurrenceVenue
+          console.log('Created venue', createdVenue)
+          console.log('Venue should be added to', unfinishedRecurrence)
+          const eventId = unfinishedRecurrence.event
+          addVenueToOwnEvents(eventId, recurrenceId, createdVenue)
+          console.log('Venue was added:')
           displaySuccess(`New venue created`)
-          setEvent(updatedEvent)
+          //setEvent(updatedEvent)
         } else {
           displayError('Venue was not created')
         }
@@ -111,7 +112,7 @@ const mapDispatchToProps = {
   displaySuccess,
   displayInfo,
   displayError,
-  updateInOwnEvents
+  addVenueToOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateRecurrenceVenue)

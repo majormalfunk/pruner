@@ -31,7 +31,7 @@ const UpdateEventRecurrenceForm = (props) => {
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`descriptionhintupdate`} setdescription={`setdescriptionupdate`} />
+              descriptionhint={`recurrencedescriptionhintupdate`} setdescription={`setrecurrencedescriptionupdate`} />
           </Col>
         </Row>
         <Row>
