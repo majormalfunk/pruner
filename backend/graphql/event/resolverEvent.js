@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
 const EventRecurrence = require('../../models/eventRecurrence')
-const RecurrenceVenue = require('../../models/RecurrenceVenue')
+const EventVenue = require('../../models/eventVenue')
 const JWT_SECRET = process.env.JWT_SECRET
 
 const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
@@ -298,7 +298,7 @@ module.exports = {
         }
 
       },
-      createRecurrenceVenue: async (root, args, { currentUser, userId }) => {
+      createEventVenue: async (root, args, { currentUser, userId }) => {
 
         if (currentUser) {
 
@@ -308,27 +308,23 @@ module.exports = {
 
             try {
 
-              console.log('Create venue for recurrence', args.recurrenceId)
+              console.log('Create venue for event', args.eventId)
 
-              let recurrence = await EventRecurrence.findOne({ _id: args.recurrenceId })
-              console.log('Recurrence is', recurrence)
-              let eventId = recurrence.event
-              console.log('Event Id is', eventId)
-              let eventToUpdate = await Event.findOne({ _id: eventId, owner: userId })
+              let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
               console.log('Event is', eventToUpdate)
 
               if (eventToUpdate && eventToUpdate !== null) {
 
-                const newVenue = new RecurrenceVenue({
+                const newVenue = new EventVenue({
                   venuename: args.venuename,
-                  recurrence: args.recurrenceId
+                  event: args.eventId
                 })
                 const savedVenue = await newVenue.save()
 
                 let newVenues = eventToUpdate.venues.concat(savedVenue)
 
                 let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: eventId },
+                  { _id: args.eventId },
                   {
                     $set: {
                       venues: newVenues

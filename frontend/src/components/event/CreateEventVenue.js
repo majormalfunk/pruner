@@ -7,12 +7,12 @@ import { addVenueToOwnEvents } from '../../reducers/ownEventsReducer'
 import { VENUENAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_VENUE } from '../../constants'
 
-import CreateRecurrenceVenueForm from './CreateRecurrenceVenueForm'
+import CreateEventVenueForm from './CreateEventVenueForm'
 
-const CreateRecurrenceVenue = (props) => {
+const CreateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedRecurrence,
-    addVenueToOwnEvents, createRecurrenceVenue, show, setEvent } = props
+  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
+    addVenueToOwnEvents, createEventVenue, show, setEvent } = props
 
   const [venuename, setVenuename] = useState('')
 
@@ -64,16 +64,15 @@ const CreateRecurrenceVenue = (props) => {
     if (venuename.trim().length >= VENUENAME_LENGTH) {
       try {
         window.alert(`Create venue ${venuename}`)
-        const recurrenceId = unfinishedRecurrence.id
-        const result = await createRecurrenceVenue[0]({
-          variables: { recurrenceId, venuename }
+        const eventId = unfinishedEvent.id
+        const result = await createEventVenue[0]({
+          variables: { eventId, venuename }
         })
         if (result) {
-          const createdVenue = result.data.createRecurrenceVenue
+          const createdVenue = result.data.createEventVenue
           console.log('Created venue', createdVenue)
-          console.log('Venue should be added to', unfinishedRecurrence)
-          const eventId = unfinishedRecurrence.event
-          addVenueToOwnEvents(eventId, recurrenceId, createdVenue)
+          console.log('Venue should be added to', unfinishedEvent)
+          addVenueToOwnEvents(eventId, createdVenue)
           console.log('Venue was added:')
           displaySuccess(`New venue created`)
           //setEvent(updatedEvent)
@@ -93,7 +92,7 @@ const CreateRecurrenceVenue = (props) => {
   }
 
   return (
-    <CreateRecurrenceVenueForm
+    <CreateEventVenueForm
       venuename={venuename}
       handleVenuename={handleVenuename}
       handleCreateVenueCancel={handleCreateVenueCancel}
@@ -115,4 +114,4 @@ const mapDispatchToProps = {
   addVenueToOwnEvents
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRecurrenceVenue)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateEventVenue)

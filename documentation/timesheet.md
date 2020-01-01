@@ -65,6 +65,7 @@
 | 29.12.2019    | Event recurrence venues                                            |     2,0   |           |
 | **WEEK 52**   | **TOTAL**                                                          |   **3,0** | **133,0** |
 | 30.12.2019    | Event recurrence venues                                            |     2,0   |           |
-| **WEEK  1**   | **TOTAL**                                                          |   **2,0** | **135,0** |
+| 01.01.2020    | Refactoring Event recurrence venues to Event venues                |     1,5   |           |
+| **WEEK  1**   | **TOTAL**                                                          |   **3,5** | **136,5** |
 
 

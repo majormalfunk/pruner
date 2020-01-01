@@ -8,7 +8,7 @@ module.exports = {
     }
     type Venue {
       venuename: String!
-      recurrence: ID!
+      event: ID!
       id: ID!
     }
     type EventRecurrence {
@@ -80,8 +80,8 @@ module.exports = {
         ): Event
     }
     extend type Mutation {
-      createRecurrenceVenue(
-        recurrenceId: ID!
+      createEventVenue(
+        eventId: ID!
         venuename: String!
         ): Venue
     }

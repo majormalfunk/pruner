@@ -53,7 +53,7 @@ export const EVENT_DETAILS = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -82,7 +82,7 @@ export const GET_OWN_EVENTS = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -115,7 +115,7 @@ export const CREATE_EVENT = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -148,7 +148,7 @@ export const UPDATE_EVENT = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -187,7 +187,7 @@ export const CREATE_EVENT_RECURRENCE = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -220,7 +220,7 @@ export const UPDATE_EVENT_RECURRENCE = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -249,7 +249,7 @@ export const DELETE_EVENT_RECURRENCE = gql`
       }
       venues {
         venuename
-        recurrence
+        event
         id
       }
       owner {
@@ -261,13 +261,13 @@ export const DELETE_EVENT_RECURRENCE = gql`
   }
 `
 
-export const CREATE_RECURRENCE_VENUE = gql`
-  mutation createRecurrenceVenue(
-    $recurrenceId: ID!, $venuename: String!) {
-    createRecurrenceVenue(
-      recurrenceId: $recurrenceId, venuename: $venuename) {
+export const CREATE_EVENT_VENUE = gql`
+  mutation createEventVenue(
+    $eventId: ID!, $venuename: String!) {
+    createEventVenue(
+      eventId: $eventId, venuename: $venuename) {
       venuename
-      recurrence
+      event
       id
     }
   }

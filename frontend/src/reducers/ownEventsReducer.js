@@ -64,13 +64,12 @@ export const removeRecurrenceFromOwnEvents = (removebaleRecurrence, eventId) => 
   }
 }
 
-export const addVenueToOwnEvents = (eventId, recurrenceId, createdVenue) => {
+export const addVenueToOwnEvents = (eventId, createdVenue) => {
   return async dispatch => {
     dispatch({
       type: 'ADD_VENUE_TO_OWN_EVENTS',
       data: {
         eventId: eventId,
-        recurrenceId: recurrenceId,
         createdVenue: createdVenue
       }
     })
@@ -126,8 +125,7 @@ const ownEventsReducer = (state = [], action) => {
       })
     case 'ADD_VENUE_TO_OWN_EVENTS':
       console.log('eventId:', action.data.eventId)
-      console.log('recurrenceId:', action.data.recurrenceId)
-      console.log('updatedVenue', action.data.createdVenue)
+      console.log('createdVenue', action.data.createdVenue)
       return state.map((event) => {
         if (event.id !== action.data.eventId) {
           return event
@@ -137,7 +135,6 @@ const ownEventsReducer = (state = [], action) => {
       })
     case 'UPDATE_VENUE_IN_OWN_EVENTS':
       console.log('eventId:', action.data.eventId)
-      console.log('recurrenceId:', action.data.recurrenceId)
       console.log('updatedVenue', action.data.updatedVenue)
       return state.map((event) => {
         if (event.id !== action.data.eventId) {

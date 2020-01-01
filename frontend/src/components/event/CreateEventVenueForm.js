@@ -3,14 +3,14 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField } from './InputFields'
 import { ACTION_CREATE_VENUE, ACTION_CREATE_VENUE_CANCEL } from '../../constants'
 
-const CreateRecurrenceVenueForm = (props) => {
+const CreateEventVenueForm = (props) => {
 
   return (
     <Container>
       <Form>
         <Row>
           <Col className="Component-title">
-            Enter a name for a new venue for the event recurrence
+            Enter a name for a new venue for the event
           </Col>
         </Row>
         <Row>
@@ -44,4 +44,4 @@ const CreateRecurrenceVenueForm = (props) => {
 
 }
 
-export default CreateRecurrenceVenueForm
+export default CreateEventVenueForm

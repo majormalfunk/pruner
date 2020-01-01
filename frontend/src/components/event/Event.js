@@ -12,7 +12,7 @@ import { DELETE_EVENT } from './gqls'
 import { CREATE_EVENT_RECURRENCE } from './gqls'
 import { UPDATE_EVENT_RECURRENCE } from './gqls'
 import { DELETE_EVENT_RECURRENCE } from './gqls'
-import { CREATE_RECURRENCE_VENUE } from './gqls'
+import { CREATE_EVENT_VENUE } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
@@ -20,7 +20,8 @@ import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
 import CreateEventRecurrence from './CreateEventRecurrence'
 import UpdateEventRecurrence from './UpdateEventRecurrence'
-import CreateRecurrenceVenue from './CreateRecurrenceVenue'
+import CreateEventVenue from './CreateEventVenue'
+import EventVenues from './EventVenues'
 
 const Event = (props) => {
 
@@ -51,7 +52,7 @@ const Event = (props) => {
   const deleteEventRecurrence = useMutation(DELETE_EVENT_RECURRENCE, {
     onError: handleError
   })
-  const createRecurrenceVenue = useMutation(CREATE_RECURRENCE_VENUE, {
+  const createEventVenue = useMutation(CREATE_EVENT_VENUE, {
     onError: handleError
   })
 
@@ -114,9 +115,11 @@ const Event = (props) => {
               deleteEventRecurrence={deleteEventRecurrence}
               unfinishedRecurrence={recurrence} setRecurrence={setRecurrence}
               setEvent={setEvent} />
-            <CreateRecurrenceVenue show={page === PAGE_EVENT_CREATE}
-              createRecurrenceVenue={createRecurrenceVenue}
-              unfinishedRecurrence={recurrence} setEvent={setEvent} />
+            <CreateEventVenue show={page === PAGE_EVENT_CREATE}
+              createEventVenue={createEventVenue}
+              unfinishedEvent={event} setEvent={setEvent} />
+            <EventVenues show={page == PAGE_EVENT_CREATE}
+              unfinishedEvent={event} setEvent={setEvent} />
           </Container>
         )
       }
