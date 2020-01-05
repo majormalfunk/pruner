@@ -12,7 +12,7 @@ const UpdateEventVenue = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, show,
     updateVenueInOwnEvents, removeVenueFromOwnEvents,
-    updateEventVenue, deleteEventVenue, unfinishedVenue, setVenue } = props
+    updateEventVenue, deleteEventVenue, unfinishedVenue, setSelectedVenue } = props
 
   const [venuename, setVenuename] = useState(unfinishedVenue.venuename)
 
@@ -59,6 +59,7 @@ const UpdateEventVenue = (props) => {
   const handleUpdateVenueCancel = (event) => {
     event.preventDefault()
     revertFields()
+    setSelectedVenue(null)
   }
 
   const handleUpdateVenue = async (event) => {
@@ -74,7 +75,7 @@ const UpdateEventVenue = (props) => {
         if (result) {
           const updatedVenue = result.data.updateEventVenue
           const eventId = unfinishedVenue.event
-          setVenue(updatedVenue)
+          setSelectedVenue(null)
           updateVenueInOwnEvents(eventId, updatedVenue)
           displaySuccess('Venue info was updated')
         } else {
@@ -105,7 +106,7 @@ const UpdateEventVenue = (props) => {
             const eventId = unfinishedVenue.event
             try {
               clearFields()
-              setVenue(null)
+              setSelectedVenue(null)
               removeVenueFromOwnEvents(eventId, id)
               displaySuccess('Venue deleted')
               console.log('Venue deleted')

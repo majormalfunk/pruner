@@ -35,6 +35,7 @@ export const ACTION_CREATE_VENUE_CANCEL = "action-create-venue-cancel"
 export const ACTION_UPDATE_VENUE = "action-update-venue"
 export const ACTION_UPDATE_VENUE_CANCEL = "action-update-venue-cancel"
 export const ACTION_DELETE_VENUE = "action-delete-venue"
+export const ACTION_SELECT_VENUE = "action-select-venue"
 
 // Navigation
 export const PAGE_HOME = "page-home"

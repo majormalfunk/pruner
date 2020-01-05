@@ -4,14 +4,16 @@ import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import UpdateEventVenue from './UpdateEventVenue'
+import SelectEventVenueForm from './SelectEventVenueForm'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateInOwnEvents } from '../../reducers/ownEventsReducer'
 
 const EventVenues = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
-    updateInOwnEvents, updateEventVenue, show, setEvent } = props
+  const { displaySuccess, displayInfo, displayError, currentUser, show,
+    updateVenueInOwnEvents, removeVenueFromOwnEvents,
+    updateEventVenue, deleteEventVenue, venues, selectedVenue, setSelectedVenue } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -19,7 +21,6 @@ const EventVenues = (props) => {
     return null
   }
 
-  const venues = unfinishedEvent.venues
   let filteredVenues = venues
 
   const itemsOnPage = 20
@@ -31,7 +32,23 @@ const EventVenues = (props) => {
       return (
         filteredVenues.map((venue, index) => {
           if (index >= offset && index < (offset + itemsOnPage)) {
-            return <UpdateEventVenue key={venue._id} venue={venue} />
+            if (selectedVenue && venue.id === selectedVenue.id) {
+              return (
+                <Row key={venue.id}>
+                  <UpdateEventVenue show={show}
+                    updateEventVenue={updateEventVenue}
+                    deleteEventVenue={deleteEventVenue}
+                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                </Row>
+              )
+            } else {
+              return (
+                <Row key={venue.id}>
+                  <SelectEventVenueForm show={show}
+                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                </Row>
+              )
+            }
           } else {
             return null
           }
@@ -44,6 +61,19 @@ const EventVenues = (props) => {
 
   return (
     <Container>
+      <Row>
+        <Col className="Component-title">
+          Event venues
+        </Col>
+      </Row>
+      <Row>
+        <Col className="Component-expl">
+          You can edit the names of your event venues
+        </Col>
+      </Row>
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
       {venuesToDisplay()}
       <Row>
         <Col><span>&nbsp;</span></Col>

@@ -35,9 +35,6 @@ const CreateEventVenueForm = (props) => {
               onClick={props.handleCreateVenueCancel}>Cancel</Button>
           </Col>
         </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
       </Form>
     </Container >
   )

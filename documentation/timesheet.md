@@ -69,7 +69,7 @@
 | 02.01.2020    | Refactoring Event recurrences                                      |     1,5   |           |
 | 04.01.2020    | Refactoring Event recurrences                                      |     2,5   |           |
 | 05.01.2020    | Refactoring Event recurrences                                      |     1,5   |           |
-| 05.01.2020    | Update and delete Event venues                                     |     1,0   |           |
-| **WEEK  1**   | **TOTAL**                                                          |  **10,0** | **143,0** |
+| 05.01.2020    | Update and delete Event venues                                     |     3,0   |           |
+| **WEEK  1**   | **TOTAL**                                                          |  **12,0** | **145,0** |
 
 

@@ -33,6 +33,7 @@ const Event = (props) => {
   const [event, setEvent] = useState(null)
   const [recurrence, setRecurrence] = useState(null)
   const [venue, setVenue] = useState(null)
+  const [selectedVenue, setSelectedVenue] = useState(null)
 
   const handleError = (error) => {
     displayError(error)
@@ -130,8 +131,12 @@ const Event = (props) => {
           const unfinishedRecurrence = event.recurrences[event.recurrences.length - 1]
           setRecurrence(unfinishedRecurrence)
         }
+        if (venue === null) {
+          const unfinishedVenue = event.venues[event.venues.length - 1]
+          setVenue(unfinishedVenue)
+        }
         if (event.venues) {
-          if (event.venues.length === 0) {
+//          if (event.venues.length === 0) {
             return (
               <Container>
                 <UpdateEvent show={page === PAGE_EVENT_CREATE}
@@ -144,9 +149,14 @@ const Event = (props) => {
                 <CreateEventVenue show={page === PAGE_EVENT_CREATE}
                   createEventVenue={createEventVenue}
                   unfinishedEvent={event} />
+                <EventVenues show={page === PAGE_EVENT_CREATE}
+                  updateEventVenue={updateEventVenue}
+                  deleteEventVenue={deleteEventVenue}
+                  venues={unfinishedEvent.venues}
+                  selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue} />
               </Container>
             )
-          } else {
+/*           } else {
             if (venue === null) {
               const unfinishedVenue = event.venues[event.venues.length - 1]
               setVenue(unfinishedVenue)
@@ -166,9 +176,9 @@ const Event = (props) => {
                   unfinishedVenue={venue} setVenue={setVenue} />
               </Container>
             )
-          }
+          }*/
         }
-      }
+       }
     }
   }
 
