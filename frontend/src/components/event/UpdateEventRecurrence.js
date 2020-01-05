@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
-import { updateInOwnEvents, removeRecurrenceFromOwnEvents } from '../../reducers/ownEventsReducer'
+import { updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents } from '../../reducers/ownEventsReducer'
 
-import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
-import { ACTION_UPDATE_RECURRENCE, ACTION_DELETE_RECURRENCE } from '../../constants'
+import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
+import { ACTION_UPDATE_RECURRENCE } from '../../constants'
 import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, show, setEvent,
+  const { displaySuccess, displayInfo, displayError, currentUser, show,
+    updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents,
     updateEventRecurrence, deleteEventRecurrence, unfinishedRecurrence, setRecurrence } = props
 
   const [recurrencename, setRecurrencename] = useState(unfinishedRecurrence.recurrencename)
@@ -23,8 +24,8 @@ const UpdateEventRecurrence = (props) => {
       if (recurrencename.trim() === '') {
         document.getElementById(`recurrencenamehintupdate`).innerHTML = 'Enter recurrence name'
         return false
-      } else if (recurrencename.trim().length < EVENTNAME_LENGTH) {
-        document.getElementById(`recurrencenamehintupdate`).innerHTML = `Recurrence name must be at least ${EVENTNAME_LENGTH} characters`
+      } else if (recurrencename.trim().length < RECURRENCENAME_LENGTH) {
+        document.getElementById(`recurrencenamehintupdate`).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
         return false
       } else {
         document.getElementById(`recurrencenamehintupdate`).innerHTML = 'Recurrence name is long enough'
@@ -68,7 +69,6 @@ const UpdateEventRecurrence = (props) => {
   }
 
   useEffect(() => {
-    //if (unfinishedRecurrence) {
     const nameOk = controlRecurrencename()
     const descriptionOk = controlDescription()
     controlPublicrecurrence()
@@ -76,10 +76,6 @@ const UpdateEventRecurrence = (props) => {
     if (document.getElementById(ACTION_UPDATE_RECURRENCE)) {
       document.getElementById(ACTION_UPDATE_RECURRENCE).disabled = !(nameOk && descriptionOk)
     }
-    //if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
-    //  document.getElementById(ACTION_DELETE_RECURRENCE).disabled = (unfinishedRecurrence.venues.length > 0)
-    //}
-    
   })
 
   if (!show || !currentUser) {
@@ -104,7 +100,7 @@ const UpdateEventRecurrence = (props) => {
     setRecurrencename('')
     document.getElementById(`setrecurrencenameupdate`).value = ''
     setDescription('')
-    document.getElementById(`setdescriptionupdate`).value = ''
+    document.getElementById(`setrecurrencedescriptionupdate`).value = ''
     setPublicrecurrence(false)
     document.getElementById(`setpublicrecurrenceupdate`).checked = false
     setLiverecurrence(false)
@@ -112,10 +108,10 @@ const UpdateEventRecurrence = (props) => {
   }
 
   const revertFields = () => {
-    setRecurrencename(unfinishedRecurrence.eventname)
+    setRecurrencename(unfinishedRecurrence.recurrencename)
     document.getElementById(`setrecurrencenameupdate`).value = unfinishedRecurrence.recurrencename
     setDescription(unfinishedRecurrence.description)
-    document.getElementById(`setdescriptionupdate`).value = unfinishedRecurrence.description
+    document.getElementById(`setrecurrencedescriptionupdate`).value = unfinishedRecurrence.description
     setPublicrecurrence(unfinishedRecurrence.publicevent)
     document.getElementById(`setpublicrecurrenceupdate`).checked = unfinishedRecurrence.publicrecurrence
     setLiverecurrence(unfinishedRecurrence.liverecurrence)
@@ -130,7 +126,7 @@ const UpdateEventRecurrence = (props) => {
   const handleUpdateRecurrence = async (event) => {
     event.preventDefault()
     //console.log('Update recurrence to', recurrencename, '(', description, ')')
-    if (recurrencename.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
+    if (recurrencename.trim().length >= RECURRENCENAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
         const id = unfinishedRecurrence.id
         const result = await updateEventRecurrence[0]({
@@ -139,9 +135,10 @@ const UpdateEventRecurrence = (props) => {
         //console.log('Result:', result)
         if (result) {
           //const updatedRecurrence = result.data.updateRecurrence
-          const updatedEvent = result.data.updateEventRecurrence
-          setRecurrence(updatedEvent.recurrences.find(r => r.id === id))
-          updateInOwnEvents(updatedEvent)
+          const updatedRecurrence = result.data.updateEventRecurrence
+          const eventId = unfinishedRecurrence.event
+          setRecurrence(updatedRecurrence)
+          updateRecurrenceInOwnEvents(eventId, updatedRecurrence)
           displaySuccess('Recurrence info was updated')
         } else {
           displayError('Recurrence info was not updated')
@@ -167,10 +164,18 @@ const UpdateEventRecurrence = (props) => {
           variables: { id }
         })
         if (result) {
-          const updatedEvent = result.data.deleteEventRecurrence
-          updateInOwnEvents(updatedEvent)
-          displaySuccess('Recurrence deleted')
-          setEvent(updatedEvent)
+          if(result.data.deleteEventRecurrence && result.data.deleteEventRecurrence === 1) {
+            const eventId = unfinishedRecurrence.event
+            try {
+              clearFields()
+              setRecurrence(null)
+              removeRecurrenceFromOwnEvents(eventId, id)
+              displaySuccess('Recurrence deleted')
+              console.log('Recurrence deleted')
+            } catch (error) {
+              console.log('Something wrong:', error)
+            }
+          }
         } else {
           displayError('Recurrence was not deleted')
         }
@@ -211,7 +216,7 @@ const mapDispatchToProps = {
   displaySuccess,
   displayInfo,
   displayError,
-  updateInOwnEvents,
+  updateRecurrenceInOwnEvents,
   removeRecurrenceFromOwnEvents
 }
 

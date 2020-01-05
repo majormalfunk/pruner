@@ -167,22 +167,21 @@ module.exports = {
 
             try {
 
-              let eventToUpdate = await Event.findOne({ _id: args.id, owner: userId })
+              let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
 
               const newRecurrence = new EventRecurrence({
                 recurrencename: args.recurrencename,
                 description: args.description,
                 publicrecurrence: args.publicrecurrence,
                 liverecurrence: args.liverecurrence,
-                venues: [],
-                event: args.id
+                event: args.eventId
               })
               const savedRecurrence = await newRecurrence.save()
 
               let newRecurrences = eventToUpdate.recurrences.concat(savedRecurrence)
 
               let updatedEvent = await Event.findOneAndUpdate(
-                { _id: args.id, owner: userId },
+                { _id: args.eventId, owner: userId },
                 {
                   $set: {
                     recurrences: newRecurrences
@@ -195,7 +194,7 @@ module.exports = {
 
               console.log('Updated event is', updatedEvent)
 
-              return updatedEvent
+              return savedRecurrence
             } catch (error) {
               throw new UserInputError(error.message, {
                 invalidArgs: args,
@@ -230,11 +229,24 @@ module.exports = {
 
                 const updatedRecurrence = await recurrenceToUpdate.save()
 
-                const updatedEvent = await Event.findOne({ _id: eventToUpdate._id })
+                const newRecurrences = eventToUpdate.recurrences.map((recurrence) => {
+                  return (recurrence.id === args.id ? updatedRecurrence : recurrence)
+                })
 
-                //console.log('Updated event is', updatedEvent)
+                let updatedEvent = await Event.findOneAndUpdate(
+                  { _id: eventToUpdate._id, owner: userId },
+                  {
+                    $set: {
+                      recurrences: newRecurrences
+                    }
+                  },
+                  {
+                    new: true
+                  }
+                )
+                console.log('Updated event is', updatedEvent)
 
-                return updatedEvent
+                return updatedRecurrence
 
               } else {
 
@@ -277,9 +289,22 @@ module.exports = {
 
                 console.log('Delete count is', result.deletedCount)
 
-                const updatedEvent = await Event.findOne({ _id: eventToUpdate._id })
+                const newRecurrences = eventToUpdate.recurrences.filter(recurrence => recurrence.id !== args.id)
 
-                return updatedEvent
+                let updatedEvent = await Event.findOneAndUpdate(
+                  { _id: eventToUpdate._id, owner: userId },
+                  {
+                    $set: {
+                      recurrences: newRecurrences
+                    }
+                  },
+                  {
+                    new: true
+                  }
+                )
+                console.log('Updated event is', updatedEvent)
+
+                return result.deletedCount
 
               } else {
 
@@ -353,6 +378,117 @@ module.exports = {
           }
         }
 
+      },
+      updateEventVenue: async (root, args, { currentUser, userId }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'update an event venue')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let venueToUpdate = await EventVenue.findOne({ _id: args.id })
+              let eventToUpdate = await Event.findOne({ _id: venueToUpdate.event, owner: userId })
+
+              if (eventToUpdate && venueToUpdate) {
+
+                venueToUpdate.venuename = args.venuename
+
+                const updatedVenue = await venueToUpdate.save()
+
+                const newVenues = eventToUpdate.venues.map((venue) => {
+                  return (venue.id === args.id ? updatedVenue : venue)
+                })
+
+                let updatedEvent = await Event.findOneAndUpdate(
+                  { _id: eventToUpdate._id, owner: userId },
+                  {
+                    $set: {
+                      venues: newVenues
+                    }
+                  },
+                  {
+                    new: true
+                  }
+                )
+                console.log('Updated event is', updatedEvent)
+
+                return updatedVenue
+
+              } else {
+
+                throw new AuthenticationError('The event is not yours to update')
+
+              }
+
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
+      },
+      deleteEventVenue: async (root, args, { currentUser, userId }) => {
+
+        console.log('Deleting an event venue')
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'delete an event venue')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let venueToDelete = await EventVenue.findOne({ _id: args.id })
+              let eventToUpdate = await Event.findOne({ _id: venueToDelete.event, owner: userId })
+
+              if (eventToUpdate && venueToDelete) {
+
+                const result = await EventVenue.deleteOne(
+                  { _id: args.id },
+                )
+
+                console.log('Delete count is', result.deletedCount)
+
+                const newVenues = eventToUpdate.venues.filter(venue => venue.id !== args.id)
+
+                let updatedEvent = await Event.findOneAndUpdate(
+                  { _id: eventToUpdate._id, owner: userId },
+                  {
+                    $set: {
+                      venues: newVenues
+                    }
+                  },
+                  {
+                    new: true
+                  }
+                )
+                console.log('Updated event is', updatedEvent)
+
+                return result.deletedCount
+
+              } else {
+
+                throw new AuthenticationError('The event is not yours to update')
+
+              }
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
       }
     }
   }

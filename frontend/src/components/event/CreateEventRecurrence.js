@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
-import { updateInOwnEvents } from '../../reducers/ownEventsReducer'
+import { addRecurrenceToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_RECURRENCE } from '../../constants'
@@ -12,7 +12,7 @@ import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
 const CreateEventRecurrence = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
-    updateInOwnEvents, createEventRecurrence, show, setEvent } = props
+    addRecurrenceToOwnEvents, createEventRecurrence, show } = props
 
   const [recurrencename, setRecurrencename] = useState('')
   const [description, setDescription] = useState('')
@@ -125,18 +125,17 @@ const CreateEventRecurrence = (props) => {
     if (recurrencename.trim().length >= RECURRENCENAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
         //window.alert(`Create event ${eventname}`)
-        const id = unfinishedEvent.id
+        const eventId = unfinishedEvent.id
         const result = await createEventRecurrence[0]({
-          variables: { id, recurrencename, description, publicrecurrence, liverecurrence }
+          variables: { eventId, recurrencename, description, publicrecurrence, liverecurrence }
         })
         if (result) {
-          const updatedEvent = result.data.createEventRecurrence
-          console.log('Created recurrence, event is', updatedEvent)
-          console.log('Event was set')
-          updateInOwnEvents(updatedEvent)
-          console.log('Recurrence was added:', updatedEvent)
+          const createdRecurrence = result.data.createEventRecurrence
+          console.log('Created recurrence', createdRecurrence)
+          addRecurrenceToOwnEvents(eventId, createdRecurrence)
+          console.log('Recurrence was added:', createdRecurrence)
           displaySuccess(`New recurrence created`)
-          setEvent(updatedEvent)
+          //setEvent(unfinishedEvent)
         } else {
           displayError('Recurrence was not created')
         }
@@ -178,7 +177,7 @@ const mapDispatchToProps = {
   displaySuccess,
   displayInfo,
   displayError,
-  updateInOwnEvents
+  addRecurrenceToOwnEvents
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateEventRecurrence)

@@ -12,7 +12,7 @@ import CreateEventVenueForm from './CreateEventVenueForm'
 const CreateEventVenue = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
-    addVenueToOwnEvents, createEventVenue, show, setEvent } = props
+    addVenueToOwnEvents, createEventVenue, show } = props
 
   const [venuename, setVenuename] = useState('')
 
@@ -63,7 +63,6 @@ const CreateEventVenue = (props) => {
     console.log('Create venue', venuename)
     if (venuename.trim().length >= VENUENAME_LENGTH) {
       try {
-        window.alert(`Create venue ${venuename}`)
         const eventId = unfinishedEvent.id
         const result = await createEventVenue[0]({
           variables: { eventId, venuename }

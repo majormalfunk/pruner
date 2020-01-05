@@ -6,7 +6,7 @@ module.exports = {
       nickname: String!
       id: ID!
     }
-    type Venue {
+    type EventVenue {
       venuename: String!
       event: ID!
       id: ID!
@@ -25,7 +25,7 @@ module.exports = {
       publicevent: Boolean!
       liveevent: Boolean!
       recurrences: [EventRecurrence]
-      venues: [Venue]
+      venues: [EventVenue]
       owner: User!
       id: ID!
     }
@@ -58,12 +58,12 @@ module.exports = {
     }
     extend type Mutation {
       createEventRecurrence(
-        id: ID!
+        eventId: ID!
         recurrencename: String!
         description: String!
         publicrecurrence: Boolean!
         liverecurrence: Boolean!
-        ): Event
+        ): EventRecurrence
     }
     extend type Mutation {
       updateEventRecurrence(
@@ -72,18 +72,29 @@ module.exports = {
         description: String!
         publicrecurrence: Boolean!
         liverecurrence: Boolean!
-        ): Event
+        ): EventRecurrence
     }
     extend type Mutation {
       deleteEventRecurrence(
         id: ID!
-        ): Event
+        ): Int!
     }
     extend type Mutation {
       createEventVenue(
         eventId: ID!
         venuename: String!
-        ): Venue
+        ): EventVenue
+    }
+    extend type Mutation {
+      updateEventVenue(
+        id: ID!
+        venuename: String!
+        ): EventVenue
+    }
+    extend type Mutation {
+      deleteEventVenue(
+        id: ID!
+        ): Int!
     }
   `
 }
