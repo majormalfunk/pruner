@@ -5,14 +5,15 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 import { updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
-import { ACTION_UPDATE_RECURRENCE } from '../../constants'
+import { ACTION_UPDATE_RECURRENCE, ACTION_DELETE_RECURRENCE } from '../../constants'
 import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, show,
+  const { displaySuccess, displayInfo, displayError, currentUser, display,
     updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents,
-    updateEventRecurrence, deleteEventRecurrence, unfinishedRecurrence, setRecurrence } = props
+    updateEventRecurrence, deleteEventRecurrence,
+    unfinishedEvent, unfinishedRecurrence, setRecurrence } = props
 
   const [recurrencename, setRecurrencename] = useState(unfinishedRecurrence.recurrencename)
   const [description, setDescription] = useState(unfinishedRecurrence.description)
@@ -76,9 +77,13 @@ const UpdateEventRecurrence = (props) => {
     if (document.getElementById(ACTION_UPDATE_RECURRENCE)) {
       document.getElementById(ACTION_UPDATE_RECURRENCE).disabled = !(nameOk && descriptionOk)
     }
+    if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
+      const venuesExist = unfinishedEvent.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+      document.getElementById(ACTION_DELETE_RECURRENCE).disabled = venuesExist
+    }
   })
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 
@@ -175,6 +180,8 @@ const UpdateEventRecurrence = (props) => {
             } catch (error) {
               console.log('Something wrong:', error)
             }
+          } else {
+            displayError('Recurrence was not deleted')
           }
         } else {
           displayError('Recurrence was not deleted')

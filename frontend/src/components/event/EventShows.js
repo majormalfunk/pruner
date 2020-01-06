@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
-import UpdateEventVenue from './UpdateEventVenue'
-import SelectEventVenueForm from './SelectEventVenueForm'
+import UpdateEventShow from './UpdateEventShow'
+import SelectEventShowForm from './SelectEventShowForm'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
-const EventVenues = (props) => {
+const EventShows = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventVenue, deleteEventVenue, venues, selectedVenue, setSelectedVenue } = props
+    updateEventShow, deleteEventShow, shows, selectedShow, setSelectedShow } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -19,31 +19,31 @@ const EventVenues = (props) => {
     return null
   }
 
-  let filteredVenues = venues
+  let filteredShows = shows
 
   const itemsOnPage = 2000
-  const pages = Math.ceil(filteredVenues.length / itemsOnPage)
+  const pages = Math.ceil(filteredShows.length / itemsOnPage)
 
-  const venuesToDisplay = () => {
+  const showsToDisplay = () => {
     var offset = (currentPage - 1) * itemsOnPage
-    if (filteredVenues !== undefined && filteredVenues !== null) {
+    if (filteredShows !== undefined && filteredShows !== null) {
       return (
-        filteredVenues.map((venue, index) => {
+        filteredShows.map((show, index) => {
           if (index >= offset && index < (offset + itemsOnPage)) {
-            if (selectedVenue && venue.id === selectedVenue.id) {
+            if (selectedShow && show.id === selectedShow.id) {
               return (
-                <Row key={venue.id}>
-                  <UpdateEventVenue display={display}
-                    updateEventVenue={updateEventVenue}
-                    deleteEventVenue={deleteEventVenue}
-                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                <Row key={show.id}>
+                  <UpdateEventShow display={display}
+                    updateEventShow={updateEventShow}
+                    deleteEventShow={deleteEventShow}
+                    unfinishedShow={show} setSelectedShow={setSelectedShow} />
                 </Row>
               )
             } else {
               return (
-                <Row key={venue.id}>
-                  <SelectEventVenueForm display={display}
-                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                <Row key={show.id}>
+                  <SelectEventShowForm display={display}
+                    unfinishedShow={show} setSelectedShow={setSelectedShow} />
                 </Row>
               )
             }
@@ -57,23 +57,23 @@ const EventVenues = (props) => {
     }
   }
 
-  if (venues && venues.length > 0) {
+  if (shows && shows.length > 0) {
     return (
       <Container>
         <Row>
           <Col className="Component-title">
-            Event venues
+            Event shows
           </Col>
         </Row>
         <Row>
           <Col className="Component-expl">
-            Select an event venue to edit it
+            Select an event show to edit it
           </Col>
         </Row>
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
-        {venuesToDisplay()}
+        {showsToDisplay()}
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -84,7 +84,7 @@ const EventVenues = (props) => {
       <Container>
         <Row>
           <Col className="Component-title">
-            Event venues
+            Event shows
           </Col>
         </Row>
         <Row>
@@ -109,4 +109,4 @@ const mapDispatchToProps = {
   displayError
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventVenues)
+export default connect(mapStateToProps, mapDispatchToProps)(EventShows)

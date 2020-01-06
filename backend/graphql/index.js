@@ -25,10 +25,16 @@ const typeDefs = [
 // RESOLVERS
 const { resolvers: resolverForUser } = require('./user/resolverUser')
 const { resolvers: resolverForEvent } = require('./event/resolverEvent')
+const { resolvers: resolverForEventRecurrence } = require('./event/resolverEventRecurrence')
+const { resolvers: resolverForEventVenue } = require('./event/resolverEventVenue')
+const { resolvers: resolverForEventShow } = require('./event/resolverEventShow')
 
 const resolvers = merge(
   resolverForUser,
-  resolverForEvent
+  resolverForEvent,
+  resolverForEventRecurrence,
+  resolverForEventVenue,
+  resolverForEventShow,
 )
 
 module.exports = {

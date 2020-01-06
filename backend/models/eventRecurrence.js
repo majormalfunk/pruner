@@ -1,18 +1,17 @@
 const mongoose = require('mongoose')
 const mongooseUniqueValidator = require('mongoose-unique-validator')
-//const autopopulate = require('mongoose-autopopulate')
+const constants = require('../constants')
 
 const eventRecurrenceSchema = new mongoose.Schema({
   recurrencename: {
     type: String,
     required: true,
-    unique: true,
-    minlength: 10
+    minlength: constants.RECURRENCENAME_LENGTH
   },
   description: {
     type: String,
     required: true,
-    minlength: 10
+    minlength: constants.DESCRIPTION_LENGTH
   },
   publicrecurrence: {
     type: Boolean,
@@ -29,7 +28,6 @@ const eventRecurrenceSchema = new mongoose.Schema({
 })
 
 eventRecurrenceSchema.plugin(mongooseUniqueValidator)
-//eventRecurrenceSchema.plugin(autopopulate)
 
 const EventRecurrence = mongoose.model('EventRecurrence', eventRecurrenceSchema)
 

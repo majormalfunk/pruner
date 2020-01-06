@@ -15,6 +15,9 @@ import { DELETE_EVENT_RECURRENCE } from './gqls'
 import { CREATE_EVENT_VENUE } from './gqls'
 import { UPDATE_EVENT_VENUE } from './gqls'
 import { DELETE_EVENT_VENUE } from './gqls'
+import { CREATE_EVENT_SHOW } from './gqls'
+import { UPDATE_EVENT_SHOW } from './gqls'
+import { DELETE_EVENT_SHOW } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
@@ -25,15 +28,20 @@ import UpdateEventRecurrence from './UpdateEventRecurrence'
 import CreateEventVenue from './CreateEventVenue'
 import UpdateEventVenue from './UpdateEventVenue'
 import EventVenues from './EventVenues'
+import CreateEventShow from './CreateEventShow'
+import UpdateEventShow from './UpdateEventShow'
+import EventShows from './EventShows'
 
 const Event = (props) => {
 
-  const { displayError, currentUser, show, page, ownEvents } = props
+  const { displayError, currentUser, display, page, ownEvents } = props
 
   const [event, setEvent] = useState(null)
   const [recurrence, setRecurrence] = useState(null)
   const [venue, setVenue] = useState(null)
   const [selectedVenue, setSelectedVenue] = useState(null)
+  const [show, setShow] = useState(null)
+  const [selectedShow, setSelectedShow] = useState(null)
 
   const handleError = (error) => {
     displayError(error)
@@ -66,14 +74,23 @@ const Event = (props) => {
   const deleteEventVenue = useMutation(DELETE_EVENT_VENUE, {
     onError: handleError
   })
+  const createEventShow = useMutation(CREATE_EVENT_SHOW, {
+    onError: handleError
+  })
+  const updateEventShow = useMutation(UPDATE_EVENT_SHOW, {
+    onError: handleError
+  })
+  const deleteEventShow = useMutation(DELETE_EVENT_SHOW, {
+    onError: handleError
+  })
 
   const unfinishedEvent = ownEvents.find(function (event) {
     return ((event.recurrences && event.recurrences.length === 0) || !event.liveevent)
   })
-  
+
   useEffect(() => {
     console.log('EVENT: Effect was used')
-    if (show) {
+    if (display) {
       if (ownEvents && ownEvents.length > 0) {
         //const unfinishedEvent = ownEvents.find(function (event) {
         //  return ((event.recurrences && event.recurrences.length === 0) || !event.liveevent)
@@ -94,22 +111,29 @@ const Event = (props) => {
           } else {
             setVenue(null)
           }
+          if (unfinishedEvent.shows.length > 0) {
+            // Select last on list
+            const unfinishedShow = unfinishedEvent.shows[unfinishedEvent.shows.length - 1]
+            setShow(unfinishedShow)
+          } else {
+            setShow(null)
+          }
         } else {
           setEvent(null)
         }
         console.log('Own events is', ownEvents)
       }
     }
-  }, [show, currentUser, ownEvents, unfinishedEvent, recurrence, venue])
+  }, [display, currentUser, ownEvents, unfinishedEvent, recurrence, venue, show])
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 
   if (!event) {
     return (
       <Container>
-        <CreateEvent show={page === PAGE_EVENT_CREATE}
+        <CreateEvent display={page === PAGE_EVENT_CREATE}
           createEvent={createEvent} setEvent={setEvent} />
       </Container>
     )
@@ -118,10 +142,10 @@ const Event = (props) => {
       if (event.recurrences.length === 0) {
         return (
           <Container>
-            <UpdateEvent show={page === PAGE_EVENT_CREATE}
+            <UpdateEvent display={page === PAGE_EVENT_CREATE}
               updateEvent={updateEvent} deleteEvent={deleteEvent}
               unfinishedEvent={event} setEvent={setEvent} />
-            <CreateEventRecurrence show={page === PAGE_EVENT_CREATE}
+            <CreateEventRecurrence display={page === PAGE_EVENT_CREATE}
               createEventRecurrence={createEventRecurrence}
               unfinishedEvent={event} />
           </Container>
@@ -135,50 +159,43 @@ const Event = (props) => {
           const unfinishedVenue = event.venues[event.venues.length - 1]
           setVenue(unfinishedVenue)
         }
-        if (event.venues) {
-//          if (event.venues.length === 0) {
-            return (
-              <Container>
-                <UpdateEvent show={page === PAGE_EVENT_CREATE}
-                  updateEvent={updateEvent} deleteEvent={deleteEvent}
-                  unfinishedEvent={event} setEvent={setEvent} />
-                <UpdateEventRecurrence show={page === PAGE_EVENT_CREATE}
-                  updateEventRecurrence={updateEventRecurrence}
-                  deleteEventRecurrence={deleteEventRecurrence}
-                  unfinishedRecurrence={recurrence} setRecurrence={setRecurrence} />
-                <CreateEventVenue show={page === PAGE_EVENT_CREATE}
-                  createEventVenue={createEventVenue}
-                  unfinishedEvent={event} />
-                <EventVenues show={page === PAGE_EVENT_CREATE}
-                  updateEventVenue={updateEventVenue}
-                  deleteEventVenue={deleteEventVenue}
-                  venues={unfinishedEvent.venues}
-                  selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue} />
-              </Container>
-            )
-/*           } else {
-            if (venue === null) {
-              const unfinishedVenue = event.venues[event.venues.length - 1]
-              setVenue(unfinishedVenue)
-            }
-            return (
-              <Container>
-                <UpdateEvent show={page === PAGE_EVENT_CREATE}
-                  updateEvent={updateEvent} deleteEvent={deleteEvent}
-                  unfinishedEvent={event} setEvent={setEvent} />
-                <UpdateEventRecurrence show={page === PAGE_EVENT_CREATE}
-                  updateEventRecurrence={updateEventRecurrence}
-                  deleteEventRecurrence={deleteEventRecurrence}
-                  unfinishedRecurrence={recurrence} setRecurrence={setRecurrence} />
-                <UpdateEventVenue show={page === PAGE_EVENT_CREATE}
-                  updateEventVenue={updateEventVenue}
-                  deleteEventVenue={deleteEventVenue}
-                  unfinishedVenue={venue} setVenue={setVenue} />
-              </Container>
-            )
-          }*/
+        if (show === null) {
+          const unfinishedShow = event.shows[event.shows.length - 1]
+          setShow(unfinishedShow)
         }
-       }
+        if (event.venues && event.shows) {
+          return (
+            <Container>
+              <UpdateEvent display={page === PAGE_EVENT_CREATE}
+                updateEvent={updateEvent} deleteEvent={deleteEvent}
+                unfinishedEvent={event} setEvent={setEvent} />
+              <UpdateEventRecurrence display={page === PAGE_EVENT_CREATE}
+                updateEventRecurrence={updateEventRecurrence}
+                deleteEventRecurrence={deleteEventRecurrence}
+                unfinishedEvent={event}
+                unfinishedRecurrence={recurrence} setRecurrence={setRecurrence} />
+              <EventVenues display={page === PAGE_EVENT_CREATE}
+                updateEventVenue={updateEventVenue}
+                deleteEventVenue={deleteEventVenue}
+                venues={unfinishedEvent.venues}
+                selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue} />
+              <CreateEventVenue display={page === PAGE_EVENT_CREATE}
+                createEventVenue={createEventVenue}
+                unfinishedEvent={event}
+                unfinishedRecurrence={recurrence} />
+              <EventShows display={page === PAGE_EVENT_CREATE}
+                updateEventShow={updateEventShow}
+                deleteEventShow={deleteEventShow}
+                shows={unfinishedEvent.shows}
+                selectedShow={selectedShow} setSelectedShow={setSelectedShow} />
+              <CreateEventShow display={page === PAGE_EVENT_CREATE}
+                createEventShow={createEventShow}
+                unfinishedEvent={event}
+                unfinishedRecurrence={recurrence} />
+            </Container>
+          )
+        }
+      }
     }
   }
 

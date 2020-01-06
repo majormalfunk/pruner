@@ -10,7 +10,7 @@ import UpdateEventVenueForm from './UpdateEventVenueForm'
 
 const UpdateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, show,
+  const { displaySuccess, displayInfo, displayError, currentUser, display,
     updateVenueInOwnEvents, removeVenueFromOwnEvents,
     updateEventVenue, deleteEventVenue, unfinishedVenue, setSelectedVenue } = props
 
@@ -38,7 +38,7 @@ const UpdateEventVenue = (props) => {
     }
   })
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 

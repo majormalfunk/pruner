@@ -1,18 +1,18 @@
 const mongoose = require('mongoose')
 const mongooseUniqueValidator = require('mongoose-unique-validator')
 const autopopulate = require('mongoose-autopopulate')
+const constants = require('../constants')
 
 const eventSchema = new mongoose.Schema({
   eventname: {
     type: String,
     required: true,
-    unique: true,
-    minlength: 10
+    minlength: constants.EVENTNAME_LENGTH
   },
   description: {
     type: String,
     required: true,
-    minlength: 10
+    minlength: constants.DESCRIPTION_LENGTH
   },
   publicevent: {
     type: Boolean,
@@ -30,7 +30,13 @@ const eventSchema = new mongoose.Schema({
   venues: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventVenue',
-    autopopulate: { select: ['venuename', 'event', '_id'] } }],
+    autopopulate: { select: ['venuename', 'event', 'recurrence', '_id'] }
+  }],
+  shows: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EventShow',
+    autopopulate: { select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
+  }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

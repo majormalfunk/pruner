@@ -101,10 +101,46 @@ export const updateVenueInOwnEvents = (eventId, updatedVenue) => {
 }
 
 export const removeVenueFromOwnEvents = (eventId, id) => {
-  console.log('Reducer removing venue', id)
   return async dispatch => {
     dispatch({
       type: 'REMOVE_VENUE_FROM_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        id: id
+      }
+    })
+  }
+}
+
+export const addShowToOwnEvents = (eventId, createdShow) => {
+  return async dispatch => {
+    dispatch({
+      type: 'ADD_SHOW_TO_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        createdShow: createdShow
+      }
+    })
+  }
+}
+
+export const updateShowInOwnEvents = (eventId, updatedShow) => {
+  return async dispatch => {
+    dispatch({
+      type: 'UPDATE_SHOW_IN_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        updatedShow: updatedShow
+      }
+    })
+  }
+}
+
+export const removeShowFromOwnEvents = (eventId, id) => {
+  console.log('Reducer removing show', id)
+  return async dispatch => {
+    dispatch({
+      type: 'REMOVE_SHOW_FROM_OWN_EVENTS',
       data: {
         eventId: eventId,
         id: id
@@ -176,7 +212,6 @@ const ownEventsReducer = (state = [], action) => {
           return (venue.id === action.data.updatedVenue.id ? action.data.updatedVenue : venue)
         })
         event.venues = newVenues
-        console.log('Event in reducer', event)
         return event
       })
     case 'REMOVE_VENUE_FROM_OWN_EVENTS':
@@ -187,6 +222,37 @@ const ownEventsReducer = (state = [], action) => {
         }
         const newVenues = event.venues.filter(venue => venue.id !== action.data.id)
         event.venues = newVenues
+        return event
+      })
+    case 'ADD_SHOW_TO_OWN_EVENTS':
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        event.shows.push(action.data.createdShow)
+        console.log('Event in reducer', event)
+        return event
+      })
+    case 'UPDATE_SHOW_IN_OWN_EVENTS':
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        const newShows = event.shows.map((show) => {
+          return (show.id === action.data.updatedShow.id ? action.data.updatedShow : show)
+        })
+        event.shows = newShows
+        console.log('Event in reducer', event)
+        return event
+      })
+    case 'REMOVE_SHOW_FROM_OWN_EVENTS':
+      console.log('CASE: ', action.type)
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        const newShows = event.shows.filter(show => show.id !== action.data.id)
+        event.shows = newShows
         console.log('Event in reducer', event)
         return event
       })

@@ -11,8 +11,8 @@ import CreateEventVenueForm from './CreateEventVenueForm'
 
 const CreateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
-    addVenueToOwnEvents, createEventVenue, show } = props
+  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent, unfinishedRecurrence,
+    addVenueToOwnEvents, createEventVenue, display } = props
 
   const [venuename, setVenuename] = useState('')
 
@@ -40,7 +40,7 @@ const CreateEventVenue = (props) => {
     }
   })
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 
@@ -64,8 +64,9 @@ const CreateEventVenue = (props) => {
     if (venuename.trim().length >= VENUENAME_LENGTH) {
       try {
         const eventId = unfinishedEvent.id
+        const recurrenceId = unfinishedRecurrence.id
         const result = await createEventVenue[0]({
-          variables: { eventId, venuename }
+          variables: { eventId, recurrenceId, venuename }
         })
         if (result) {
           const createdVenue = result.data.createEventVenue

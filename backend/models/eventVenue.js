@@ -1,22 +1,24 @@
 const mongoose = require('mongoose')
 const mongooseUniqueValidator = require('mongoose-unique-validator')
-//const autopopulate = require('mongoose-autopopulate')
+const constants = require('../constants')
 
 const eventVenueSchema = new mongoose.Schema({
   venuename: {
     type: String,
     required: true,
-    unique: true,
-    minlength: 4
+    minlength: constants.VENUENAME_LENGTH
   },
   event: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event' 
+  },
+  recurrence: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EventRecurrence' 
   }
 })
 
 eventVenueSchema.plugin(mongooseUniqueValidator)
-//eventRecurrenceSchema.plugin(autopopulate)
 
 const EventVenue = mongoose.model('EventVenue', eventVenueSchema)
 

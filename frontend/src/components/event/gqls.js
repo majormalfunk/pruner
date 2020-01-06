@@ -1,25 +1,5 @@
 import { gql } from 'apollo-boost'
 
-// eventrecurrences {
-//   recurrencename
-//   publicrecurrence
-//   recurrencethings {
-//     thingname
-//     thingdescription
-//     thinglink
-//     thingduration
-//     thingrecurrences {
-//       startdatetime
-//       thingvenue {
-//         venuename
-//       }
-//     }
-//   }
-//   recurrencevenues {
-//     venuename
-//   }
-// }
-
 export const EVENT_RECURRENCE = gql`
   fragment EventRecurrences on CurrentUser {
     recurrences {
@@ -28,39 +8,6 @@ export const EVENT_RECURRENCE = gql`
       publicrecurrence
       liverecurrence
     id
-    }
-  }
-`
-
-export const EVENT_DETAILS = gql`
-  fragment EventDetails on CurrentUser {
-    events {
-      eventname
-      description
-      publicevent
-      liveevent
-      recurrences {
-        recurrencename
-        description
-        publicrecurrence
-        liverecurrence
-        venues {
-          venuename
-          recurrence
-          id
-        }
-        id
-      }
-      venues {
-        venuename
-        event
-        id
-      }
-      owner {
-        nickname
-        id
-      }
-      id
     }
   }
 `
@@ -83,6 +30,16 @@ export const GET_OWN_EVENTS = gql`
       venues {
         venuename
         event
+        recurrence
+        id
+      }
+      shows {
+        showname
+        description
+        link
+        duration
+        event
+        recurrence
         id
       }
       owner {
@@ -116,6 +73,16 @@ export const CREATE_EVENT = gql`
       venues {
         venuename
         event
+        recurrence
+        id
+      }
+      shows {
+        showname
+        description
+        link
+        duration
+        event
+        recurrence
         id
       }
       owner {
@@ -149,6 +116,16 @@ export const UPDATE_EVENT = gql`
       venues {
         venuename
         event
+        recurrence
+        id
+      }
+      shows {
+        showname
+        description
+        link
+        duration
+        event
+        recurrence
         id
       }
       owner {
@@ -208,11 +185,12 @@ export const DELETE_EVENT_RECURRENCE = gql`
 
 export const CREATE_EVENT_VENUE = gql`
   mutation createEventVenue(
-    $eventId: ID!, $venuename: String!) {
+    $eventId: ID!, $recurrenceId: ID!, $venuename: String!) {
     createEventVenue(
-      eventId: $eventId, venuename: $venuename) {
+      eventId: $eventId, recurrenceId: $recurrenceId, venuename: $venuename) {
       venuename
       event
+      recurrence
       id
     }
   }
@@ -225,6 +203,7 @@ export const UPDATE_EVENT_VENUE = gql`
       id: $id, venuename: $venuename) {
       venuename
       event
+      recurrence
       id
     }
   }
@@ -233,5 +212,47 @@ export const UPDATE_EVENT_VENUE = gql`
 export const DELETE_EVENT_VENUE = gql`
   mutation deleteEventVenue($id: ID!) {
     deleteEventVenue(id: $id)
+  }
+`
+
+export const CREATE_EVENT_SHOW = gql`
+  mutation createEventShow(
+    $eventId: ID!, $recurrenceId: ID!, $showname: String!, $description: String,
+    $link: String, $duration: Int!) {
+    createEventShow(
+      eventId: $eventId, recurrenceId: $recurrenceId, showname: $showname, description: $description,
+      link: $link, duration: $duration) {
+      showname
+      description
+      link
+      duration
+      event
+      recurrence
+      id
+    }
+  }
+`
+
+export const UPDATE_EVENT_SHOW = gql`
+  mutation updateEventShow(
+    $id: ID!, $showname: String!, $description: String,
+    $link: String, $duration: Int!) {
+    updateEventShow(
+      id: $id, showname: $showname description: $description,
+      link: $link, duration: $duration) {
+      showname
+      description
+      link
+      duration
+      event
+      recurrence
+      id
+    }
+  }
+`
+
+export const DELETE_EVENT_SHOW = gql`
+  mutation deleteEventShow($id: ID!) {
+    deleteEventShow(id: $id)
   }
 `

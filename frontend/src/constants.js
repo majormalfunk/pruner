@@ -9,6 +9,7 @@ export const EVENTNAME_LENGTH = 10
 export const DESCRIPTION_LENGTH = 10
 export const RECURRENCENAME_LENGTH = 10
 export const VENUENAME_LENGTH = 4
+export const SHOWNAME_LENGTH = 2
 
 // Actions
 export const ACTION_CREATE_ACCOUNT = "action-create-account"
@@ -36,6 +37,12 @@ export const ACTION_UPDATE_VENUE = "action-update-venue"
 export const ACTION_UPDATE_VENUE_CANCEL = "action-update-venue-cancel"
 export const ACTION_DELETE_VENUE = "action-delete-venue"
 export const ACTION_SELECT_VENUE = "action-select-venue"
+export const ACTION_CREATE_SHOW = "action-create-show"
+export const ACTION_CREATE_SHOW_CANCEL = "action-create-show-cancel"
+export const ACTION_UPDATE_SHOW = "action-update-show"
+export const ACTION_UPDATE_SHOW_CANCEL = "action-update-show-cancel"
+export const ACTION_DELETE_SHOW = "action-delete-show"
+export const ACTION_SELECT_SHOW = "action-select-show"
 
 // Navigation
 export const PAGE_HOME = "page-home"

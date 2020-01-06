@@ -9,13 +9,8 @@ const CreateEventVenueForm = (props) => {
     <Container>
       <Form>
         <Row>
-          <Col className="Component-title">
-            Enter a name for a new venue for the event
-          </Col>
-        </Row>
-        <Row>
           <Col className="Component-expl">
-            After creating venues for your event you can add shows at those venues.
+            Add a new venue to your event recurrence
           </Col>
         </Row>
         <Row>

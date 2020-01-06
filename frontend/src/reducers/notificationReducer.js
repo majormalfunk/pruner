@@ -40,6 +40,7 @@ export const displayError = (error) => {
     console.log(error.message)
     message = error.message.replace('GraphQL error:', '')
   } else {
+    console.log(error)
     message = error
   }
   return async dispatch => {

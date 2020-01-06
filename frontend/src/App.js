@@ -16,41 +16,12 @@ import Home from './components/home/Home'
 import Account from './components/account/Account'
 import Event from './components/event/Event'
 
-//const AVAILABLE_EVENTS = gql`
-//  {
-//    availableEvents {
-//      name
-//      description
-//      public
-//      recurrences {
-//        name
-//        public
-//        id
-//      }
-//      id
-//    }
-//  }
-//`
-
 const App = (props) => {
 
   const { displayInfo, currentUser, clearCurrentUser, clearOwnEvents } = props
 
-  //const [user, setUser] = useState(null)
   const [page, setPage] = useState(PAGE_HOME)
   const client = useApolloClient()
-
-  /*
-  const handleSetUser = (newUser) => {
-    if (newUser) {
-      setCurrentUser(newUser)
-      window.localStorage.setItem(USER_TOKEN, newUser.token)
-    } else {
-      clearCurrentUser()
-      window.localStorage.removeItem(USER_TOKEN)
-    }
-  }
-  */
 
   const handleSetPage = (event) => {
     setPage(event)
@@ -91,11 +62,11 @@ const App = (props) => {
 
         <Notification />
 
-        <Home show={page === PAGE_HOME} handleSetPage={handleSetPage} />
+        <Home display={page === PAGE_HOME} handleSetPage={handleSetPage} />
 
-        <Account show={page === PAGE_ACCOUNT} logout={logout} />
+        <Account display={page === PAGE_ACCOUNT} logout={logout} />
 
-        <Event show={page.startsWith(PAGE_EVENT)} page={page} />
+        <Event display={page.startsWith(PAGE_EVENT)} page={page} />
 
       </div>
     </div>

@@ -7,7 +7,7 @@ import UpcomingEventsCard from './UpcomingEventsCard'
 import PastEventsCard from './PastEventsCard'
 import MyEventsCard from './MyEventsCard'
 
-const Home = ({ show, handleSetPage }) => {
+const Home = ({ display, handleSetPage }) => {
 
   const [cardColumns, setCardColumns] = useState(window.innerWidth >= 576 ? 3 : 2)
 
@@ -24,7 +24,7 @@ const Home = ({ show, handleSetPage }) => {
     }
   }, [cardColumns])
 
-  if (!show) {
+  if (!display) {
     return null
   }
 

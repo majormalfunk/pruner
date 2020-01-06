@@ -1,11 +1,10 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { NameField } from './InputFields'
 import { ACTION_SELECT_VENUE } from '../../constants'
 
 const SelectEventVenueForm = (props) => {
 
-  const { currentUser, show, unfinishedVenue, setSelectedVenue } = props
+  const { unfinishedVenue, setSelectedVenue } = props
 
   const handleSelectVenue = async (event) => {
     event.preventDefault()

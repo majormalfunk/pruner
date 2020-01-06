@@ -12,7 +12,7 @@ import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
 const CreateEventRecurrence = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
-    addRecurrenceToOwnEvents, createEventRecurrence, show } = props
+    addRecurrenceToOwnEvents, createEventRecurrence, display } = props
 
   const [recurrencename, setRecurrencename] = useState('')
   const [description, setDescription] = useState('')
@@ -86,7 +86,7 @@ const CreateEventRecurrence = (props) => {
     }
   })
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 

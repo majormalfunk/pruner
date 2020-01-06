@@ -12,7 +12,7 @@ const UpdateEvent = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser,
     removeFromOwnEvents, updateInOwnEvents,
-    updateEvent, deleteEvent, unfinishedEvent, show, setEvent } = props
+    updateEvent, deleteEvent, unfinishedEvent, display, setEvent } = props
 
   const [eventname, setEventname] = useState(unfinishedEvent.eventname)
   const [description, setDescription] = useState(unfinishedEvent.description)
@@ -81,7 +81,7 @@ const UpdateEvent = (props) => {
     }
   })
 
-  if (!show || !currentUser) {
+  if (!display || !currentUser) {
     return null
   }
 

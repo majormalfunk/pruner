@@ -16,7 +16,7 @@ export const DescriptionField = (props) => {
   return (
     <>
       <Form.Label>Description</Form.Label>
-      <Form.Control type="text" required placeholder="Description" name="decriptionField" id={props.setdescription}
+      <Form.Control type="text" required placeholder="Description" name="descriptionField" id={props.setdescription}
         defaultValue={props.description} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.descriptionhint}></Form.Text>
     </>
@@ -43,4 +43,26 @@ export const IsLiveField = (props) => {
   )
 }
 
+export const LinkField = (props) => {
+  return (
+    <>
+      <Form.Label>Link</Form.Label>
+      <Form.Control type="text" required placeholder="Link" name="linkField" id={props.setlink}
+        defaultValue={props.link} onChange={props.trigger} />
+      <Form.Text className="text-muted" id={props.linkhint}></Form.Text>
+    </>
+  )
+}
+
+export const DurationField = (props) => {
+  return (
+    <>
+      <Form.Label>Duration</Form.Label>
+      <Form.Control type="number" step="1" min="0"
+        required placeholder="Duration" name="durationField" id={props.setduration}
+        defaultValue={props.duration} onChange={props.trigger} />
+      <Form.Text className="text-muted" id={props.durationhint}></Form.Text>
+    </>
+  )
+}
 
