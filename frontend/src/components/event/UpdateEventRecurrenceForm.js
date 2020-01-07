@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_UPDATE_RECURRENCE, ACTION_UPDATE_RECURRENCE_CANCEL, ACTION_DELETE_RECURRENCE } from '../../constants'
+import { FLD_UPD_HNT_REC_DES, FLD_UPD_HNT_REC_NAM, FLD_UPD_HNT_REC_LIV, FLD_UPD_HNT_REC_PUB } from '../../constants'
+import { FLD_UPD_SET_REC_DES, FLD_UPD_SET_REC_NAM, FLD_UPD_SET_REC_LIV, FLD_UPD_SET_REC_PUB } from '../../constants'
 
 const UpdateEventRecurrenceForm = (props) => {
 
@@ -27,21 +29,21 @@ const UpdateEventRecurrenceForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.recurrencename} trigger={props.handleRecurrencename}
-              namehint={`recurrencenamehintupdate`} setname={`setrecurrencenameupdate`} />
+              namehint={FLD_UPD_HNT_REC_NAM} setname={FLD_UPD_SET_REC_NAM} />
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`recurrencedescriptionhintupdate`} setdescription={`setrecurrencedescriptionupdate`} />
+              descriptionhint={FLD_UPD_HNT_REC_DES} setdescription={FLD_UPD_SET_REC_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <IsPublicField ispublic={props.publicrecurrence} trigger={props.handlePublicrecurrence}
-              ispublichint={`publicrecurrencehintupdate`} setpublic={`setpublicrecurrenceupdate`} />
+              ispublichint={FLD_UPD_HNT_REC_PUB} setpublic={FLD_UPD_SET_REC_PUB} />
           </Col>
           <Col>
             <IsLiveField islive={props.liverecurrence} trigger={props.handleLiverecurrence}
-              islivehint={`liverecurrencehintupdate`} setlive={`setliverecurrenceupdate`} />
+              islivehint={FLD_UPD_HNT_REC_LIV} setlive={FLD_UPD_SET_REC_LIV} />
           </Col>
         </Row>
         <Row>

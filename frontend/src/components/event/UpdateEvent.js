@@ -6,6 +6,8 @@ import { updateInOwnEvents, removeFromOwnEvents } from '../../reducers/ownEvents
 
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_EVENT, ACTION_DELETE_EVENT } from '../../constants'
+import { FLD_UPD_HNT_EVE_DES, FLD_UPD_HNT_EVE_NAM, FLD_UPD_HNT_EVE_LIV, FLD_UPD_HNT_EVE_PUB } from '../../constants'
+import { FLD_UPD_SET_EVE_DES, FLD_UPD_SET_EVE_NAM, FLD_UPD_SET_EVE_LIV, FLD_UPD_SET_EVE_PUB } from '../../constants'
 import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
@@ -20,49 +22,49 @@ const UpdateEvent = (props) => {
   const [liveevent, setLiveevent] = useState(unfinishedEvent.liveevent)
 
   const controlEventname = () => {
-    if (document.getElementById(`eventnamehintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_EVE_NAM)) {
       if (eventname.trim() === '') {
-        document.getElementById(`eventnamehintupdate`).innerHTML = 'Enter event name'
+        document.getElementById(FLD_UPD_HNT_EVE_NAM).innerHTML = 'Enter event name'
         return false
       } else if (eventname.trim().length < EVENTNAME_LENGTH) {
-        document.getElementById(`eventnamehintupdate`).innerHTML = `Event name must be at least ${EVENTNAME_LENGTH} characters`
+        document.getElementById(FLD_UPD_HNT_EVE_NAM).innerHTML = `Event name must be at least ${EVENTNAME_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`eventnamehintupdate`).innerHTML = 'Event name is long enough'
+        document.getElementById(FLD_UPD_HNT_EVE_NAM).innerHTML = 'Event name is long enough'
         return true
       }
     }
   }
   const controlDescription = () => {
-    if (document.getElementById(`descriptionhintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_EVE_DES)) {
       if (description.trim() === '') {
-        document.getElementById(`descriptionhintupdate`).innerHTML = 'Enter description of event'
+        document.getElementById(FLD_UPD_HNT_EVE_DES).innerHTML = 'Enter description of event'
         return false
       } else if (description.trim().length < DESCRIPTION_LENGTH) {
-        document.getElementById(`descriptionhintupdate`).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
+        document.getElementById(FLD_UPD_HNT_EVE_DES).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`descriptionhintupdate`).innerHTML = 'Description is long enough'
+        document.getElementById(FLD_UPD_HNT_EVE_DES).innerHTML = 'Description is long enough'
         return true
       }
     }
   }
   const controlPublicevent = () => {
-    if (document.getElementById(`publiceventhintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_EVE_PUB)) {
       if (publicevent === false) {
-        document.getElementById(`publiceventhintupdate`).innerHTML = 'You have chosen to make the event private'
+        document.getElementById(FLD_UPD_HNT_EVE_PUB).innerHTML = 'You have chosen to make the event private'
       } else {
-        document.getElementById(`publiceventhintupdate`).innerHTML = 'You have chosen to make the event visible to all'
+        document.getElementById(FLD_UPD_HNT_EVE_PUB).innerHTML = 'You have chosen to make the event visible to all'
       }
     }
     return
   }
   const controlLiveevent = () => {
-    if (document.getElementById(`liveeventhintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_EVE_LIV)) {
       if (liveevent === false) {
-        document.getElementById(`liveeventhintupdate`).innerHTML = 'You have chosen not to make the event live'
+        document.getElementById(FLD_UPD_HNT_EVE_LIV).innerHTML = 'You have chosen not to make the event live'
       } else {
-        document.getElementById(`liveeventhintupdate`).innerHTML = 'You have chosen to make the event live'
+        document.getElementById(FLD_UPD_HNT_EVE_LIV).innerHTML = 'You have chosen to make the event live'
       }
     }
     return
@@ -100,24 +102,24 @@ const UpdateEvent = (props) => {
 
   const clearFields = () => {
     setEventname('')
-    document.getElementById(`seteventnameupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_EVE_NAM).value = ''
     setDescription('')
-    document.getElementById(`setdescriptionupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_EVE_DES).value = ''
     setPublicevent(false)
-    document.getElementById(`setpubliceventupdate`).checked = false
+    document.getElementById(FLD_UPD_SET_EVE_PUB).checked = false
     setLiveevent(false)
-    document.getElementById(`setliveeventupdate`).checked = false
+    document.getElementById(FLD_UPD_SET_EVE_LIV).checked = false
   }
 
   const revertFields = () => {
     setEventname(unfinishedEvent.eventname)
-    document.getElementById(`seteventnameupdate`).value = unfinishedEvent.eventname
+    document.getElementById(FLD_UPD_SET_EVE_NAM).value = unfinishedEvent.eventname
     setDescription(unfinishedEvent.description)
-    document.getElementById(`setdescriptionupdate`).value = unfinishedEvent.description
+    document.getElementById(FLD_UPD_SET_EVE_DES).value = unfinishedEvent.description
     setPublicevent(unfinishedEvent.publicevent)
-    document.getElementById(`setpubliceventupdate`).checked = unfinishedEvent.publicevent
+    document.getElementById(FLD_UPD_SET_EVE_PUB).checked = unfinishedEvent.publicevent
     setLiveevent(unfinishedEvent.liveevent)
-    document.getElementById(`setliveeventupdate`).checked = unfinishedEvent.liveevent
+    document.getElementById(FLD_UPD_SET_EVE_LIV).checked = unfinishedEvent.liveevent
   }
 
   const handleUpdateEventCancel = (event) => {

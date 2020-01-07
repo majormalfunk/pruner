@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField } from './InputFields'
 import { ACTION_CREATE_VENUE, ACTION_CREATE_VENUE_CANCEL } from '../../constants'
+import { FLD_CRE_HNT_VEN_NAM } from '../../constants'
+import { FLD_CRE_SET_VEN_NAM } from '../../constants'
 
 const CreateEventVenueForm = (props) => {
 
@@ -19,7 +21,7 @@ const CreateEventVenueForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.venuename} trigger={props.handleVenuename}
-              namehint={`venuenamehintcreate`} setname={`setvenuenamecreate`} />
+              namehint={FLD_CRE_HNT_VEN_NAM} setname={FLD_CRE_SET_VEN_NAM} />
             &nbsp;
           </Col>
           <Col>

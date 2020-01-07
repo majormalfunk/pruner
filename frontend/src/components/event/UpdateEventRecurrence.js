@@ -6,6 +6,8 @@ import { updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents } from '../.
 
 import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_RECURRENCE, ACTION_DELETE_RECURRENCE } from '../../constants'
+import { FLD_UPD_HNT_REC_DES, FLD_UPD_HNT_REC_NAM, FLD_UPD_HNT_REC_LIV, FLD_UPD_HNT_REC_PUB } from '../../constants'
+import { FLD_UPD_SET_REC_DES, FLD_UPD_SET_REC_NAM, FLD_UPD_SET_REC_LIV, FLD_UPD_SET_REC_PUB } from '../../constants'
 import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
@@ -21,49 +23,49 @@ const UpdateEventRecurrence = (props) => {
   const [liverecurrence, setLiverecurrence] = useState(unfinishedRecurrence.liverecurrence)
 
   const controlRecurrencename = () => {
-    if (document.getElementById(`recurrencenamehintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_REC_NAM)) {
       if (recurrencename.trim() === '') {
-        document.getElementById(`recurrencenamehintupdate`).innerHTML = 'Enter recurrence name'
+        document.getElementById(FLD_UPD_HNT_REC_NAM).innerHTML = 'Enter recurrence name'
         return false
       } else if (recurrencename.trim().length < RECURRENCENAME_LENGTH) {
-        document.getElementById(`recurrencenamehintupdate`).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
+        document.getElementById(FLD_UPD_HNT_REC_NAM).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`recurrencenamehintupdate`).innerHTML = 'Recurrence name is long enough'
+        document.getElementById(FLD_UPD_HNT_REC_NAM).innerHTML = 'Recurrence name is long enough'
         return true
       }
     }
   }
   const controlDescription = () => {
-    if (document.getElementById(`descriptionhintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_REC_DES)) {
       if (description.trim() === '') {
-        document.getElementById(`descriptionhintupdate`).innerHTML = 'Enter description of recurrence'
+        document.getElementById(FLD_UPD_HNT_REC_DES).innerHTML = 'Enter description of recurrence'
         return false
       } else if (description.trim().length < DESCRIPTION_LENGTH) {
-        document.getElementById(`descriptionhintupdate`).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
+        document.getElementById(FLD_UPD_HNT_REC_DES).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`descriptionhintupdate`).innerHTML = 'Description is long enough'
+        document.getElementById(FLD_UPD_HNT_REC_DES).innerHTML = 'Description is long enough'
         return true
       }
     }
   }
   const controlPublicrecurrence = () => {
-    if (document.getElementById(`publicrecurrencehintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_REC_PUB)) {
       if (publicrecurrence === false) {
-        document.getElementById(`publicrecurrencehintupdate`).innerHTML = 'You have chosen to make the recurrence private'
+        document.getElementById(FLD_UPD_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence private'
       } else {
-        document.getElementById(`publicrecurrencehintupdate`).innerHTML = 'You have chosen to make the recurrence visible to all'
+        document.getElementById(FLD_UPD_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence visible to all'
       }
     }
     return
   }
   const controlLiverecurrence = () => {
-    if (document.getElementById(`liverecurrencehintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_REC_LIV)) {
       if (liverecurrence === false) {
-        document.getElementById(`liverecurrencehintupdate`).innerHTML = 'You have chosen not to make the recurrence live'
+        document.getElementById(FLD_UPD_HNT_REC_LIV).innerHTML = 'You have chosen not to make the recurrence live'
       } else {
-        document.getElementById(`liverecurrencehintupdate`).innerHTML = 'You have chosen to make the recurrence live'
+        document.getElementById(FLD_UPD_HNT_REC_LIV).innerHTML = 'You have chosen to make the recurrence live'
       }
     }
     return
@@ -103,24 +105,24 @@ const UpdateEventRecurrence = (props) => {
 
   const clearFields = () => {
     setRecurrencename('')
-    document.getElementById(`setrecurrencenameupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_REC_NAM).value = ''
     setDescription('')
-    document.getElementById(`setrecurrencedescriptionupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_REC_DES).value = ''
     setPublicrecurrence(false)
-    document.getElementById(`setpublicrecurrenceupdate`).checked = false
+    document.getElementById(FLD_UPD_SET_REC_PUB).checked = false
     setLiverecurrence(false)
-    document.getElementById(`setliverecurrenceupdate`).checked = false
+    document.getElementById(FLD_UPD_SET_REC_LIV).checked = false
   }
 
   const revertFields = () => {
     setRecurrencename(unfinishedRecurrence.recurrencename)
-    document.getElementById(`setrecurrencenameupdate`).value = unfinishedRecurrence.recurrencename
+    document.getElementById(FLD_UPD_SET_REC_NAM).value = unfinishedRecurrence.recurrencename
     setDescription(unfinishedRecurrence.description)
-    document.getElementById(`setrecurrencedescriptionupdate`).value = unfinishedRecurrence.description
+    document.getElementById(FLD_UPD_SET_REC_DES).value = unfinishedRecurrence.description
     setPublicrecurrence(unfinishedRecurrence.publicevent)
-    document.getElementById(`setpublicrecurrenceupdate`).checked = unfinishedRecurrence.publicrecurrence
+    document.getElementById(FLD_UPD_SET_REC_PUB).checked = unfinishedRecurrence.publicrecurrence
     setLiverecurrence(unfinishedRecurrence.liverecurrence)
-    document.getElementById(`setliverecurrenceupdate`).checked = unfinishedRecurrence.liverecurrence
+    document.getElementById(FLD_UPD_SET_REC_LIV).checked = unfinishedRecurrence.liverecurrence
   }
 
   const handleUpdateRecurrenceCancel = (event) => {

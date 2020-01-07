@@ -72,6 +72,7 @@
 | 05.01.2020    | Update and delete Event venues                                     |     3,0   |           |
 | **WEEK  1**   | **TOTAL**                                                          |  **12,0** | **145,0** |
 | 06.01.2020    | Create, update and delete Event shows                              |     6,0   |           |
-| **WEEK  2**   | **TOTAL**                                                          |   **6,0** | **151,0** |
+| 07.01.2020    | Some refactoring and Event entries                                 |     2,0   |           |
+| **WEEK  2**   | **TOTAL**                                                          |   **8,0** | **153,0** |
 
 

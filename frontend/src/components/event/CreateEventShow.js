@@ -6,6 +6,8 @@ import { addShowToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { SHOWNAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_SHOW } from '../../constants'
+import { FLD_CRE_HNT_SHO_DES, FLD_CRE_HNT_SHO_NAM, FLD_CRE_HNT_SHO_LNK, FLD_CRE_HNT_SHO_DUR } from '../../constants'
+import { FLD_CRE_SET_SHO_DES, FLD_CRE_SET_SHO_NAM, FLD_CRE_SET_SHO_LNK, FLD_CRE_SET_SHO_DUR } from '../../constants'
 
 import CreateEventShowForm from './CreateEventShowForm'
 
@@ -21,15 +23,15 @@ const CreateEventShow = (props) => {
 
   const controlShowname = () => {
     if (showname) {
-      if (document.getElementById(`shownamehintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_SHO_NAM)) {
         if (showname.trim() === '') {
-          document.getElementById(`shownamehintcreate`).innerHTML = 'Enter show name'
+          document.getElementById(FLD_CRE_HNT_SHO_NAM).innerHTML = 'Enter show name'
           return false
         } else if (showname.trim().length < SHOWNAME_LENGTH) {
-          document.getElementById(`shownamehintcreate`).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
+          document.getElementById(FLD_CRE_HNT_SHO_NAM).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
           return false
         } else {
-          document.getElementById(`shownamehintcreate`).innerHTML = 'Show name is long enough'
+          document.getElementById(FLD_CRE_HNT_SHO_NAM).innerHTML = 'Show name is long enough'
           return true
         }
       }
@@ -37,11 +39,11 @@ const CreateEventShow = (props) => {
   }
   const controlDescription = () => {
     if (description) {
-      if (document.getElementById(`showdescriptionhintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_SHO_DES)) {
         if (description.trim() === '') {
-          document.getElementById(`showdescriptionhintcreate`).innerHTML = 'You should give a short description of the show'
+          document.getElementById(FLD_CRE_HNT_SHO_DES).innerHTML = 'You should give a short description of the show'
         } else {
-          document.getElementById(`showdescriptionhintcreate`).innerHTML = 'Planners will see this description'
+          document.getElementById(FLD_CRE_HNT_SHO_DES).innerHTML = 'Planners will see this description'
         }
       }
       return
@@ -49,11 +51,11 @@ const CreateEventShow = (props) => {
   }
   const controlLink = () => {
     if (link) {
-      if (document.getElementById(`showlinkhintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_SHO_LNK)) {
         if (description.trim() === '') {
-          document.getElementById(`showlinkhintcreate`).innerHTML = 'You can provide a link for the show'
+          document.getElementById(FLD_CRE_HNT_SHO_LNK).innerHTML = 'You can provide a link for the show'
         } else {
-          document.getElementById(`showlinkhintcreate`).innerHTML = 'Planners will see this link'
+          document.getElementById(FLD_CRE_HNT_SHO_LNK).innerHTML = 'Planners will see this link'
         }
       }
       return
@@ -64,15 +66,15 @@ const CreateEventShow = (props) => {
       if (isNaN(duration)) {
         return false
       }
-      if (document.getElementById(`showdurationhintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_SHO_DUR)) {
         if (duration < 0) {
-          document.getElementById(`showdurationhintcreate`).innerHTML = 'Show´s duration can´t be negative'
+          document.getElementById(FLD_CRE_HNT_SHO_DUR).innerHTML = 'Show´s duration can´t be negative'
           return false
         } else if (duration === 0) {
-          document.getElementById(`showdurationhintcreate`).innerHTML = 'Are you sure the show takes less than a minute?'
+          document.getElementById(FLD_CRE_HNT_SHO_DUR).innerHTML = 'Are you sure the show takes less than a minute?'
           return true
         } else {
-          document.getElementById(`showdurationhintcreate`).innerHTML = `Show duration is ${duration} minutes`
+          document.getElementById(FLD_CRE_HNT_SHO_DUR).innerHTML = `Show duration is ${duration} minutes`
           return true
         }
       }
@@ -113,13 +115,13 @@ const CreateEventShow = (props) => {
 
   const clearFields = () => {
     setShowname('')
-    document.getElementById(`setshownamecreate`).value = ''
+    document.getElementById(FLD_CRE_SET_SHO_NAM).value = ''
     setDescription('')
-    document.getElementById(`setshowdescriptioncreate`).value = ''
+    document.getElementById(FLD_CRE_SET_SHO_DES).value = ''
     setLink('')
-    document.getElementById(`setshowlinkcreate`).value = ''
+    document.getElementById(FLD_CRE_SET_SHO_LNK).value = ''
     setDuration(0)
-    document.getElementById(`setshowdurationcreate`).value = 0
+    document.getElementById(FLD_CRE_SET_SHO_DUR).value = 0
   }
 
   const handleCreateShowCancel = (event) => {

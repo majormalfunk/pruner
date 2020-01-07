@@ -6,6 +6,8 @@ import { addRecurrenceToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_CREATE_RECURRENCE } from '../../constants'
+import { FLD_CRE_HNT_REC_DES, FLD_CRE_HNT_REC_NAM, FLD_CRE_HNT_REC_LIV, FLD_CRE_HNT_REC_PUB } from '../../constants'
+import { FLD_CRE_SET_REC_DES, FLD_CRE_SET_REC_NAM, FLD_CRE_SET_REC_LIV, FLD_CRE_SET_REC_PUB } from '../../constants'
 
 import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
 
@@ -21,15 +23,15 @@ const CreateEventRecurrence = (props) => {
 
   const controlRecurrencename = () => {
     if (recurrencename) {
-      if (document.getElementById(`recurrencenamehintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_REC_NAM)) {
         if (recurrencename.trim() === '') {
-          document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Enter recurrence name'
+          document.getElementById(FLD_CRE_HNT_REC_NAM).innerHTML = 'Enter recurrence name'
           return false
         } else if (recurrencename.trim().length < RECURRENCENAME_LENGTH) {
-          document.getElementById(`recurrencenamehintcreate`).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
+          document.getElementById(FLD_CRE_HNT_REC_NAM).innerHTML = `Recurrence name must be at least ${RECURRENCENAME_LENGTH} characters`
           return false
         } else {
-          document.getElementById(`recurrencenamehintcreate`).innerHTML = 'Recurrence name is long enough'
+          document.getElementById(FLD_CRE_HNT_REC_NAM).innerHTML = 'Recurrence name is long enough'
           return true
         }
       }
@@ -37,15 +39,15 @@ const CreateEventRecurrence = (props) => {
   }
   const controlDescription = () => {
     if (description) {
-      if (document.getElementById(`descriptionhintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_REC_DES)) {
         if (description.trim() === '') {
-          document.getElementById(`descriptionhintcreate`).innerHTML = 'Enter description of recurrence'
+          document.getElementById(FLD_CRE_HNT_REC_DES).innerHTML = 'Enter description of recurrence'
           return false
         } else if (description.trim().length < DESCRIPTION_LENGTH) {
-          document.getElementById(`descriptionhintcreate`).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
+          document.getElementById(FLD_CRE_HNT_REC_DES).innerHTML = `Description must be at least ${DESCRIPTION_LENGTH} characters`
           return false
         } else {
-          document.getElementById(`descriptionhintcreate`).innerHTML = 'Description is long enough'
+          document.getElementById(FLD_CRE_HNT_REC_DES).innerHTML = 'Description is long enough'
           return true
         }
       }
@@ -53,11 +55,11 @@ const CreateEventRecurrence = (props) => {
   }
   const controlPublicrecurrence = () => {
     if (publicrecurrence) {
-      if (document.getElementById(`publicrecurrencehintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_REC_PUB)) {
         if (publicrecurrence === false) {
-          document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence private'
+          document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence private'
         } else {
-          document.getElementById(`publicrecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence visible to all'
+          document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence visible to all'
         }
       }
       return
@@ -65,11 +67,11 @@ const CreateEventRecurrence = (props) => {
   }
   const controlLiverecurrence = () => {
     if (liverecurrence) {
-      if (document.getElementById(`liverecurrencehintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_REC_LIV)) {
         if (liverecurrence === false) {
-          document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen not to make the recurrence live'
+          document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen not to make the recurrence live'
         } else {
-          document.getElementById(`liverecurrencehintcreate`).innerHTML = 'You have chosen to make the recurrence live'
+          document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen to make the recurrence live'
         }
       }
       return
@@ -105,13 +107,13 @@ const CreateEventRecurrence = (props) => {
 
   const clearFields = () => {
     setRecurrencename('')
-    document.getElementById(`setrecurrencenamecreate`).value = ''
+    document.getElementById(FLD_CRE_SET_REC_NAM).value = ''
     setDescription('')
-    document.getElementById(`setdescriptioncreate`).value = ''
+    document.getElementById(FLD_CRE_SET_REC_DES).value = ''
     setPublicrecurrence(false)
-    document.getElementById(`setpublicrecurrencecreate`).checked = false
+    document.getElementById(FLD_CRE_SET_REC_PUB).checked = false
     setLiverecurrence(false)
-    document.getElementById(`setliverecurrencecreate`).checked = false
+    document.getElementById(FLD_CRE_SET_REC_LIV).checked = false
   }
 
   const handleCreateRecurrenceCancel = (event) => {

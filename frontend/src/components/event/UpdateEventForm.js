@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_UPDATE_EVENT, ACTION_UPDATE_EVENT_CANCEL, ACTION_DELETE_EVENT } from '../../constants'
+import { FLD_UPD_HNT_EVE_DES, FLD_UPD_HNT_EVE_NAM, FLD_UPD_HNT_EVE_LIV, FLD_UPD_HNT_EVE_PUB } from '../../constants'
+import { FLD_UPD_SET_EVE_DES, FLD_UPD_SET_EVE_NAM, FLD_UPD_SET_EVE_LIV, FLD_UPD_SET_EVE_PUB } from '../../constants'
 
 const UpdateEventForm = (props) => {
 
@@ -32,21 +34,21 @@ const UpdateEventForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.eventname} trigger={props.handleEventname}
-              namehint={`eventnamehintupdate`} setname={`seteventnameupdate`} />
+              namehint={FLD_UPD_HNT_EVE_NAM} setname={FLD_UPD_SET_EVE_NAM} />
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`descriptionhintupdate`} setdescription={`setdescriptionupdate`} />
+              descriptionhint={FLD_UPD_HNT_EVE_DES} setdescription={FLD_UPD_SET_EVE_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <IsPublicField ispublic={props.publicevent} trigger={props.handlePublicevent}
-              ispublichint={`publiceventhintupdate`} setpublic={`setpubliceventupdate`} />
+              ispublichint={FLD_UPD_HNT_EVE_PUB} setpublic={FLD_UPD_SET_EVE_PUB} />
           </Col>
           <Col>
             <IsLiveField islive={props.liveevent} trigger={props.handleLiveevent}
-              islivehint={`liveeventhintupdate`} setlive={`setliveeventupdate`} />
+              islivehint={FLD_UPD_HNT_EVE_LIV} setlive={FLD_UPD_SET_EVE_LIV} />
           </Col>
         </Row>
         <Row>

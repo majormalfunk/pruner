@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, DurationField, LinkField } from './InputFields'
 import { ACTION_UPDATE_SHOW, ACTION_UPDATE_SHOW_CANCEL, ACTION_DELETE_SHOW } from '../../constants'
+import { FLD_UPD_HNT_SHO_DES, FLD_UPD_HNT_SHO_NAM, FLD_UPD_HNT_SHO_LNK, FLD_UPD_HNT_SHO_DUR } from '../../constants'
+import { FLD_UPD_SET_SHO_DES, FLD_UPD_SET_SHO_NAM, FLD_UPD_SET_SHO_LNK, FLD_UPD_SET_SHO_DUR } from '../../constants'
 
 const UpdateEventShowForm = (props) => {
 
@@ -11,23 +13,23 @@ const UpdateEventShowForm = (props) => {
       <Row>
           <Col>
             <NameField name={props.showname} trigger={props.handleShowname}
-              namehint={`shownamehintupdate`} setname={`setshownameupdate`} />
+              namehint={FLD_UPD_HNT_SHO_NAM} setname={FLD_UPD_SET_SHO_NAM} />
             &nbsp;
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`showdescriptionhintupdate`} setdescription={`setshowdescriptionupdate`} />
+              descriptionhint={FLD_UPD_HNT_SHO_DES} setdescription={FLD_UPD_SET_SHO_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <DurationField duration={props.duration} trigger={props.handleDuration}
-              durationhint={`showdurationhintupdate`} setduration={`setshowdurationupdate`} />
+              durationhint={FLD_UPD_HNT_SHO_DUR} setduration={FLD_UPD_SET_SHO_DUR} />
             &nbsp;
           </Col>
           <Col>
             <LinkField link={props.link} trigger={props.handleLink}
-              linkhint={`showlinkhintupdate`} setlink={`setshowlinkupdate`} />
+              linkhint={FLD_UPD_HNT_SHO_LNK} setlink={FLD_UPD_SET_SHO_LNK} />
           </Col>
         </Row>
         <Row>

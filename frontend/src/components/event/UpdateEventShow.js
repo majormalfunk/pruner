@@ -6,6 +6,8 @@ import { updateShowInOwnEvents, removeShowFromOwnEvents } from '../../reducers/o
 
 import { SHOWNAME_LENGTH } from '../../constants'
 import { ACTION_UPDATE_SHOW } from '../../constants'
+import { FLD_UPD_HNT_SHO_DES, FLD_UPD_HNT_SHO_NAM, FLD_UPD_HNT_SHO_LNK, FLD_UPD_HNT_SHO_DUR } from '../../constants'
+import { FLD_UPD_SET_SHO_DES, FLD_UPD_SET_SHO_NAM, FLD_UPD_SET_SHO_LNK, FLD_UPD_SET_SHO_DUR } from '../../constants'
 import UpdateEventShowForm from './UpdateEventShowForm'
 
 const UpdateEventShow = (props) => {
@@ -21,15 +23,15 @@ const UpdateEventShow = (props) => {
 
   const controlShowname = () => {
     if (showname) {
-      if (document.getElementById(`shownamehintupdate`)) {
+      if (document.getElementById(FLD_UPD_HNT_SHO_NAM)) {
         if (showname.trim() === '') {
-          document.getElementById(`shownamehintupdate`).innerHTML = 'Enter show name'
+          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Enter show name'
           return false
         } else if (showname.trim().length < SHOWNAME_LENGTH) {
-          document.getElementById(`shownamehintupdate`).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
+          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
           return false
         } else {
-          document.getElementById(`shownamehintupdate`).innerHTML = 'Show name is long enough'
+          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Show name is long enough'
           return true
         }
       }
@@ -37,11 +39,11 @@ const UpdateEventShow = (props) => {
   }
   const controlDescription = () => {
     if (description) {
-      if (document.getElementById(`showdescriptionhintupdate`)) {
+      if (document.getElementById(FLD_UPD_HNT_SHO_DES)) {
         if (description.trim() === '') {
-          document.getElementById(`showdescriptionhintupdate`).innerHTML = 'You should give a short description of the show'
+          document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'You should give a short description of the show'
         } else {
-          document.getElementById(`showdescriptionhintupdate`).innerHTML = 'Planners will see this description'
+          document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'Planners will see this description'
         }
       }
       return
@@ -49,11 +51,11 @@ const UpdateEventShow = (props) => {
   }
   const controlLink = () => {
     if (link) {
-      if (document.getElementById(`showlinkhintupdate`)) {
+      if (document.getElementById(FLD_UPD_HNT_SHO_LNK)) {
         if (description.trim() === '') {
-          document.getElementById(`showlinkhintupdate`).innerHTML = 'You can provide a link for the show'
+          document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'You can provide a link for the show'
         } else {
-          document.getElementById(`showlinkhintupdate`).innerHTML = 'Planners will see this link'
+          document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'Planners will see this link'
         }
       }
       return
@@ -64,15 +66,15 @@ const UpdateEventShow = (props) => {
       if (isNaN(duration)) {
         return false
       }
-      if (document.getElementById(`showdurationhintupdate`)) {
+      if (document.getElementById(FLD_UPD_HNT_SHO_DUR)) {
         if (duration < 0) {
-          document.getElementById(`showdurationhintupdate`).innerHTML = 'Show´s duration can´t be negative'
+          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Show´s duration can´t be negative'
           return false
         } else if (duration === 0) {
-          document.getElementById(`showdurationhintupdate`).innerHTML = 'Are you sure the show takes less than a minute?'
+          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Are you sure the show takes less than a minute?'
           return true
         } else {
-          document.getElementById(`showdurationhintupdate`).innerHTML = `Show duration is ${duration} minutes`
+          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = `Show duration is ${duration} minutes`
           return true
         }
       }
@@ -113,24 +115,24 @@ const UpdateEventShow = (props) => {
 
   const clearFields = () => {
     setShowname('')
-    document.getElementById(`setshownameupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_SHO_NAM).value = ''
     setDescription('')
-    document.getElementById(`setshowdescriptionupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_SHO_DES).value = ''
     setLink('')
-    document.getElementById(`setshowlinkupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_SHO_LNK).value = ''
     setDuration(0)
-    document.getElementById(`setshowdurationupdate`).value = 0
+    document.getElementById(FLD_UPD_SET_SHO_DUR).value = 0
   }
 
   const revertFields = () => {
     setShowname(unfinishedShow.showname)
-    document.getElementById(`setshownameupdate`).value = unfinishedShow.showname
+    document.getElementById(FLD_UPD_SET_SHO_NAM).value = unfinishedShow.showname
     setDescription(unfinishedShow.description)
-    document.getElementById(`setshowdescriptionupdate`).value = unfinishedShow.description
+    document.getElementById(FLD_UPD_SET_SHO_DES).value = unfinishedShow.description
     setLink(unfinishedShow.link)
-    document.getElementById(`setshowlinkupdate`).value = unfinishedShow.link
+    document.getElementById(FLD_UPD_SET_SHO_LNK).value = unfinishedShow.link
     setDuration(unfinishedShow.duration)
-    document.getElementById(`setshowdurationupdate`).value = unfinishedShow.duration
+    document.getElementById(FLD_UPD_SET_SHO_DUR).value = unfinishedShow.duration
   }
 
   const handleUpdateShowCancel = (event) => {

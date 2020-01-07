@@ -6,6 +6,8 @@ import { updateVenueInOwnEvents, removeVenueFromOwnEvents } from '../../reducers
 
 import { VENUENAME_LENGTH } from '../../constants'
 import { ACTION_UPDATE_VENUE } from '../../constants'
+import { FLD_UPD_HNT_VEN_NAM } from '../../constants'
+import { FLD_UPD_SET_VEN_NAM } from '../../constants'
 import UpdateEventVenueForm from './UpdateEventVenueForm'
 
 const UpdateEventVenue = (props) => {
@@ -17,15 +19,15 @@ const UpdateEventVenue = (props) => {
   const [venuename, setVenuename] = useState(unfinishedVenue.venuename)
 
   const controlVenuename = () => {
-    if (document.getElementById(`venuenamehintupdate`)) {
+    if (document.getElementById(FLD_UPD_HNT_VEN_NAM)) {
       if (venuename.trim() === '') {
-        document.getElementById(`venuenamehintupdate`).innerHTML = 'Enter venue name'
+        document.getElementById(FLD_UPD_HNT_VEN_NAM).innerHTML = 'Enter venue name'
         return false
       } else if (venuename.trim().length < VENUENAME_LENGTH) {
-        document.getElementById(`venuenamehintupdate`).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
+        document.getElementById(FLD_UPD_HNT_VEN_NAM).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
         return false
       } else {
-        document.getElementById(`venuenamehintupdate`).innerHTML = 'Venue name is long enough'
+        document.getElementById(FLD_UPD_HNT_VEN_NAM).innerHTML = 'Venue name is long enough'
         return true
       }
     }
@@ -48,12 +50,12 @@ const UpdateEventVenue = (props) => {
 
   const clearFields = () => {
     setVenuename('')
-    document.getElementById(`setvenuenameupdate`).value = ''
+    document.getElementById(FLD_UPD_SET_VEN_NAM).value = ''
   }
 
   const revertFields = () => {
     setVenuename(unfinishedVenue.venuename)
-    document.getElementById(`setvenuenameupdate`).value = unfinishedVenue.venuename
+    document.getElementById(FLD_UPD_SET_VEN_NAM).value = unfinishedVenue.venuename
   }
 
   const handleUpdateVenueCancel = (event) => {

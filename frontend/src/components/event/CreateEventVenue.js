@@ -6,6 +6,8 @@ import { addVenueToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { VENUENAME_LENGTH } from '../../constants'
 import { ACTION_CREATE_VENUE } from '../../constants'
+import { FLD_CRE_HNT_VEN_NAM } from '../../constants'
+import { FLD_CRE_SET_VEN_NAM } from '../../constants'
 
 import CreateEventVenueForm from './CreateEventVenueForm'
 
@@ -18,15 +20,15 @@ const CreateEventVenue = (props) => {
 
   const controlVenuename = () => {
     if (venuename) {
-      if (document.getElementById(`venuenamehintcreate`)) {
+      if (document.getElementById(FLD_CRE_HNT_VEN_NAM)) {
         if (venuename.trim() === '') {
-          document.getElementById(`venuenamehintcreate`).innerHTML = 'Enter venue name'
+          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Enter venue name'
           return false
         } else if (venuename.trim().length < VENUENAME_LENGTH) {
-          document.getElementById(`venuenamehintcreate`).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
+          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
           return false
         } else {
-          document.getElementById(`venuenamehintcreate`).innerHTML = 'Venue name is long enough'
+          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Venue name is long enough'
           return true
         }
       }
@@ -50,7 +52,7 @@ const CreateEventVenue = (props) => {
 
   const clearFields = () => {
     setVenuename('')
-    document.getElementById(`setvenuenamecreate`).value = ''
+    document.getElementById(FLD_CRE_SET_VEN_NAM).value = ''
   }
 
   const handleCreateVenueCancel = (event) => {

@@ -137,10 +137,45 @@ export const updateShowInOwnEvents = (eventId, updatedShow) => {
 }
 
 export const removeShowFromOwnEvents = (eventId, id) => {
-  console.log('Reducer removing show', id)
   return async dispatch => {
     dispatch({
       type: 'REMOVE_SHOW_FROM_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        id: id
+      }
+    })
+  }
+}
+
+export const addEntryToOwnEvents = (eventId, createdEntry) => {
+  return async dispatch => {
+    dispatch({
+      type: 'ADD_ENTRY_TO_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        createdEntry: createdEntry
+      }
+    })
+  }
+}
+
+export const updateEntryInOwnEvents = (eventId, updatedEntry) => {
+  return async dispatch => {
+    dispatch({
+      type: 'UPDATE_ENTRY_IN_OWN_EVENTS',
+      data: {
+        eventId: eventId,
+        updatedEntry: updatedEntry
+      }
+    })
+  }
+}
+
+export const removeEntryFromOwnEvents = (eventId, id) => {
+  return async dispatch => {
+    dispatch({
+      type: 'REMOVE_ENTRY_FROM_OWN_EVENTS',
       data: {
         eventId: eventId,
         id: id
@@ -181,18 +216,15 @@ const ownEventsReducer = (state = [], action) => {
           return (recurrence.id === action.data.updatedRecurrence.id ? action.data.updatedRecurrence : recurrence)
         })
         event.recurrences = newRecurrences
-        console.log('Event in reducer', event)
         return event
       })
     case 'REMOVE_RECURRENCE_FROM_OWN_EVENTS':
-      console.log('CASE: ', action.type)
       return state.map((event) => {
         if (event.id !== action.data.eventId) {
           return event
         }
         const newRecurrences = event.recurrences.filter(recurrence => recurrence.id !== action.data.id)
         event.recurrences = newRecurrences
-        console.log('Event in reducer', event)
         return event
       })
     case 'ADD_VENUE_TO_OWN_EVENTS':
@@ -215,7 +247,6 @@ const ownEventsReducer = (state = [], action) => {
         return event
       })
     case 'REMOVE_VENUE_FROM_OWN_EVENTS':
-      console.log('CASE: ', action.type)
       return state.map((event) => {
         if (event.id !== action.data.eventId) {
           return event
@@ -230,7 +261,6 @@ const ownEventsReducer = (state = [], action) => {
           return event
         }
         event.shows.push(action.data.createdShow)
-        console.log('Event in reducer', event)
         return event
       })
     case 'UPDATE_SHOW_IN_OWN_EVENTS':
@@ -242,17 +272,45 @@ const ownEventsReducer = (state = [], action) => {
           return (show.id === action.data.updatedShow.id ? action.data.updatedShow : show)
         })
         event.shows = newShows
-        console.log('Event in reducer', event)
         return event
       })
     case 'REMOVE_SHOW_FROM_OWN_EVENTS':
-      console.log('CASE: ', action.type)
       return state.map((event) => {
         if (event.id !== action.data.eventId) {
           return event
         }
         const newShows = event.shows.filter(show => show.id !== action.data.id)
         event.shows = newShows
+        return event
+      })
+    case 'ADD_ENTRY_TO_OWN_EVENTS':
+        return state.map((event) => {
+          if (event.id !== action.data.eventId) {
+            return event
+          }
+          event.entries.push(action.data.createdEntry)
+          console.log('Event in reducer', event)
+          return event
+        })
+    case 'UPDATE_ENTRY_IN_OWN_EVENTS':
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        const newEntries = event.entries.map((entry) => {
+          return (entry.id === action.data.updatedEntry.id ? action.data.updatedEntry : entry)
+        })
+        event.entries = newEntries
+        console.log('Event in reducer', event)
+        return event
+      })
+    case 'REMOVE_ENTRY_FROM_OWN_EVENTS':
+      return state.map((event) => {
+        if (event.id !== action.data.eventId) {
+          return event
+        }
+        const newEntries = event.entries.filter(entry => entry.id !== action.data.id)
+        event.entries = newEntries
         console.log('Event in reducer', event)
         return event
       })

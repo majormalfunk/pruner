@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, DurationField, LinkField } from './InputFields'
 import { ACTION_CREATE_SHOW, ACTION_CREATE_SHOW_CANCEL } from '../../constants'
+import { FLD_CRE_HNT_SHO_DES, FLD_CRE_HNT_SHO_NAM, FLD_CRE_HNT_SHO_LNK, FLD_CRE_HNT_SHO_DUR } from '../../constants'
+import { FLD_CRE_SET_SHO_DES, FLD_CRE_SET_SHO_NAM, FLD_CRE_SET_SHO_LNK, FLD_CRE_SET_SHO_DUR } from '../../constants'
 
 const CreateEventShowForm = (props) => {
 
@@ -19,23 +21,23 @@ const CreateEventShowForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.showname} trigger={props.handleShowname}
-              namehint={`shownamehintcreate`} setname={`setshownamecreate`} />
+              namehint={FLD_CRE_HNT_SHO_NAM} setname={FLD_CRE_SET_SHO_NAM} />
             &nbsp;
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`showdescriptionhintcreate`} setdescription={`setshowdescriptioncreate`} />
+              descriptionhint={FLD_CRE_HNT_SHO_DES} setdescription={FLD_CRE_SET_SHO_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <DurationField duration={props.duration} trigger={props.handleDuration}
-              durationhint={`showdurationhintcreate`} setduration={`setshowdurationcreate`} />
+              durationhint={FLD_CRE_HNT_SHO_DUR} setduration={FLD_CRE_SET_SHO_DUR} />
             &nbsp;
           </Col>
           <Col>
             <LinkField link={props.link} trigger={props.handleLink}
-              linkhint={`showlinkhintcreate`} setlink={`setshowlinkcreate`} />
+              linkhint={FLD_CRE_HNT_SHO_LNK} setlink={FLD_CRE_SET_SHO_LNK} />
           </Col>
         </Row>
         <Row>

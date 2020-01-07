@@ -2,8 +2,17 @@ const { gql } = require('apollo-server')
 
 module.exports = {
   typeDef: gql`
+    scalar Date
     type User {
       nickname: String!
+      id: ID!
+    }
+    type EventEntry {
+      showtime: Date!
+      event: ID!
+      recurrence: ID!
+      venue: ID!
+      show: ID!
       id: ID!
     }
     type EventShow {
@@ -129,6 +138,26 @@ module.exports = {
     }
     extend type Mutation {
       deleteEventShow(
+        id: ID!
+        ): Int!
+    }
+    extend type Mutation {
+      createEventEntry(
+        eventId: ID!
+        recurrenceId: ID!
+        venueId: ID!
+        showId: ID!
+        showtime: Date!
+        ): EventEntry
+    }
+    extend type Mutation {
+      updateEventEntry(
+        id: ID!
+        showtime: Date!
+        ): EventEntry
+    }
+    extend type Mutation {
+      deleteEventEntry(
         id: ID!
         ): Int!
     }

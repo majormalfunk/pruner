@@ -256,3 +256,39 @@ export const DELETE_EVENT_SHOW = gql`
     deleteEventShow(id: $id)
   }
 `
+
+export const CREATE_EVENT_ENTRY = gql`
+  mutation createEventEntry(
+    $eventId: ID!, $recurrenceId: ID!, $venueId: ID!, $showId: ID! $showtime: Date!) {
+    createEventEntry(
+      eventId: $eventId, recurrenceId: $recurrenceId, venueId: $venueId, showId: $showId, showtime: $showtime) {
+      showtime
+      event
+      recurrence
+      venue
+      show
+      id
+    }
+  }
+`
+
+export const UPDATE_EVENT_ENTRY = gql`
+  mutation updateEventEntry(
+    $id: ID!, $showtime: Date!) {
+    updateEventEntry(
+      id: $id, showtime: $showtime) {
+      showtime
+      event
+      recurrence
+      venue
+      show
+      id
+    }
+  }
+`
+
+export const DELETE_EVENT_ENTRY = gql`
+  mutation deleteEventEntry($id: ID!) {
+    deleteEventEntry(id: $id)
+  }
+`

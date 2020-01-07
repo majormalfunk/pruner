@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_CREATE_EVENT, ACTION_CREATE_EVENT_CANCEL } from '../../constants'
+import { FLD_CRE_HNT_EVE_DES, FLD_CRE_HNT_EVE_NAM, FLD_CRE_HNT_EVE_LIV, FLD_CRE_HNT_EVE_PUB } from '../../constants'
+import { FLD_CRE_SET_EVE_DES, FLD_CRE_SET_EVE_NAM, FLD_CRE_SET_EVE_LIV, FLD_CRE_SET_EVE_PUB } from '../../constants'
 
 const CreateEventForm = (props) => {
 
@@ -25,21 +27,21 @@ const CreateEventForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.eventname} trigger={props.handleEventname}
-              namehint={`eventnamehintcreate`} setname={`seteventnamecreate`} />
+              namehint={FLD_CRE_HNT_EVE_NAM} setname={FLD_CRE_SET_EVE_NAM} />
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`descriptionhintcreate`} setdescription={`setdescriptioncreate`} />
+              descriptionhint={FLD_CRE_HNT_EVE_DES} setdescription={FLD_CRE_SET_EVE_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <IsPublicField ispublic={props.publicevent} trigger={props.handlePublicevent}
-              ispublichint={`publiceventhintcreate`} setpublic={`setpubliceventcreate`} />
+              ispublichint={FLD_CRE_HNT_EVE_PUB} setpublic={FLD_CRE_SET_EVE_PUB} />
           </Col>
           <Col>
             <IsLiveField islive={props.liveevent} trigger={props.handleLiveevent}
-              islivehint={`liveeventhintcreate`} setlive={`setliveeventcreate`} />
+              islivehint={FLD_CRE_HNT_EVE_LIV} setlive={FLD_CRE_SET_EVE_LIV} />
           </Col>
         </Row>
         <Row>

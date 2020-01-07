@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField } from './InputFields'
 import { ACTION_UPDATE_VENUE, ACTION_UPDATE_VENUE_CANCEL, ACTION_DELETE_VENUE } from '../../constants'
+import { FLD_UPD_HNT_VEN_NAM } from '../../constants'
+import { FLD_UPD_SET_VEN_NAM } from '../../constants'
 
 const UpdateEventVenueForm = (props) => {
 
@@ -11,7 +13,7 @@ const UpdateEventVenueForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.venuename} trigger={props.handleVenuename}
-              namehint={`venuenamehintupdate`} setname={`setvenuenameupdate`} />
+              namehint={FLD_UPD_HNT_VEN_NAM} setname={FLD_UPD_SET_VEN_NAM} />
           </Col>
           <Col>
             <Button className="FormAlignedBtn"  variant="success" type="button"

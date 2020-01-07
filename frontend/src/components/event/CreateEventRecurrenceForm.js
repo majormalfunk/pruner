@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_CREATE_RECURRENCE, ACTION_CREATE_RECURRENCE_CANCEL } from '../../constants'
+import { FLD_CRE_HNT_REC_DES, FLD_CRE_HNT_REC_NAM, FLD_CRE_HNT_REC_LIV, FLD_CRE_HNT_REC_PUB } from '../../constants'
+import { FLD_CRE_SET_REC_DES, FLD_CRE_SET_REC_NAM, FLD_CRE_SET_REC_LIV, FLD_CRE_SET_REC_PUB } from '../../constants'
 
 const CreateEventRecurrenceForm = (props) => {
 
@@ -25,21 +27,21 @@ const CreateEventRecurrenceForm = (props) => {
         <Row>
           <Col>
             <NameField name={props.recurrencename} trigger={props.handleRecurrencename}
-              namehint={`recurrencenamehintcreate`} setname={`setrecurrencenamecreate`} />
+              namehint={FLD_CRE_HNT_REC_NAM} setname={FLD_CRE_SET_REC_NAM} />
           </Col>
           <Col>
             <DescriptionField description={props.description} trigger={props.handleDescription}
-              descriptionhint={`descriptionhintcreate`} setdescription={`setdescriptioncreate`} />
+              descriptionhint={FLD_CRE_HNT_REC_DES} setdescription={FLD_CRE_SET_REC_DES} />
           </Col>
         </Row>
         <Row>
           <Col>
             <IsPublicField ispublic={props.publicrecurrence} trigger={props.handlePublicrecurrence}
-              ispublichint={`publicrecurrencehintcreate`} setpublic={`setpublicrecurrencecreate`} />
+              ispublichint={FLD_CRE_HNT_REC_PUB} setpublic={FLD_CRE_SET_REC_PUB} />
           </Col>
           <Col>
             <IsLiveField islive={props.liverecurrence} trigger={props.handleLiverecurrence}
-              islivehint={`liverecurrencehintcreate`} setlive={`setliverecurrencecreate`} />
+              islivehint={FLD_CRE_HNT_REC_LIV} setlive={FLD_CRE_SET_REC_LIV} />
           </Col>
         </Row>
         <Row>
