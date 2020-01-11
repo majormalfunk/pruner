@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Event = require('../../models/event')
 const EventShow = require('../../models/eventShow')
+const EventEntry = require('../../models/eventEntry')
 
 const { checkCurrentUser } = require('../../utils')
 
@@ -131,6 +132,13 @@ module.exports = {
           if (userId && userId !== '') {
 
             try {
+
+              let entriesExist = await EventEntry.find({ show: args.id })
+
+              if (entriesExist && entriesExist.length > 0 ) {
+                console.log('Not deleting. Show', args.id, 'has', entriesExist.length, 'associated entries')
+                return 0
+              }
 
               let showToDelete = await EventShow.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: showToDelete.event, owner: userId })

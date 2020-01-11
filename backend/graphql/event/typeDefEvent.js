@@ -46,6 +46,7 @@ module.exports = {
       recurrences: [EventRecurrence]
       venues: [EventVenue]
       shows: [EventShow]
+      entries: [EventEntry]
       owner: User!
       id: ID!
     }

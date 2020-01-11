@@ -6,6 +6,7 @@ const Event = require('../../models/event')
 const EventRecurrence = require('../../models/eventRecurrence')
 const EventVenue = require('../../models/eventVenue')
 const EventShow = require('../../models/eventShow')
+const EventEntry = require('../../models/eventEntry')
 
 const { checkCurrentUser } = require('../../utils')
 
@@ -144,6 +145,13 @@ module.exports = {
 
               if (showsExist && showsExist.length > 0 ) {
                 console.log('Not deleting. Recurrence', args.id, 'has', showsExist.length, 'associated shows')
+                return 0
+              }
+
+              let entriesExist = await EventEntry.find({ recurrence: args.id })
+
+              if (entriesExist && entriesExist.length > 0 ) {
+                console.log('Not deleting. Recurrence', args.id, 'has', entriesExist.length, 'associated entries')
                 return 0
               }
 

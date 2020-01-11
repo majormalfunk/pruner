@@ -37,6 +37,11 @@ const eventSchema = new mongoose.Schema({
     ref: 'EventShow',
     autopopulate: { select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
   }],
+  entries: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EventEntry',
+    autopopulate: { select: ['showtime', 'event', 'recurrence', 'venue', 'show', '_id'] }
+  }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

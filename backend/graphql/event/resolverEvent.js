@@ -70,6 +70,7 @@ module.exports = {
                   recurrences: [],
                   venues: [],
                   shows: [],
+                  entries: [],
                   owner: userId
                 })
                 const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
