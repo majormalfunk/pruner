@@ -22,61 +22,54 @@ const UpdateEventShow = (props) => {
   const [duration, setDuration] = useState(unfinishedShow.duration)
 
   const controlShowname = () => {
-    if (showname) {
-      if (document.getElementById(FLD_UPD_HNT_SHO_NAM)) {
-        if (showname.trim() === '') {
-          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Enter show name'
-          return false
-        } else if (showname.trim().length < SHOWNAME_LENGTH) {
-          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
-          return false
-        } else {
-          document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Show name is long enough'
-          return true
-        }
+    if (document.getElementById(FLD_UPD_HNT_SHO_NAM)) {
+      if (showname.trim() === '') {
+        document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Enter show name'
+        return false
+      } else if (showname.trim().length < SHOWNAME_LENGTH) {
+        document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = `Show name must be at least ${SHOWNAME_LENGTH} characters`
+        return false
+      } else {
+        document.getElementById(FLD_UPD_HNT_SHO_NAM).innerHTML = 'Show name is long enough'
+        return true
       }
     }
   }
   const controlDescription = () => {
-    if (description) {
-      if (document.getElementById(FLD_UPD_HNT_SHO_DES)) {
-        if (description.trim() === '') {
-          document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'You should give a short description of the show'
-        } else {
-          document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'Planners will see this description'
-        }
+    if (document.getElementById(FLD_UPD_HNT_SHO_DES)) {
+      if (description.trim() === '') {
+        document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'You should give a short description of the show'
+      } else {
+        document.getElementById(FLD_UPD_HNT_SHO_DES).innerHTML = 'Planners will see this description'
       }
-      return
     }
+    return
   }
   const controlLink = () => {
-    if (link) {
-      if (document.getElementById(FLD_UPD_HNT_SHO_LNK)) {
-        if (description.trim() === '') {
-          document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'You can provide a link for the show'
-        } else {
-          document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'Planners will see this link'
-        }
+    if (document.getElementById(FLD_UPD_HNT_SHO_LNK)) {
+      if (link.trim() === '') {
+        document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'You can provide a link for the show'
+      } else {
+        document.getElementById(FLD_UPD_HNT_SHO_LNK).innerHTML = 'Planners will see this link'
       }
-      return
     }
+    return
   }
   const controlDuration = () => {
-    if (duration) {
-      if (isNaN(duration)) {
+    if (isNaN(duration)) {
+      document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = `Show duration should be a number`
+      return false
+    }
+    if (document.getElementById(FLD_UPD_HNT_SHO_DUR)) {
+      if (duration < 0) {
+        document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Show´s duration can´t be negative'
         return false
-      }
-      if (document.getElementById(FLD_UPD_HNT_SHO_DUR)) {
-        if (duration < 0) {
-          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Show´s duration can´t be negative'
-          return false
-        } else if (duration === 0) {
-          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Are you sure the show takes less than a minute?'
-          return true
-        } else {
-          document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = `Show duration is ${duration} minutes`
-          return true
-        }
+      } else if (duration === 0) {
+        document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = 'Are you sure the show takes less than a minute?'
+        return true
+      } else {
+        document.getElementById(FLD_UPD_HNT_SHO_DUR).innerHTML = `Show duration is ${duration} minutes`
+        return true
       }
     }
   }

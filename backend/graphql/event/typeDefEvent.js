@@ -17,7 +17,7 @@ module.exports = {
     }
     type EventShow {
       showname: String!
-      description: String!
+      description: String
       link: String
       duration: Int!
       event: ID!

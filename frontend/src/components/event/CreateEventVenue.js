@@ -19,18 +19,16 @@ const CreateEventVenue = (props) => {
   const [venuename, setVenuename] = useState('')
 
   const controlVenuename = () => {
-    if (venuename) {
-      if (document.getElementById(FLD_CRE_HNT_VEN_NAM)) {
-        if (venuename.trim() === '') {
-          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Enter venue name'
-          return false
-        } else if (venuename.trim().length < VENUENAME_LENGTH) {
-          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
-          return false
-        } else {
-          document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Venue name is long enough'
-          return true
-        }
+    if (document.getElementById(FLD_CRE_HNT_VEN_NAM)) {
+      if (venuename.trim() === '') {
+        document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Enter venue name'
+        return false
+      } else if (venuename.trim().length < VENUENAME_LENGTH) {
+        document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = `Venue name must be at least ${VENUENAME_LENGTH} characters`
+        return false
+      } else {
+        document.getElementById(FLD_CRE_HNT_VEN_NAM).innerHTML = 'Venue name is long enough'
+        return true
       }
     }
   }

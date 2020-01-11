@@ -15,12 +15,18 @@ const SelectEventShowForm = (props) => {
     <Container>
       <Form>
         <Row className="ListRow">
-          <Col>
+          <Col lg={4}>
             <Button variant="primary" type="button" size="sm"
               value={ACTION_SELECT_SHOW} id={unfinishedShow.id}
               onClick={handleSelectShow}>Select</Button>
               &nbsp;
               {unfinishedShow.showname}
+          </Col>
+          <Col lg={1}>
+            {parseInt(unfinishedShow.duration).toString().concat(' min')}
+          </Col>
+          <Col lg={4}>
+            {unfinishedShow.description.substring(0, 20).concat('...')}
           </Col>
         </Row>
       </Form>

@@ -73,7 +73,7 @@
 | **WEEK  1**   | **TOTAL**                                                          |  **12,0** | **145,0** |
 | 06.01.2020    | Create, update and delete Event shows                              |     6,0   |           |
 | 07.01.2020    | Some refactoring and Event entries                                 |     2,0   |           |
-| 11.01.2020    | Some refactoring and Event entries                                 |     1,5   |           |
-| **WEEK  2**   | **TOTAL**                                                          |   **9,5** | **154,5** |
+| 11.01.2020    | Some refactoring and Event entries + test data                     |     4,5   |           |
+| **WEEK  2**   | **TOTAL**                                                          |  **12,5** | **157,5** |
 
 

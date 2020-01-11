@@ -5,6 +5,8 @@ const { UserInputError, AuthenticationError } = require('apollo-server')
 //const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
+const EventVenue = require('../../models/eventVenue') // DELETE THIS WHEN TEST DATA OK
+const EventShow = require('../../models/eventShow') // DELETE THIS WHEN TEST DATA OK
 //const JWT_SECRET = process.env.JWT_SECRET
 
 const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
@@ -24,7 +26,7 @@ module.exports = {
             if (userId) {
               try {
                 const eventsFromDB = await Event.find({ owner: userId })
-                console.log('Found events', eventsFromDB)
+                //console.log('Found events', eventsFromDB)
                 //console.log('With recurrs', eventsFromDB.recurrences)
                 return eventsFromDB
               } catch (error) {
@@ -95,6 +97,9 @@ module.exports = {
 
           checkCurrentUser({ currentUser }, 'update an event')
 
+          let shows = await EventShow.find({ event: args.id }) // DELETE THIS WHEN TEST DATA OK
+          let venues = await EventVenue.find({ event: args.id }) // DELETE THIS WHEN TEST DATA OK
+
           if (userId && userId !== '') {
 
             try {
@@ -106,7 +111,9 @@ module.exports = {
                     eventname: args.eventname,
                     description: args.description,
                     publicevent: args.publicevent,
-                    liveevent: args.liveevent
+                    liveevent: args.liveevent,
+                    venues: venues, // DELETE THIS WHEN TEST DATA OK
+                    shows: shows // DELETE THIS WHEN TEST DATA OK
                   }
                 },
                 {
