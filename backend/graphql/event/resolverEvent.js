@@ -2,12 +2,10 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const { UserInputError, AuthenticationError } = require('apollo-server')
-//const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Event = require('../../models/event')
 const EventVenue = require('../../models/eventVenue') // DELETE THIS WHEN TEST DATA OK
 const EventShow = require('../../models/eventShow') // DELETE THIS WHEN TEST DATA OK
-//const JWT_SECRET = process.env.JWT_SECRET
 
 const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 

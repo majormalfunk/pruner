@@ -18,6 +18,9 @@ import { DELETE_EVENT_VENUE } from './gqls'
 import { CREATE_EVENT_SHOW } from './gqls'
 import { UPDATE_EVENT_SHOW } from './gqls'
 import { DELETE_EVENT_SHOW } from './gqls'
+import { CREATE_EVENT_ENTRY } from './gqls'
+import { UPDATE_EVENT_ENTRY } from './gqls'
+import { DELETE_EVENT_ENTRY } from './gqls'
 
 import { PAGE_EVENT_CREATE } from '../../constants'
 
@@ -31,6 +34,9 @@ import EventVenues from './EventVenues'
 import CreateEventShow from './CreateEventShow'
 import UpdateEventShow from './UpdateEventShow'
 import EventShows from './EventShows'
+import CreateEventEntry from './CreateEventEntry'
+import UpdateEventEntry from './UpdateEventEntry'
+import EventEntries from './EventEntries'
 
 const Event = (props) => {
 
@@ -42,6 +48,7 @@ const Event = (props) => {
   const [selectedVenue, setSelectedVenue] = useState(null)
   const [show, setShow] = useState(null)
   const [selectedShow, setSelectedShow] = useState(null)
+  const [selectedEntry, setSelectedEntry] = useState(null)
 
   const handleError = (error) => {
     displayError(error)
@@ -81,6 +88,15 @@ const Event = (props) => {
     onError: handleError
   })
   const deleteEventShow = useMutation(DELETE_EVENT_SHOW, {
+    onError: handleError
+  })
+  const createEventEntry = useMutation(CREATE_EVENT_ENTRY, {
+    onError: handleError
+  })
+  const updateEventEntry = useMutation(UPDATE_EVENT_ENTRY, {
+    onError: handleError
+  })
+  const deleteEventEntry = useMutation(DELETE_EVENT_ENTRY, {
     onError: handleError
   })
 
@@ -192,6 +208,19 @@ const Event = (props) => {
                 createEventShow={createEventShow}
                 unfinishedEvent={event}
                 unfinishedRecurrence={recurrence} />
+              <EventEntries display={page === PAGE_EVENT_CREATE}
+                updateEventEntry={updateEventEntry}
+                deleteEventEntry={deleteEventEntry}
+                venues={unfinishedEvent.venues}
+                shows={unfinishedEvent.shows}
+                entries={unfinishedEvent.entries}
+                selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry} />
+              <CreateEventEntry display={page === PAGE_EVENT_CREATE}
+                createEventEntry={createEventEntry}
+                unfinishedEvent={event}
+                unfinishedRecurrence={recurrence}
+                venues={unfinishedEvent.venues}
+                shows={unfinishedEvent.shows} />
             </Container>
           )
         }

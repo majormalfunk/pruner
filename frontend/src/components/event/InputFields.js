@@ -66,3 +66,62 @@ export const DurationField = (props) => {
   )
 }
 
+export const DateField = (props) => {
+  return (
+    <>
+      <Form.Label>Date</Form.Label>
+      <Form.Control type="text"
+        required placeholder="dd.mm.yyyy" name="dateField" id={props.setDate}
+        defaultValue={props.date} onChange={props.trigger} />
+      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
+    </>
+  )
+}
+
+export const TimeField = (props) => {
+  return (
+    <>
+      <Form.Label>Time</Form.Label>
+      <Form.Control type="text"
+        required placeholder="hh.mi" name="timeField" id={props.setTime}
+        defaultValue={props.time} onChange={props.trigger} />
+      <Form.Text className="text-muted" id={props.timehint}></Form.Text>
+    </>
+  )
+}
+
+export const VenueSelectField = (props) => {
+  return (
+    <>
+      <Form.Label>Venue</Form.Label>
+      <Form.Control as="select"
+        required placeholder="Select venue" name="venueSelectField" id={props.setVenue}
+        defaultValue={props.venue} onChange={props.trigger} >
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </Form.Control>
+      <Form.Text className="text-muted" id={props.venuehint}></Form.Text>
+    </>
+  )
+}
+
+export const ShowSelectField = (props) => {
+  return (
+    <>
+      <Form.Label>Show</Form.Label>
+      <Form.Control as="select"
+        required placeholder="Select show" name="showSelectField" id={props.setShow}
+        defaultValue={props.show} onChange={props.trigger} >
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </Form.Control>
+      <Form.Text className="text-muted" id={props.showhint}></Form.Text>
+    </>
+  )
+}
