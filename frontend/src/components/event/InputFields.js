@@ -91,37 +91,60 @@ export const TimeField = (props) => {
 }
 
 export const VenueSelectField = (props) => {
-  return (
-    <>
-      <Form.Label>Venue</Form.Label>
-      <Form.Control as="select"
-        required placeholder="Select venue" name="venueSelectField" id={props.setVenue}
-        defaultValue={props.venue} onChange={props.trigger} >
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </Form.Control>
-      <Form.Text className="text-muted" id={props.venuehint}></Form.Text>
-    </>
-  )
+
+  if (props.venues) {
+    return (
+      <>
+        <Form.Label>Venue</Form.Label>
+        <Form.Control as="select"
+          required placeholder="Select venue" name="venueSelectField" id={props.setVenue}
+          defaultValue={props.venue} onChange={props.trigger}>
+          {
+            props.venues.map((venue) => {
+              return (<option key={venue.id} value={venue.id}>{venue.venuename}</option>)
+            })
+          }
+        </Form.Control>
+        <Form.Text className="text-muted" id={props.venuehint}></Form.Text>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Form.Label>Venue</Form.Label>
+        <Form.Text>No venues available</Form.Text>
+        <Form.Text className="text-muted" id={props.venuehint}></Form.Text>
+      </>
+    )
+  }
 }
 
 export const ShowSelectField = (props) => {
-  return (
-    <>
-      <Form.Label>Show</Form.Label>
-      <Form.Control as="select"
-        required placeholder="Select show" name="showSelectField" id={props.setShow}
-        defaultValue={props.show} onChange={props.trigger} >
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </Form.Control>
-      <Form.Text className="text-muted" id={props.showhint}></Form.Text>
-    </>
-  )
+
+  if (props.shows) {
+    return (
+      <>
+        <Form.Label>Show</Form.Label>
+        <Form.Control as="select"
+          required placeholder="Select show" name="showSelectField" id={props.setShow}
+          defaultValue={props.show} onChange={props.trigger} >
+          {
+            props.shows.map((show) => {
+              return (<option key={show.id} value={show.id}>{show.showname}</option>)
+            })
+          }
+        </Form.Control>
+        <Form.Text className="text-muted" id={props.showhint}></Form.Text>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Form.Label>Show</Form.Label>
+        <Form.Text>No shows available</Form.Text>
+        <Form.Text className="text-muted" id={props.showhint}></Form.Text>
+      </>
+    )
+  }
+
 }

@@ -76,5 +76,7 @@
 | 11.01.2020    | Some refactoring and Event entries + test data                     |     4,5   |           |
 | 12.01.2020    | Event entries                                                      |     2,5   |           |
 | **WEEK  2**   | **TOTAL**                                                          |  **15,0** | **160,0** |
+| 13.01.2020    | Event entries                                                      |     1,0   |           |
+| **WEEK  1**   | **TOTAL**                                                          |   **1,0** | **161,0** |
 
 

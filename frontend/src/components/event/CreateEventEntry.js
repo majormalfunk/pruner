@@ -24,6 +24,10 @@ const CreateEventEntry = (props) => {
   const [showtime, setShowtime] = useState('')
 
   const controlShow = () => {
+    if (!shows || shows === null || shows.length === 0) {
+      document.getElementById(FLD_CRE_HNT_ENT_SHO).innerHTML = 'At least 1 show needed to create entry'
+      return false
+    }
     if (document.getElementById(FLD_CRE_HNT_ENT_SHO)) {
       if (show.trim() === '') {
         document.getElementById(FLD_CRE_HNT_ENT_SHO).innerHTML = 'Select show'
@@ -35,6 +39,10 @@ const CreateEventEntry = (props) => {
     }
   }
   const controlVenue = () => {
+    if (!venues || venues === null || venues.length === 0) {
+      document.getElementById(FLD_CRE_HNT_ENT_VEN).innerHTML = 'At least 1 venue needed to create entry'
+      return false
+    }
     if (document.getElementById(FLD_CRE_HNT_ENT_VEN)) {
       if (venue.trim() === '') {
         document.getElementById(FLD_CRE_HNT_ENT_VEN).innerHTML = 'Select venue'
@@ -146,7 +154,9 @@ const CreateEventEntry = (props) => {
       showdate={showdate}
       handleShowdate={handleShowdate}
       handleVenue={handleVenue}
+      venues={venues}
       handleShow={handleShow}
+      shows={shows}
       handleCreateEntryCancel={handleCreateEntryCancel}
       handleCreateEntry={handleCreateEntry} />
   )
