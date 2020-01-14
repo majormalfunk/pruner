@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Container, Form, Row, Col } from 'react-bootstrap'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateInOwnEvents, removeFromOwnEvents } from '../../reducers/ownEventsReducer'
@@ -8,13 +9,14 @@ import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_EVENT, ACTION_DELETE_EVENT } from '../../constants'
 import { FLD_UPD_HNT_EVE_DES, FLD_UPD_HNT_EVE_NAM, FLD_UPD_HNT_EVE_LIV, FLD_UPD_HNT_EVE_PUB } from '../../constants'
 import { FLD_UPD_SET_EVE_DES, FLD_UPD_SET_EVE_NAM, FLD_UPD_SET_EVE_LIV, FLD_UPD_SET_EVE_PUB } from '../../constants'
+import UpdateEventCollapsed from './UpdateEventCollapsed'
 import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser,
-    removeFromOwnEvents, updateInOwnEvents,
-    updateEvent, deleteEvent, unfinishedEvent, display, setEvent } = props
+    removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent, unfinishedEvent,
+    display, setEvent, displayEvent, handleDisplayEvent } = props
 
   const [eventname, setEventname] = useState(unfinishedEvent.eventname)
   const [description, setDescription] = useState(unfinishedEvent.description)
@@ -186,19 +188,67 @@ const UpdateEvent = (props) => {
   }
 
   return (
-    <UpdateEventForm
-      eventname={eventname}
-      handleEventname={handleEventname}
-      description={description}
-      handleDescription={handleDescription}
-      publicevent={publicevent}
-      handlePublicevent={handlePublicevent}
-      liveevent={liveevent}
-      handleLiveevent={handleLiveevent}
-      handleUpdateEventCancel={handleUpdateEventCancel}
-      handleUpdateEvent={handleUpdateEvent}
-      handleDeleteEvent={handleDeleteEvent} />
+    <Container>
+        <Row>
+          <Col className="Component-title">
+            This event needs some more data before it can be used in a plan
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Component-title">
+            Your Event
+          </Col>
+        </Row>
+          {(!displayEvent) ? (
+            <UpdateEventCollapsed
+              eventname={eventname}
+              description={description}
+              handleDisplayEvent={handleDisplayEvent} />
+          ) : (
+            <UpdateEventForm
+              eventname={eventname}
+              handleEventname={handleEventname}
+              description={description}
+              handleDescription={handleDescription}
+              publicevent={publicevent}
+              handlePublicevent={handlePublicevent}
+              liveevent={liveevent}
+              handleLiveevent={handleLiveevent}
+              handleUpdateEventCancel={handleUpdateEventCancel}
+              handleUpdateEvent={handleUpdateEvent}
+              handleDeleteEvent={handleDeleteEvent}
+              handleDisplayEvent={handleDisplayEvent} />
+          )}
+    </Container>
   )
+  /*
+  if (!displayEvent) {
+    return (
+      <UpdateEventCollapsed
+        eventname={eventname}
+        description={description}
+        handleDisplayEvent={handleDisplayEvent} />
+    )
+  } else {
+    return (
+      <UpdateEventForm
+        eventname={eventname}
+        handleEventname={handleEventname}
+        description={description}
+        handleDescription={handleDescription}
+        publicevent={publicevent}
+        handlePublicevent={handlePublicevent}
+        liveevent={liveevent}
+        handleLiveevent={handleLiveevent}
+        handleUpdateEventCancel={handleUpdateEventCancel}
+        handleUpdateEvent={handleUpdateEvent}
+        handleDeleteEvent={handleDeleteEvent} />
+    )
+  }
+  */
 }
 
 const mapStateToProps = (state) => {
