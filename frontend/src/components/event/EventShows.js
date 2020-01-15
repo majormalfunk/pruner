@@ -5,13 +5,15 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 import UpdateEventShow from './UpdateEventShow'
 import SelectEventShowForm from './SelectEventShowForm'
+import UpdateEventShowCollapsed from './UpdateEventShowCollapsed'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
 const EventShows = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventShow, deleteEventShow, shows, selectedShow, setSelectedShow } = props
+    updateEventShow, deleteEventShow, shows, selectedShow, setSelectedShow,
+    displayShows, handleDisplayShows } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -57,7 +59,7 @@ const EventShows = (props) => {
     }
   }
 
-  if (shows && shows.length > 0) {
+  if (!displayShows) {
     return (
       <Container>
         <Row>
@@ -65,15 +67,9 @@ const EventShows = (props) => {
             Event shows
           </Col>
         </Row>
-        <Row>
-          <Col className="Component-expl">
-            Select an event show to edit it
-          </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        {showsToDisplay()}
+        <UpdateEventShowCollapsed
+          shows={shows}
+          handleDisplayShows={handleDisplayShows} />
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -87,9 +83,26 @@ const EventShows = (props) => {
             Event shows
           </Col>
         </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
+        {(shows && shows.length > 0) ? (
+          <>
+            <Row>
+              <Col className="Component-expl">
+                Select an event show to edit it
+              </Col>
+            </Row>
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+              {showsToDisplay()}
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+          </>
+        ) : (
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+        )}
       </Container>
     )
   }

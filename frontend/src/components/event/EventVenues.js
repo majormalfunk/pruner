@@ -5,13 +5,15 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 import UpdateEventVenue from './UpdateEventVenue'
 import SelectEventVenueForm from './SelectEventVenueForm'
+import UpdateEventVenueCollapsed from './UpdateEventVenueCollapsed'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
 const EventVenues = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventVenue, deleteEventVenue, venues, selectedVenue, setSelectedVenue } = props
+    updateEventVenue, deleteEventVenue, venues, selectedVenue, setSelectedVenue,
+    displayVenues, handleDisplayVenues } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -57,7 +59,7 @@ const EventVenues = (props) => {
     }
   }
 
-  if (venues && venues.length > 0) {
+  if (!displayVenues) {
     return (
       <Container>
         <Row>
@@ -65,15 +67,9 @@ const EventVenues = (props) => {
             Event venues
           </Col>
         </Row>
-        <Row>
-          <Col className="Component-expl">
-            Select an event venue to edit it
-          </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        {venuesToDisplay()}
+        <UpdateEventVenueCollapsed
+          venues={venues}
+          handleDisplayVenues={handleDisplayVenues} />
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -87,9 +83,26 @@ const EventVenues = (props) => {
             Event venues
           </Col>
         </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
+        {(venues && venues.length > 0) ? (
+          <>
+            <Row>
+              <Col className="Component-expl">
+                Select an event venue to edit it
+              </Col>
+            </Row>
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+              {venuesToDisplay()}
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+          </>
+        ) : (
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+        )}
       </Container>
     )
   }

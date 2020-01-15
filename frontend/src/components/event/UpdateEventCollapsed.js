@@ -14,7 +14,7 @@ const UpdateEventCollapsed = (props) => {
           <Col className="Content-title">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_EVENT}
-              onClick={props.handleDisplayEvent}>Edit</Button>
+              onClick={props.handleDisplayEvent}>Show</Button>
               &nbsp;
               {props.eventname}
           </Col>

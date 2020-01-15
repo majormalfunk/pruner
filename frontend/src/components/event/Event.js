@@ -58,10 +58,18 @@ const Event = (props) => {
   const handleError = (error) => {
     displayError(error)
   }
-
   const handleDisplayEvent = () => {
     setDisplayEvent(!displayEvent)
-  } 
+  }
+  const handleDisplayRecurrence = () => {
+    setDisplayRecurrence(!displayRecurrence)
+  }
+  const handleDisplayVenues = () => {
+    setDisplayVenues(!displayVenues)
+  }
+  const handleDisplayShows = () => {
+    setDisplayShows(!displayShows)
+  }
 
   const createEvent = useMutation(CREATE_EVENT, {
     onError: handleError
@@ -193,7 +201,7 @@ const Event = (props) => {
           deleteEventRecurrence={deleteEventRecurrence}
           unfinishedEvent={event}
           unfinishedRecurrence={recurrence} setRecurrence={setRecurrence}
-          displayRecurrence={displayRecurrence} setDisplayRecurrence={setDisplayRecurrence} />
+          displayRecurrence={displayRecurrence} handleDisplayRecurrence={handleDisplayRecurrence} />
       )}
       {(event && event.recurrences && event.recurrences.length > 0 && event.venues && event.shows) &&
         <>
@@ -202,23 +210,25 @@ const Event = (props) => {
             deleteEventVenue={deleteEventVenue}
             venues={unfinishedEvent.venues}
             selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue}
-            displayVenues={displayVenues} setDisplayVenues={setDisplayVenues} />
-          <CreateEventVenue display={page === PAGE_EVENT_CREATE}
+            displayVenues={displayVenues} handleDisplayVenues={handleDisplayVenues} />
+          {(displayVenues &&
+            <CreateEventVenue display={page === PAGE_EVENT_CREATE}
             createEventVenue={createEventVenue}
             unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            displayVenues={displayVenues} />
+            unfinishedRecurrence={recurrence} />
+          )}
           <EventShows display={page === PAGE_EVENT_CREATE}
             updateEventShow={updateEventShow}
             deleteEventShow={deleteEventShow}
             shows={unfinishedEvent.shows}
             selectedShow={selectedShow} setSelectedShow={setSelectedShow}
-            displayShows={displayShows} setDisplayShows={setDisplayShows} />
-          <CreateEventShow display={page === PAGE_EVENT_CREATE}
+            displayShows={displayShows} handleDisplayShows={handleDisplayShows} />
+          {(displayShows &&
+            <CreateEventShow display={page === PAGE_EVENT_CREATE}
             createEventShow={createEventShow}
             unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            displayShows={displayShows} />
+            unfinishedRecurrence={recurrence} />
+          )}
           <EventEntries display={page === PAGE_EVENT_CREATE}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}

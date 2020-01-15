@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Container, Form, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateInOwnEvents, removeFromOwnEvents } from '../../reducers/ownEventsReducer'

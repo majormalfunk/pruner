@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents } from '../../reducers/ownEventsReducer'
@@ -8,14 +9,14 @@ import { RECURRENCENAME_LENGTH, DESCRIPTION_LENGTH } from '../../constants'
 import { ACTION_UPDATE_RECURRENCE, ACTION_DELETE_RECURRENCE } from '../../constants'
 import { FLD_UPD_HNT_REC_DES, FLD_UPD_HNT_REC_NAM, FLD_UPD_HNT_REC_LIV, FLD_UPD_HNT_REC_PUB } from '../../constants'
 import { FLD_UPD_SET_REC_DES, FLD_UPD_SET_REC_NAM, FLD_UPD_SET_REC_LIV, FLD_UPD_SET_REC_PUB } from '../../constants'
+import UpdateEventRecurrenceCollapsed from './UpdateEventRecurrenceCollapsed'
 import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents,
-    updateEventRecurrence, deleteEventRecurrence,
-    unfinishedEvent, unfinishedRecurrence, setRecurrence } = props
+    updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents, updateEventRecurrence, deleteEventRecurrence,
+    unfinishedEvent, unfinishedRecurrence, setRecurrence, displayRecurrence, handleDisplayRecurrence } = props
 
   const [recurrencename, setRecurrencename] = useState(unfinishedRecurrence.recurrencename)
   const [description, setDescription] = useState(unfinishedRecurrence.description)
@@ -200,18 +201,33 @@ const UpdateEventRecurrence = (props) => {
   }
 
   return (
-    <UpdateEventRecurrenceForm
-      recurrencename={recurrencename}
-      handleRecurrencename={handleRecurrencename}
-      description={description}
-      handleDescription={handleDescription}
-      publicrecurrence={publicrecurrence}
-      handlePublicrecurrence={handlePublicrecurrence}
-      liverecurrence={liverecurrence}
-      handleLiverecurrence={handleLiverecurrence}
-      handleUpdateRecurrenceCancel={handleUpdateRecurrenceCancel}
-      handleUpdateRecurrence={handleUpdateRecurrence}
-      handleDeleteRecurrence={handleDeleteRecurrence} />
+    <Container>
+      <Row>
+        <Col className="Component-title">
+          Event recurrence
+        </Col>
+      </Row>
+        {(!displayRecurrence) ? (
+          <UpdateEventRecurrenceCollapsed
+            recurrencename={recurrencename}
+            description={description}
+            handleDisplayRecurrence={handleDisplayRecurrence} />
+        ) : (
+          <UpdateEventRecurrenceForm
+            recurrencename={recurrencename}
+            handleRecurrencename={handleRecurrencename}
+            description={description}
+            handleDescription={handleDescription}
+            publicrecurrence={publicrecurrence}
+            handlePublicrecurrence={handlePublicrecurrence}
+            liverecurrence={liverecurrence}
+            handleLiverecurrence={handleLiverecurrence}
+            handleUpdateRecurrenceCancel={handleUpdateRecurrenceCancel}
+            handleUpdateRecurrence={handleUpdateRecurrence}
+            handleDeleteRecurrence={handleDeleteRecurrence}
+            handleDisplayRecurrence={handleDisplayRecurrence} />
+        )}
+    </Container>
   )
 }
 

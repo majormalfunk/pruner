@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, IsPublicField, IsLiveField } from './InputFields'
 import { ACTION_UPDATE_RECURRENCE, ACTION_UPDATE_RECURRENCE_CANCEL, ACTION_DELETE_RECURRENCE } from '../../constants'
+import { ACTION_TOGGLE_RECURRENCE } from '../../constants'
 import { FLD_UPD_HNT_REC_DES, FLD_UPD_HNT_REC_NAM, FLD_UPD_HNT_REC_LIV, FLD_UPD_HNT_REC_PUB } from '../../constants'
 import { FLD_UPD_SET_REC_DES, FLD_UPD_SET_REC_NAM, FLD_UPD_SET_REC_LIV, FLD_UPD_SET_REC_PUB } from '../../constants'
 
@@ -10,14 +11,6 @@ const UpdateEventRecurrenceForm = (props) => {
   return (
     <Container>
       <Form>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        <Row>
-          <Col className="Component-title">
-            Event recurrence
-          </Col>
-        </Row>
         <Row>
           <Col className="Component-expl">
             You can edit the name and description of your event recurrence and choose to make it public or private
@@ -59,6 +52,16 @@ const UpdateEventRecurrenceForm = (props) => {
             <Button variant="danger" type="button"
               value={ACTION_DELETE_RECURRENCE} id={ACTION_DELETE_RECURRENCE}
               onClick={props.handleDeleteRecurrence}>Delete this recurrence</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Content-title">
+            <Button variant="primary" type="button" size="sm"
+              value={ACTION_TOGGLE_RECURRENCE}
+              onClick={props.handleDisplayRecurrence}>Hide</Button>
           </Col>
         </Row>
         <Row>
