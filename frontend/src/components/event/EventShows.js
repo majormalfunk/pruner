@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
+import CreateEventShow from './CreateEventShow'
 import UpdateEventShow from './UpdateEventShow'
 import SelectEventShowForm from './SelectEventShowForm'
 import UpdateEventShowCollapsed from './UpdateEventShowCollapsed'
@@ -11,9 +12,9 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const EventShows = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventShow, deleteEventShow, shows, selectedShow, setSelectedShow,
-    displayShows, handleDisplayShows } = props
+  const { currentUser, display, displayShows, handleDisplayShows,
+    createEventShow, updateEventShow, deleteEventShow,
+    unfinishedEvent, unfinishedRecurrence, shows, selectedShow, setSelectedShow } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -35,17 +36,21 @@ const EventShows = (props) => {
             if (selectedShow && show.id === selectedShow.id) {
               return (
                 <Row key={show.id}>
-                  <UpdateEventShow display={display}
-                    updateEventShow={updateEventShow}
-                    deleteEventShow={deleteEventShow}
-                    unfinishedShow={show} setSelectedShow={setSelectedShow} />
+                  <Col>
+                    <UpdateEventShow display={display}
+                      updateEventShow={updateEventShow}
+                      deleteEventShow={deleteEventShow}
+                      unfinishedShow={show} setSelectedShow={setSelectedShow} />
+                  </Col>
                 </Row>
               )
             } else {
               return (
                 <Row key={show.id}>
-                  <SelectEventShowForm display={display}
-                    unfinishedShow={show} setSelectedShow={setSelectedShow} />
+                  <Col>
+                    <SelectEventShowForm display={display}
+                      unfinishedShow={show} setSelectedShow={setSelectedShow} />
+                  </Col>
                 </Row>
               )
             }
@@ -67,9 +72,13 @@ const EventShows = (props) => {
             Event shows
           </Col>
         </Row>
-        <UpdateEventShowCollapsed
-          shows={shows}
-          handleDisplayShows={handleDisplayShows} />
+        <Row>
+          <Col>
+            <UpdateEventShowCollapsed
+              shows={shows}
+              handleDisplayShows={handleDisplayShows} />
+          </Col>
+        </Row>
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -83,11 +92,29 @@ const EventShows = (props) => {
             Event shows
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <CreateEventShow display={display}
+              createEventShow={createEventShow}
+              unfinishedEvent={unfinishedEvent}
+              unfinishedRecurrence={unfinishedRecurrence}
+              handleDisplayShows={handleDisplayShows} />
+          </Col>
+        </Row>
         {(shows && shows.length > 0) ? (
           <>
             <Row>
-              <Col className="Component-expl">
-                Select an event show to edit it
+              <Col>
+                <Container>
+                  <Row>
+                    <Col><span>&nbsp;</span></Col>
+                  </Row>
+                  <Row>
+                    <Col className="Component-expl">
+                      Select an event show to edit it
+                    </Col>
+                  </Row>
+                </Container>
               </Col>
             </Row>
             <Row>

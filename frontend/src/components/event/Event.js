@@ -28,11 +28,7 @@ import CreateEvent from './CreateEvent'
 import UpdateEvent from './UpdateEvent'
 import CreateEventRecurrence from './CreateEventRecurrence'
 import UpdateEventRecurrence from './UpdateEventRecurrence'
-import CreateEventVenue from './CreateEventVenue'
-import UpdateEventVenue from './UpdateEventVenue'
 import EventVenues from './EventVenues'
-import CreateEventShow from './CreateEventShow'
-import UpdateEventShow from './UpdateEventShow'
 import EventShows from './EventShows'
 import CreateEventEntry from './CreateEventEntry'
 import UpdateEventEntry from './UpdateEventEntry'
@@ -206,29 +202,21 @@ const Event = (props) => {
       {(event && event.recurrences && event.recurrences.length > 0 && event.venues && event.shows) &&
         <>
           <EventVenues display={page === PAGE_EVENT_CREATE}
+            createEventVenue={createEventVenue}
             updateEventVenue={updateEventVenue}
             deleteEventVenue={deleteEventVenue}
+            unfinishedEvent={event}
+            unfinishedRecurrence={recurrence}
             venues={unfinishedEvent.venues}
             selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue}
             displayVenues={displayVenues} handleDisplayVenues={handleDisplayVenues} />
-          {(displayVenues &&
-            <CreateEventVenue display={page === PAGE_EVENT_CREATE}
-            createEventVenue={createEventVenue}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence} />
-          )}
           <EventShows display={page === PAGE_EVENT_CREATE}
+            createEventShow={createEventShow}
             updateEventShow={updateEventShow}
             deleteEventShow={deleteEventShow}
             shows={unfinishedEvent.shows}
             selectedShow={selectedShow} setSelectedShow={setSelectedShow}
             displayShows={displayShows} handleDisplayShows={handleDisplayShows} />
-          {(displayShows &&
-            <CreateEventShow display={page === PAGE_EVENT_CREATE}
-            createEventShow={createEventShow}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence} />
-          )}
           <EventEntries display={page === PAGE_EVENT_CREATE}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}

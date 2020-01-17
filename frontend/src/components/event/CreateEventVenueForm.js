@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField } from './InputFields'
-import { ACTION_CREATE_VENUE, ACTION_CREATE_VENUE_CANCEL } from '../../constants'
+import { ACTION_CREATE_VENUE, ACTION_CREATE_VENUE_CANCEL, ACTION_TOGGLE_VENUE } from '../../constants'
 import { FLD_CRE_HNT_VEN_NAM } from '../../constants'
 import { FLD_CRE_SET_VEN_NAM } from '../../constants'
 
@@ -30,6 +30,13 @@ const CreateEventVenueForm = (props) => {
             &nbsp;
             <Button className="FormAlignedBtn" variant="primary" type="button" value={ACTION_CREATE_VENUE_CANCEL} id={ACTION_CREATE_VENUE_CANCEL}
               onClick={props.handleCreateVenueCancel}>Cancel</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="Content-title">
+            <Button variant="primary" type="button" size="sm"
+              value={ACTION_TOGGLE_VENUE}
+              onClick={props.handleDisplayVenues}>Hide</Button>
           </Col>
         </Row>
       </Form>

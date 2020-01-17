@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { NameField, DescriptionField, DurationField, LinkField } from './InputFields'
-import { ACTION_CREATE_SHOW, ACTION_CREATE_SHOW_CANCEL } from '../../constants'
+import { ACTION_CREATE_SHOW, ACTION_CREATE_SHOW_CANCEL, ACTION_TOGGLE_SHOW } from '../../constants'
 import { FLD_CRE_HNT_SHO_DES, FLD_CRE_HNT_SHO_NAM, FLD_CRE_HNT_SHO_LNK, FLD_CRE_HNT_SHO_DUR } from '../../constants'
 import { FLD_CRE_SET_SHO_DES, FLD_CRE_SET_SHO_NAM, FLD_CRE_SET_SHO_LNK, FLD_CRE_SET_SHO_DUR } from '../../constants'
 
@@ -42,13 +42,23 @@ const CreateEventShowForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button className="FormAlignedBtn" variant="success" type="button"
+            <Button variant="success" type="button"
               value={ACTION_CREATE_SHOW} id={ACTION_CREATE_SHOW}
               onClick={props.handleCreateShow}>Create new show</Button>
             &nbsp;
-            <Button className="FormAlignedBtn" variant="primary" type="button"
+            <Button variant="primary" type="button"
               value={ACTION_CREATE_SHOW_CANCEL} id={ACTION_CREATE_SHOW_CANCEL}
               onClick={props.handleCreateShowCancel}>Cancel</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col className="Content-title">
+            <Button variant="primary" type="button" size="sm"
+              value={ACTION_TOGGLE_SHOW}
+              onClick={props.handleDisplayShows}>Hide</Button>
           </Col>
         </Row>
       </Form>

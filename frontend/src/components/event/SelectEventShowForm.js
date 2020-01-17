@@ -15,7 +15,7 @@ const SelectEventShowForm = (props) => {
     <Container>
       <Form>
         <Row className="ListRow">
-          <Col lg={4}>
+          <Col lg={7}>
             <Button variant="primary" type="button" size="sm"
               value={ACTION_SELECT_SHOW} id={unfinishedShow.id}
               onClick={handleSelectShow}>Select</Button>

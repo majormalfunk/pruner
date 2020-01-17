@@ -13,8 +13,9 @@ import CreateEventVenueForm from './CreateEventVenueForm'
 
 const CreateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent, unfinishedRecurrence,
-    addVenueToOwnEvents, createEventVenue, display } = props
+  const { displaySuccess, displayInfo, displayError, currentUser,
+    unfinishedEvent, unfinishedRecurrence,
+    addVenueToOwnEvents, createEventVenue, display, handleDisplayVenues } = props
 
   const [venuename, setVenuename] = useState('')
 
@@ -95,7 +96,8 @@ const CreateEventVenue = (props) => {
       venuename={venuename}
       handleVenuename={handleVenuename}
       handleCreateVenueCancel={handleCreateVenueCancel}
-      handleCreateVenue={handleCreateVenue} />
+      handleCreateVenue={handleCreateVenue}
+      handleDisplayVenues={handleDisplayVenues} />
   )
 }
 

@@ -14,7 +14,7 @@ import CreateEventShowForm from './CreateEventShowForm'
 const CreateEventShow = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent, unfinishedRecurrence,
-    addShowToOwnEvents, createEventShow, display } = props
+    addShowToOwnEvents, createEventShow, display, handleDisplayShows } = props
 
   const [showname, setShowname] = useState('')
   const [description, setDescription] = useState('')
@@ -160,7 +160,8 @@ const CreateEventShow = (props) => {
       handleLink={handleLink}
       handleDuration={handleDuration}
       handleCreateShowCancel={handleCreateShowCancel}
-      handleCreateShow={handleCreateShow} />
+      handleCreateShow={handleCreateShow}
+      handleDisplayShows={handleDisplayShows} />
   )
 }
 

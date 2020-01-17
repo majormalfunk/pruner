@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 
+import CreateEventVenue from './CreateEventVenue'
 import UpdateEventVenue from './UpdateEventVenue'
 import SelectEventVenueForm from './SelectEventVenueForm'
 import UpdateEventVenueCollapsed from './UpdateEventVenueCollapsed'
@@ -12,7 +13,8 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 const EventVenues = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventVenue, deleteEventVenue, venues, selectedVenue, setSelectedVenue,
+    createEventVenue, updateEventVenue, deleteEventVenue,
+    unfinishedEvent, unfinishedRecurrence, venues, selectedVenue, setSelectedVenue,
     displayVenues, handleDisplayVenues } = props
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -35,17 +37,21 @@ const EventVenues = (props) => {
             if (selectedVenue && venue.id === selectedVenue.id) {
               return (
                 <Row key={venue.id}>
-                  <UpdateEventVenue display={display}
-                    updateEventVenue={updateEventVenue}
-                    deleteEventVenue={deleteEventVenue}
-                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                  <Col>
+                    <UpdateEventVenue display={display}
+                      updateEventVenue={updateEventVenue}
+                      deleteEventVenue={deleteEventVenue}
+                      unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                  </Col>
                 </Row>
               )
             } else {
               return (
                 <Row key={venue.id}>
-                  <SelectEventVenueForm display={display}
-                    unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                  <Col>
+                    <SelectEventVenueForm display={display}
+                      unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                  </Col>
                 </Row>
               )
             }
@@ -83,11 +89,29 @@ const EventVenues = (props) => {
             Event venues
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <CreateEventVenue display={display}
+              createEventVenue={createEventVenue}
+              unfinishedEvent={unfinishedEvent}
+              unfinishedRecurrence={unfinishedRecurrence}
+              handleDisplayVenues={handleDisplayVenues} />
+          </Col>
+        </Row>
         {(venues && venues.length > 0) ? (
           <>
             <Row>
-              <Col className="Component-expl">
-                Select an event venue to edit it
+              <Col>
+                <Container>
+                  <Row>
+                    <Col><span>&nbsp;</span></Col>
+                  </Row>
+                  <Row>
+                    <Col className="Component-expl">
+                      Select an event venue to edit it
+                    </Col>
+                  </Row>
+                </Container>
               </Col>
             </Row>
             <Row>
