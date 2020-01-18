@@ -80,7 +80,7 @@
 | 14.01.2020    | Toggle component visibility                                        |     1,5   |           |
 | 15.01.2020    | Toggle component visibility                                        |     1,5   |           |
 | 17.01.2020    | Toggle component visibility and layout                             |     1,5   |           |
-| 18.01.2020    | Date picker component to Event entries                             |     5,0   |           |
-| **WEEK  3**   | **TOTAL**                                                          |  **10,5** | **170,5** |
+| 18.01.2020    | Date picker component to Event entries                             |     6,5   |           |
+| **WEEK  3**   | **TOTAL**                                                          |  **12,0** | **172,0** |
 
 

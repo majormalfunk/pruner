@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { ShowSelectField, VenueSelectField, DateField, TimeField } from './InputFields'
-import { DatePicker } from './InputFields'
+import { DatePickerX } from './InputFields'
 import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL } from '../../constants'
 import { FLD_CRE_HNT_ENT_DAT, FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
 import { FLD_CRE_SET_ENT_DAT, FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
@@ -34,23 +34,16 @@ const CreateEventEntryForm = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <DatePicker date={showdate} trigger={handleShowdate}
-              datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
-            &nbsp;
-          </Col>
-          <Col>
+          <Col lg={6}>
             <TimeField date={showtime} trigger={handleShowtime}
               timehint={FLD_CRE_HNT_ENT_TIM} settime={FLD_CRE_SET_ENT_TIM} />
           </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Button variant="success" type="button"
+          <Col lg={6}>
+            <Button className="FormAlignedBtn" variant="success" type="button"
               value={ACTION_CREATE_ENTRY} id={ACTION_CREATE_ENTRY}
               onClick={handleCreateEntry}>Create new entry</Button>
             &nbsp;
-            <Button variant="primary" type="button"
+            <Button className="FormAlignedBtn" variant="primary" type="button"
               value={ACTION_CREATE_ENTRY_CANCEL} id={ACTION_CREATE_ENTRY_CANCEL}
               onClick={handleCreateEntryCancel}>Cancel</Button>
           </Col>
@@ -58,7 +51,17 @@ const CreateEventEntryForm = (props) => {
       </Form>
     </Container >
   )
+
 /*
+          <Col lg={3}>
+            <DatePickerX date={showdate} trigger={handleShowdate}
+              datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
+            &nbsp;
+          </Col>
+
+*/
+
+  /*
   <DateField date={showdate} trigger={handleShowdate}
   datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
 */

@@ -37,6 +37,7 @@ const CreateEventEntry = (props) => {
         return true
       }
     }
+    return false
   }
   const controlVenue = () => {
     if (!venues || venues === null || venues.length === 0) {
@@ -46,11 +47,13 @@ const CreateEventEntry = (props) => {
     if (document.getElementById(FLD_CRE_HNT_ENT_VEN)) {
       if (venue.trim() === '') {
         document.getElementById(FLD_CRE_HNT_ENT_VEN).innerHTML = 'Select venue'
+        return false
       } else {
         document.getElementById(FLD_CRE_HNT_ENT_VEN).innerHTML = 'Venue selected'
+        return true
       }
     }
-    return
+    return false
   }
   const controlShowdate = () => {
     if (document.getElementById(FLD_CRE_HNT_ENT_DAT)) {
@@ -58,10 +61,11 @@ const CreateEventEntry = (props) => {
         document.getElementById(FLD_CRE_HNT_ENT_DAT).innerHTML = 'Set date as dd.mm.yyyy'
         return false
       } else {
-        document.getElementById(FLD_CRE_HNT_ENT_DAT).innerHTML = 'Date is valid'
+        document.getElementById(FLD_CRE_HNT_ENT_DAT).innerHTML = `Selected date is ${showdate.toLocaleDateString()}`
         return true
       }
     }
+    return false
   }
 
   useEffect(() => {
@@ -88,9 +92,11 @@ const CreateEventEntry = (props) => {
   }
 
   const handleShow = (event) => {
+    console.log('Selected show:', event.target.value)
     setShow(event.target.value)
   }
   const handleVenue = (event) => {
+    console.log('Selected venue:', event.target.value)
     setVenue(event.target.value)
   }
   const handleShowdate = (event) => {
@@ -99,9 +105,23 @@ const CreateEventEntry = (props) => {
       let locdate = event.toLocaleDateString()
       let shodate = DateTime.fromFormat(locdate, 'd.L.yyyy').toJSDate()
       console.log('Format date', shodate)
-      //if (isValidDate(shodate)) {
-      //  setShowdate(shodate)
-      //}
+      if (isValidDate(event)) {
+        setShowdate(event)
+      }
+    } catch (error) {
+      console.log("Error with date", event)
+      console.log(error)
+    }
+  }
+  const handleShowtime = (event) => {
+    try {
+      console.log('Origin date:', event)
+      let locdate = event.toLocaleDateString()
+      let shodate = DateTime.fromFormat(locdate, 'd.L.yyyy').toJSDate()
+      console.log('Format date', shodate)
+      if (isValidDate(event)) {
+        setShowdate(event)
+      }
     } catch (error) {
       console.log("Error with date", event)
       console.log(error)
@@ -157,6 +177,8 @@ const CreateEventEntry = (props) => {
     <CreateEventEntryForm
       showdate={showdate}
       handleShowdate={handleShowdate}
+      showtime={showtime}
+      handleShowtime={handleShowtime}
       handleVenue={handleVenue}
       venues={venues}
       handleShow={handleShow}

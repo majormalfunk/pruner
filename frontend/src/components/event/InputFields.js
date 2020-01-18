@@ -8,6 +8,10 @@ import 'react-day-picker/lib/style.css'
 import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 
+// Date picker
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
+
 export const NameField = (props) => {
   return (
     <>
@@ -85,7 +89,7 @@ export const DateField = (props) => {
   )
 }
 
-export const DatePicker = (props) => {
+export const DatePickerX = (props) => {
   const FORMAT = 'dd.MM.yyyy';
   const FIRSTDAY = 1
   function parseDate(str, format, locale) {
@@ -112,18 +116,19 @@ export const DatePicker = (props) => {
     <>
       <Form.Label>Date</Form.Label>
       <Form.Row>&nbsp;
-        <DayPickerInput onDayClick={props.trigger}
+        <DayPickerInput
           inputProps={{ className: "form-control" }}
           overlayComponent={CustomOverlay}
           formatDate={formatDate}
           format={FORMAT}
           parseDate={parseDate}
-          placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
+          placeholder="dd.mm.yyyy"//{`${dateFnsFormat(new Date(), FORMAT)}`}
           dayPickerProps={{
             month: new Date(),
             format: {FORMAT},
             showWeekNumbers: true,
-            firstDayOfWeek: FIRSTDAY
+            firstDayOfWeek: FIRSTDAY,
+            onDayClick: props.trigger
           }} />
       </Form.Row>
       <Form.Text className="text-muted" id={props.datehint}></Form.Text>
@@ -135,12 +140,41 @@ export const TimeField = (props) => {
   return (
     <>
       <Form.Label>Time</Form.Label>
-      <Form.Control type="text"
+      <Form.Row>&nbsp;
+        <DatePicker className="form-control"
+          onChange={props.trigger}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={5}
+          //timeCaption="Showtime"
+          dateFormat="dd.MM.yyyy"
+        />
+      </Form.Row>
+      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
+    </>
+  )
+  /*
+  return (
+    <>
+      <Form.Label>Time</Form.Label>
+      <Form.Control as="select"
+        required name="timeField" id={props.setTime} style={{ width: "75%" }}
+        defaultValue={props.showtime} onChange={props.trigger}>
+        {
+          props.venues.map((venue) => {
+            return (<option key={venue.id} value={venue.id}>{venue.venuename}</option>)
+          })
+        }
+      </Form.Control>
+
+
+      <Form.Control type="text" style={{ width: "75%" }}
         required placeholder="hh.mi" name="timeField" id={props.setTime}
         defaultValue={props.time} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.timehint}></Form.Text>
     </>
   )
+  */
 }
 
 export const VenueSelectField = (props) => {
