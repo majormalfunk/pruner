@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Form, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import CreateEventVenue from './CreateEventVenue'
 import UpdateEventVenue from './UpdateEventVenue'
@@ -12,10 +12,9 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const EventVenues = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
+  const { currentUser, display, displayVenues, handleDisplayVenues,
     createEventVenue, updateEventVenue, deleteEventVenue,
-    unfinishedEvent, unfinishedRecurrence, venues, selectedVenue, setSelectedVenue,
-    displayVenues, handleDisplayVenues } = props
+    unfinishedEvent, unfinishedRecurrence, venues, selectedVenue, setSelectedVenue } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 

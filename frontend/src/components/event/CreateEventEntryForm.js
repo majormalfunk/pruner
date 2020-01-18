@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { ShowSelectField, VenueSelectField, DateField, TimeField } from './InputFields'
+import { DatePicker } from './InputFields'
 import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL } from '../../constants'
 import { FLD_CRE_HNT_ENT_DAT, FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
 import { FLD_CRE_SET_ENT_DAT, FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
@@ -34,7 +35,7 @@ const CreateEventEntryForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <DateField date={showdate} trigger={handleShowdate}
+            <DatePicker date={showdate} trigger={handleShowdate}
               datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
             &nbsp;
           </Col>
@@ -45,11 +46,11 @@ const CreateEventEntryForm = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button className="FormAlignedBtn" variant="success" type="button"
+            <Button variant="success" type="button"
               value={ACTION_CREATE_ENTRY} id={ACTION_CREATE_ENTRY}
               onClick={handleCreateEntry}>Create new entry</Button>
             &nbsp;
-            <Button className="FormAlignedBtn" variant="primary" type="button"
+            <Button variant="primary" type="button"
               value={ACTION_CREATE_ENTRY_CANCEL} id={ACTION_CREATE_ENTRY_CANCEL}
               onClick={handleCreateEntryCancel}>Cancel</Button>
           </Col>
@@ -57,7 +58,10 @@ const CreateEventEntryForm = (props) => {
       </Form>
     </Container >
   )
-
+/*
+  <DateField date={showdate} trigger={handleShowdate}
+  datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
+*/
 }
 
 export default CreateEventEntryForm

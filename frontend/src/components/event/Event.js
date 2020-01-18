@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { displayError } from '../../reducers/notificationReducer'
 
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 
 import { CREATE_EVENT } from './gqls'
@@ -234,6 +234,9 @@ const Event = (props) => {
             displayEntries={displayEntries} />
         </>
       }
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
     </Container>
   )
 }

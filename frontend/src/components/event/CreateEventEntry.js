@@ -95,12 +95,16 @@ const CreateEventEntry = (props) => {
   }
   const handleShowdate = (event) => {
     try {
-      let shodate = DateTime.fromFormat(event.target.value, 'd.L.yyyy').toJSDate()
-      if (isValidDate(shodate)) {
-        setShowdate(shodate)
-      }
+      console.log('Origin date:', event)
+      let locdate = event.toLocaleDateString()
+      let shodate = DateTime.fromFormat(locdate, 'd.L.yyyy').toJSDate()
+      console.log('Format date', shodate)
+      //if (isValidDate(shodate)) {
+      //  setShowdate(shodate)
+      //}
     } catch (error) {
-      console.log("Error with date", event.target.value)
+      console.log("Error with date", event)
+      console.log(error)
     }
   }
 

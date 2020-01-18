@@ -1,6 +1,13 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
+// Day picker
+import DayPickerInput from 'react-day-picker/DayPickerInput'
+import { DateUtils } from 'react-day-picker';
+import 'react-day-picker/lib/style.css'
+import dateFnsFormat from 'date-fns/format';
+import dateFnsParse from 'date-fns/parse';
+
 export const NameField = (props) => {
   return (
     <>
@@ -78,6 +85,52 @@ export const DateField = (props) => {
   )
 }
 
+export const DatePicker = (props) => {
+  const FORMAT = 'dd.MM.yyyy';
+  const FIRSTDAY = 1
+  function parseDate(str, format, locale) {
+    const parsed = dateFnsParse(str, format, new Date(), { locale });
+    if (DateUtils.isDate(parsed)) {
+      return parsed;
+    }
+    return undefined;
+  }
+  function formatDate(date, format, locale) {
+    return dateFnsFormat(date, format, { locale });
+  }
+  function CustomOverlay({ classNames, selectedDay, children, ...props }) {
+    return (
+      <div className={classNames.overlayWrapper} {...props} >
+        <div className={classNames.overlay} style={{ color: "#ebc20c", background: "black" }}>
+          {children}
+        </div>
+    </div>
+    )
+  }
+
+  return (
+    <>
+      <Form.Label>Date</Form.Label>
+      <Form.Row>&nbsp;
+        <DayPickerInput onDayClick={props.trigger}
+          inputProps={{ className: "form-control" }}
+          overlayComponent={CustomOverlay}
+          formatDate={formatDate}
+          format={FORMAT}
+          parseDate={parseDate}
+          placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
+          dayPickerProps={{
+            month: new Date(),
+            format: {FORMAT},
+            showWeekNumbers: true,
+            firstDayOfWeek: FIRSTDAY
+          }} />
+      </Form.Row>
+      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
+    </>
+  )
+}
+
 export const TimeField = (props) => {
   return (
     <>
@@ -98,7 +151,8 @@ export const VenueSelectField = (props) => {
         <Form.Label>Venue</Form.Label>
         <Form.Control as="select"
           required placeholder="Select venue" name="venueSelectField" id={props.setVenue}
-          defaultValue={props.venue} onChange={props.trigger}>
+          defaultValue={props.venue ? props.venue : "-1"} onChange={props.trigger}>
+          <option hidden disabled value={-1}> -- Select a venue -- </option>
           {
             props.venues.map((venue) => {
               return (<option key={venue.id} value={venue.id}>{venue.venuename}</option>)
@@ -127,7 +181,8 @@ export const ShowSelectField = (props) => {
         <Form.Label>Show</Form.Label>
         <Form.Control as="select"
           required placeholder="Select show" name="showSelectField" id={props.setShow}
-          defaultValue={props.show} onChange={props.trigger} >
+          defaultValue={props.show ? props.show : "-1"} onChange={props.trigger} >
+          <option hidden disabled value={-1}> -- Select a show -- </option>
           {
             props.shows.map((show) => {
               return (<option key={show.id} value={show.id}>{show.showname}</option>)
