@@ -1,14 +1,13 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { ShowSelectField, VenueSelectField, DateField, TimeField } from './InputFields'
-import { DatePickerX } from './InputFields'
+import { ShowSelectField, VenueSelectField, TimeField } from './InputFields'
 import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL } from '../../constants'
-import { FLD_CRE_HNT_ENT_DAT, FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
-import { FLD_CRE_SET_ENT_DAT, FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
+import { FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
+import { FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
 
 const CreateEventEntryForm = (props) => {
 
-  const { shows, show, handleShow, venues, venue, handleVenue, showdate, handleShowdate,
+  const { shows, show, handleShow, venues, venue, handleVenue,
           showtime, handleShowtime, handleCreateEntry, handleCreateEntryCancel } = props
 
   return (
@@ -25,7 +24,7 @@ const CreateEventEntryForm = (props) => {
         <Row>
           <Col>
             <ShowSelectField shows={shows} show={show} trigger={handleShow}
-              showhint={FLD_CRE_HNT_ENT_SHO} sethint={FLD_CRE_SET_ENT_SHO} />
+              showhint={FLD_CRE_HNT_ENT_SHO} setshow={FLD_CRE_SET_ENT_SHO} />
             &nbsp;
           </Col>
           <Col>
@@ -35,7 +34,7 @@ const CreateEventEntryForm = (props) => {
         </Row>
         <Row>
           <Col lg={6}>
-            <TimeField date={showtime} trigger={handleShowtime}
+            <TimeField label="Showtime" showtime={showtime} trigger={handleShowtime}
               timehint={FLD_CRE_HNT_ENT_TIM} settime={FLD_CRE_SET_ENT_TIM} />
           </Col>
           <Col lg={6}>
@@ -51,20 +50,6 @@ const CreateEventEntryForm = (props) => {
       </Form>
     </Container >
   )
-
-/*
-          <Col lg={3}>
-            <DatePickerX date={showdate} trigger={handleShowdate}
-              datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
-            &nbsp;
-          </Col>
-
-*/
-
-  /*
-  <DateField date={showdate} trigger={handleShowdate}
-  datehint={FLD_CRE_HNT_ENT_DAT} setdate={FLD_CRE_SET_ENT_DAT} />
-*/
 }
 
 export default CreateEventEntryForm

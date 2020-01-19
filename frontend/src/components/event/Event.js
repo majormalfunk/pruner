@@ -30,8 +30,8 @@ import CreateEventRecurrence from './CreateEventRecurrence'
 import UpdateEventRecurrence from './UpdateEventRecurrence'
 import EventVenues from './EventVenues'
 import EventShows from './EventShows'
-import CreateEventEntry from './CreateEventEntry'
-import UpdateEventEntry from './UpdateEventEntry'
+//import CreateEventEntry from './CreateEventEntry'
+//import UpdateEventEntry from './UpdateEventEntry'
 import EventEntries from './EventEntries'
 
 const Event = (props) => {
@@ -48,6 +48,7 @@ const Event = (props) => {
   const [show, setShow] = useState(null)
   const [selectedShow, setSelectedShow] = useState(null)
   const [displayShows, setDisplayShows] = useState(false)
+  const [entry, setEntry] = useState(null)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const [displayEntries, setDisplayEntries] = useState(false)
 
@@ -65,6 +66,9 @@ const Event = (props) => {
   }
   const handleDisplayShows = () => {
     setDisplayShows(!displayShows)
+  }
+  const handleDisplayEntries = () => {
+    setDisplayEntries(!displayEntries)
   }
 
   const createEvent = useMutation(CREATE_EVENT, {
@@ -147,13 +151,20 @@ const Event = (props) => {
           } else {
             setShow(null)
           }
+          if (unfinishedEvent.entries.length > 0) {
+            // Select last on list
+            const unfinishedEntry = unfinishedEvent.entries[unfinishedEvent.entries.length - 1]
+            setEntry(unfinishedEntry)
+          } else {
+            setEntry(null)
+          }
         } else {
           setEvent(null)
         }
         console.log('Own events is', ownEvents)
       }
     }
-  }, [display, currentUser, ownEvents, unfinishedEvent, recurrence, venue, show])
+  }, [display, currentUser, ownEvents, unfinishedEvent, recurrence, venue, show, entry])
 
   if (!display || !currentUser) {
     return null
@@ -218,6 +229,26 @@ const Event = (props) => {
             selectedShow={selectedShow} setSelectedShow={setSelectedShow}
             displayShows={displayShows} handleDisplayShows={handleDisplayShows} />
           <EventEntries display={page === PAGE_EVENT_CREATE}
+            createEventEntry={createEventEntry}
+            updateEventEntry={updateEventEntry}
+            deleteEventEntry={deleteEventEntry}
+            venues={unfinishedEvent.venues}
+            shows={unfinishedEvent.shows}
+            entries={unfinishedEvent.entries}
+            selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry}
+            displayEntries={displayEntries} handleDisplayEntries={handleDisplayEntries} />
+        </>
+      }
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+    </Container>
+  )
+}
+
+/*
+
+          <EventEntries display={page === PAGE_EVENT_CREATE}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}
             venues={unfinishedEvent.venues}
@@ -232,14 +263,9 @@ const Event = (props) => {
             venues={unfinishedEvent.venues}
             shows={unfinishedEvent.shows}
             displayEntries={displayEntries} />
-        </>
-      }
-      <Row>
-        <Col><span>&nbsp;</span></Col>
-      </Row>
-    </Container>
-  )
-}
+
+
+*/
 
 const mapStateToProps = (state) => {
   return {

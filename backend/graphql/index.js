@@ -28,6 +28,7 @@ const { resolvers: resolverForEvent } = require('./event/resolverEvent')
 const { resolvers: resolverForEventRecurrence } = require('./event/resolverEventRecurrence')
 const { resolvers: resolverForEventVenue } = require('./event/resolverEventVenue')
 const { resolvers: resolverForEventShow } = require('./event/resolverEventShow')
+const { resolvers: resolverForEventEntry } = require('./event/resolverEventEntry')
 
 const resolvers = merge(
   resolverForUser,
@@ -35,6 +36,7 @@ const resolvers = merge(
   resolverForEventRecurrence,
   resolverForEventVenue,
   resolverForEventShow,
+  resolverForEventEntry,
 )
 
 module.exports = {

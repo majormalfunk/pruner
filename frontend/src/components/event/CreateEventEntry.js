@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { DateTime, Settings } from 'luxon'
+import { Settings } from 'luxon'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 import { addEntryToOwnEvents } from '../../reducers/ownEventsReducer'
 
 import { ACTION_CREATE_ENTRY } from '../../constants'
-import { FLD_CRE_HNT_ENT_DAT, FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
-import { FLD_CRE_SET_ENT_DAT, FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
+import { FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
+import { FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
 
 import CreateEventEntryForm from './CreateEventEntryForm'
 
@@ -15,13 +15,13 @@ const CreateEventEntry = (props) => {
 
   Settings.defaultLocale = 'fi'
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent, unfinishedRecurrence,
-    venues, shows, addEntryToOwnEvents, createEventEntry, display } = props
+  const { displaySuccess, displayInfo, displayError, currentUser,
+    unfinishedEvent, unfinishedRecurrence, venues, shows,
+    addEntryToOwnEvents, createEventEntry, display } = props
 
   const [show, setShow] = useState('')
   const [venue, setVenue] = useState('')
-  const [showdate, setShowdate] = useState('')
-  const [showtime, setShowtime] = useState('')
+  const [showtime, setShowtime] = useState(null)
 
   const controlShow = () => {
     if (!shows || shows === null || shows.length === 0) {
@@ -55,13 +55,13 @@ const CreateEventEntry = (props) => {
     }
     return false
   }
-  const controlShowdate = () => {
-    if (document.getElementById(FLD_CRE_HNT_ENT_DAT)) {
-      if (!isValidDate(showdate)) {
-        document.getElementById(FLD_CRE_HNT_ENT_DAT).innerHTML = 'Set date as dd.mm.yyyy'
+  const controlShowtime = () => {
+    if (document.getElementById(FLD_CRE_HNT_ENT_TIM)) {
+      if (!isValidDate(showtime)) {
+        document.getElementById(FLD_CRE_HNT_ENT_TIM).innerHTML = 'Select date'
         return false
       } else {
-        document.getElementById(FLD_CRE_HNT_ENT_DAT).innerHTML = `Selected date is ${showdate.toLocaleDateString()}`
+        document.getElementById(FLD_CRE_HNT_ENT_TIM).innerHTML = `Selected date is ${showtime.toLocaleDateString()}`
         return true
       }
     }
@@ -71,9 +71,9 @@ const CreateEventEntry = (props) => {
   useEffect(() => {
     const showOk = controlShow()
     const venueOk = controlVenue()
-    const dateOk = controlShowdate()
+    const timeOk = controlShowtime()
     if (document.getElementById(ACTION_CREATE_ENTRY)) {
-      document.getElementById(ACTION_CREATE_ENTRY).disabled = !(showOk && venueOk && dateOk)
+      document.getElementById(ACTION_CREATE_ENTRY).disabled = !(showOk && venueOk && timeOk)
     }
   })
 
@@ -99,42 +99,27 @@ const CreateEventEntry = (props) => {
     console.log('Selected venue:', event.target.value)
     setVenue(event.target.value)
   }
-  const handleShowdate = (event) => {
-    try {
-      console.log('Origin date:', event)
-      let locdate = event.toLocaleDateString()
-      let shodate = DateTime.fromFormat(locdate, 'd.L.yyyy').toJSDate()
-      console.log('Format date', shodate)
-      if (isValidDate(event)) {
-        setShowdate(event)
-      }
-    } catch (error) {
-      console.log("Error with date", event)
-      console.log(error)
-    }
-  }
   const handleShowtime = (event) => {
     try {
-      console.log('Origin date:', event)
-      let locdate = event.toLocaleDateString()
-      let shodate = DateTime.fromFormat(locdate, 'd.L.yyyy').toJSDate()
-      console.log('Format date', shodate)
       if (isValidDate(event)) {
-        setShowdate(event)
+        setShowtime(event)
+        console.log('Selected showtime:', event)
+      } else {
+        console.log(event, 'was not a valid showtime')
       }
     } catch (error) {
-      console.log("Error with date", event)
+      console.log("Error with showtime", event)
       console.log(error)
     }
   }
 
   const clearFields = () => {
     setShow('')
-    document.getElementById(FLD_CRE_SET_ENT_SHO).value = ''
+    document.getElementById(FLD_CRE_SET_ENT_SHO).selectedIndex = '-1'
     setVenue('')
-    document.getElementById(FLD_CRE_SET_ENT_VEN).value = ''
-    setShowdate('')
-    document.getElementById(FLD_CRE_SET_ENT_DAT).value = ''
+    document.getElementById(FLD_CRE_SET_ENT_VEN).selectedIndex = '-1'
+    setShowtime(null)
+    document.getElementById(FLD_CRE_SET_ENT_TIM).value = ''
   }
 
   const handleCreateEntryCancel = (event) => {
@@ -144,16 +129,19 @@ const CreateEventEntry = (props) => {
 
   const handleCreateEntry = async (event) => {
     event.preventDefault()
-    console.log('Create entry at ', showdate)
-    if (show !== '' && venue !== '' && isValidDate(showdate)) {
+    console.log('Create entry at', showtime)
+    if (show !== '' && venue !== '' && isValidDate(showtime)) {
       try {
+        console.log('Trying')
         const eventId = unfinishedEvent.id
         const recurrenceId = unfinishedRecurrence.id
-        const showdateint = (new Date(showdate)).toMillis()
+        const showtimeint = showtime.getTime()
+        console.log('Parameters ready')
         const result = await createEventEntry[0]({
-          variables: { eventId, recurrenceId, venue, show, showdateint }
+          variables: { eventId, recurrenceId, venue, show, showtimeint }
         })
         if (result) {
+          //console.log('Got result')
           const createdEntry = result.data.createEventEntry
           clearFields()
           addEntryToOwnEvents(eventId, createdEntry)
@@ -168,15 +156,12 @@ const CreateEventEntry = (props) => {
         displayError(error)
       }
     } else {
-      displayInfo('Show, venue or date invalid')
+      displayInfo('Show, venue or showtime invalid')
     }
-
   }
 
   return (
     <CreateEventEntryForm
-      showdate={showdate}
-      handleShowdate={handleShowdate}
       showtime={showtime}
       handleShowtime={handleShowtime}
       handleVenue={handleVenue}

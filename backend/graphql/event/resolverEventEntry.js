@@ -12,6 +12,8 @@ module.exports = {
     Mutation: {
       createEventEntry: async (root, args, { currentUser, userId }) => {
 
+        console.log('Trying to create an event entry')
+
         if (currentUser) {
 
           checkCurrentUser({ currentUser }, 'create an event entry')
@@ -22,8 +24,10 @@ module.exports = {
 
               let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
 
+              let showtime = new Date(args.showtime)
+
               const newEntry = new EventEntry({
-                showtime: args.showtime,
+                showtime: showtime,
                 event: args.eventId,
                 recurrence: args.recurrenceId,
                 venue: args.venueId,
@@ -45,7 +49,7 @@ module.exports = {
                 }
               )
 
-              console.log('Updated event is', updatedEvent)
+              //console.log('Updated event is', updatedEvent)
 
               return savedEntry
             } catch (error) {
@@ -94,7 +98,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return updatedEntry
 
@@ -152,7 +156,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return result.deletedCount
 

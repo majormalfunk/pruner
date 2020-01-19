@@ -1,16 +1,14 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-// Day picker
-import DayPickerInput from 'react-day-picker/DayPickerInput'
-import { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css'
-import dateFnsFormat from 'date-fns/format';
-import dateFnsParse from 'date-fns/parse';
-
 // Date picker
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+import { registerLocale, setDefaultLocale } from  "react-datepicker"
+import en from 'date-fns/locale/en-GB'
+import { parseISO } from 'date-fns'
+registerLocale('en-GB', en)
+setDefaultLocale('en-GB')
 
 export const NameField = (props) => {
   return (
@@ -77,104 +75,39 @@ export const DurationField = (props) => {
   )
 }
 
-export const DateField = (props) => {
-  return (
-    <>
-      <Form.Label>Date</Form.Label>
-      <Form.Control type="text"
-        required placeholder="dd.mm.yyyy" name="dateField" id={props.setDate}
-        defaultValue={props.date} onChange={props.trigger} />
-      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
-    </>
-  )
-}
-
-export const DatePickerX = (props) => {
-  const FORMAT = 'dd.MM.yyyy';
-  const FIRSTDAY = 1
-  function parseDate(str, format, locale) {
-    const parsed = dateFnsParse(str, format, new Date(), { locale });
-    if (DateUtils.isDate(parsed)) {
-      return parsed;
-    }
-    return undefined;
-  }
-  function formatDate(date, format, locale) {
-    return dateFnsFormat(date, format, { locale });
-  }
-  function CustomOverlay({ classNames, selectedDay, children, ...props }) {
-    return (
-      <div className={classNames.overlayWrapper} {...props} >
-        <div className={classNames.overlay} style={{ color: "#ebc20c", background: "black" }}>
-          {children}
-        </div>
-    </div>
-    )
-  }
-
-  return (
-    <>
-      <Form.Label>Date</Form.Label>
-      <Form.Row>&nbsp;
-        <DayPickerInput
-          inputProps={{ className: "form-control" }}
-          overlayComponent={CustomOverlay}
-          formatDate={formatDate}
-          format={FORMAT}
-          parseDate={parseDate}
-          placeholder="dd.mm.yyyy"//{`${dateFnsFormat(new Date(), FORMAT)}`}
-          dayPickerProps={{
-            month: new Date(),
-            format: {FORMAT},
-            showWeekNumbers: true,
-            firstDayOfWeek: FIRSTDAY,
-            onDayClick: props.trigger
-          }} />
-      </Form.Row>
-      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
-    </>
-  )
-}
-
 export const TimeField = (props) => {
+
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+
+  let showtime = null
+  if (props.showtime) {
+    if (!isValidDate(props.showtime)) {
+      showtime = parseISO(props.showtime)
+    } else {
+      showtime = props.showtime
+    }
+  }
+  
   return (
     <>
-      <Form.Label>Time</Form.Label>
+      <Form.Label>{props.label}</Form.Label>
       <Form.Row>&nbsp;
-        <DatePicker className="form-control"
+        <DatePicker className="form-control" id={props.settime}
+          selected={showtime}
           onChange={props.trigger}
           showTimeSelect
+          locale="en-GB"
           timeFormat="HH:mm"
           timeIntervals={5}
-          //timeCaption="Showtime"
-          dateFormat="dd.MM.yyyy"
+          //timeCaption="Start"
+          dateFormat="dd.MM.yyyy HH:mm"
         />
       </Form.Row>
-      <Form.Text className="text-muted" id={props.datehint}></Form.Text>
-    </>
-  )
-  /*
-  return (
-    <>
-      <Form.Label>Time</Form.Label>
-      <Form.Control as="select"
-        required name="timeField" id={props.setTime} style={{ width: "75%" }}
-        defaultValue={props.showtime} onChange={props.trigger}>
-        {
-          props.venues.map((venue) => {
-            return (<option key={venue.id} value={venue.id}>{venue.venuename}</option>)
-          })
-        }
-      </Form.Control>
-
-
-      <Form.Control type="text" style={{ width: "75%" }}
-        required placeholder="hh.mi" name="timeField" id={props.setTime}
-        defaultValue={props.time} onChange={props.trigger} />
       <Form.Text className="text-muted" id={props.timehint}></Form.Text>
     </>
   )
-  */
 }
 
 export const VenueSelectField = (props) => {
@@ -184,7 +117,7 @@ export const VenueSelectField = (props) => {
       <>
         <Form.Label>Venue</Form.Label>
         <Form.Control as="select"
-          required placeholder="Select venue" name="venueSelectField" id={props.setVenue}
+          required placeholder="Select venue" name="venueSelectField" id={props.setvenue}
           defaultValue={props.venue ? props.venue : "-1"} onChange={props.trigger}>
           <option hidden disabled value={-1}> -- Select a venue -- </option>
           {
@@ -214,7 +147,7 @@ export const ShowSelectField = (props) => {
       <>
         <Form.Label>Show</Form.Label>
         <Form.Control as="select"
-          required placeholder="Select show" name="showSelectField" id={props.setShow}
+          required placeholder="Select show" name="showSelectField" id={props.setshow}
           defaultValue={props.show ? props.show : "-1"} onChange={props.trigger} >
           <option hidden disabled value={-1}> -- Select a show -- </option>
           {

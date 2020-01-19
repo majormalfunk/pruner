@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { ACTION_SELECT_ENTRY } from '../../constants'
+import { formatDate } from '../../utils/dates'
 
 const SelectEventEntryForm = (props) => {
 
@@ -20,7 +21,7 @@ const SelectEventEntryForm = (props) => {
               value={ACTION_SELECT_ENTRY} id={unfinishedEntry.id}
               onClick={handleSelectEntry}>Select</Button>
               &nbsp;
-              {unfinishedEntry.showdate}
+              {formatDate(unfinishedEntry.showtime)}
           </Col>
           <Col>
             {unfinishedEntry.venue}

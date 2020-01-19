@@ -3,25 +3,23 @@ import { connect } from 'react-redux'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
+import CreateEventEntry from './CreateEventEntry'
 import UpdateEventEntry from './UpdateEventEntry'
 import SelectEventEntryForm from './SelectEventEntryForm'
+import UpdateEventEntryCollapsed from './UpdateEventEntryCollapsed'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
 const EventEntries = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateEventEntry, deleteEventEntry, venues, shows, entries, selectedEntry, setSelectedEntry } = props
+  const { currentUser, display, displayEntries, handleDisplayEntries,
+    createEventEntry, updateEventEntry, deleteEventEntry,
+    unfinishedEvent, unfinishedRecurrence, shows, venues, entries,
+    selectedEntry, setSelectedEntry } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
   if (!display || !currentUser) {
-    return null
-  }
-  if (!venues || venues === null || venues.length === 0) {
-    return null
-  }
-  if (!shows || shows === null || shows.length === 0) {
     return null
   }
 
@@ -39,17 +37,21 @@ const EventEntries = (props) => {
             if (selectedEntry && entry.id === selectedEntry.id) {
               return (
                 <Row key={entry.id}>
-                  <UpdateEventEntry display={display}
-                    updateEventEntry={updateEventEntry}
-                    deleteEventEntry={deleteEventEntry}
-                    unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
+                  <Col>
+                    <UpdateEventEntry display={display}
+                      updateEventEntry={updateEventEntry}
+                      deleteEventEntry={deleteEventEntry}
+                      unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
+                  </Col>
                 </Row>
               )
             } else {
               return (
                 <Row key={entry.id}>
-                  <SelectEventEntryForm display={display}
-                    unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
+                  <Col>
+                    <SelectEventEntryForm display={display}
+                      unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
+                  </Col>
                 </Row>
               )
             }
@@ -63,7 +65,7 @@ const EventEntries = (props) => {
     }
   }
 
-  if (entries && entries.length > 0) {
+  if (!displayEntries) {
     return (
       <Container>
         <Row>
@@ -72,14 +74,12 @@ const EventEntries = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col className="Component-expl">
-            Select a schedule entry to edit it
+          <Col>
+            <UpdateEventEntryCollapsed
+              entries={entries}
+              handleDisplayEntries={handleDisplayEntries} />
           </Col>
         </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        {entriesToDisplay()}
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -94,8 +94,45 @@ const EventEntries = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col><span>&nbsp;</span></Col>
+          <Col>
+            <CreateEventEntry display={display}
+              createEventEntry={createEventEntry}
+              unfinishedEvent={unfinishedEvent}
+              unfinishedRecurrence={unfinishedRecurrence}
+              venues={venues}
+              shows={shows}
+              handleDisplayEntries={handleDisplayEntries} />
+          </Col>
         </Row>
+        {(entries && entries.length > 0) ? (
+          <>
+            <Row>
+              <Col>
+                <Container>
+                  <Row>
+                    <Col><span>&nbsp;</span></Col>
+                  </Row>
+                  <Row>
+                    <Col className="Component-expl">
+                      Select an event entry to edit it
+                    </Col>
+                  </Row>
+                </Container>
+              </Col>
+            </Row>
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+              {entriesToDisplay()}
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+          </>
+        ) : (
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+        )}
       </Container>
     )
   }
