@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+
+import { ACTION_TOGGLE_SHOW } from '../../constants'
 
 import CreateEventShow from './CreateEventShow'
 import UpdateEventShow from './UpdateEventShow'
@@ -121,6 +123,22 @@ const EventShows = (props) => {
               <Col><span>&nbsp;</span></Col>
             </Row>
               {showsToDisplay()}
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+            <Row>
+              <Col>
+                <Container>
+                  <Row>
+                    <Col className="Content-title">
+                      <Button variant="primary" type="button" size="sm"
+                        value={ACTION_TOGGLE_SHOW}
+                        onClick={handleDisplayShows}>Hide</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </Col>
+            </Row>
             <Row>
               <Col><span>&nbsp;</span></Col>
             </Row>

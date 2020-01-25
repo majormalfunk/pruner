@@ -17,7 +17,7 @@ const CreateEventEntry = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser,
     unfinishedEvent, unfinishedRecurrence, venues, shows,
-    addEntryToOwnEvents, createEventEntry, display } = props
+    addEntryToOwnEvents, createEventEntry, display, handleDisplayEntries } = props
 
   const [show, setShow] = useState('')
   const [venue, setVenue] = useState('')
@@ -171,7 +171,8 @@ const CreateEventEntry = (props) => {
       handleShow={handleShow}
       shows={shows}
       handleCreateEntryCancel={handleCreateEntryCancel}
-      handleCreateEntry={handleCreateEntry} />
+      handleCreateEntry={handleCreateEntry}
+      handleDisplayEntries={handleDisplayEntries} />
   )
 }
 

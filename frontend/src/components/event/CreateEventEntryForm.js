@@ -1,14 +1,15 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { ShowSelectField, VenueSelectField, TimeField } from './InputFields'
-import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL } from '../../constants'
+import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL, ACTION_TOGGLE_ENTRY } from '../../constants'
 import { FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../constants'
 import { FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../constants'
 
 const CreateEventEntryForm = (props) => {
 
   const { shows, show, handleShow, venues, venue, handleVenue,
-          showtime, handleShowtime, handleCreateEntry, handleCreateEntryCancel } = props
+          showtime, handleShowtime, handleCreateEntry, handleCreateEntryCancel,
+          handleDisplayEntries } = props
 
   return (
     <Container>
@@ -45,6 +46,13 @@ const CreateEventEntryForm = (props) => {
             <Button className="FormAlignedBtn" variant="primary" type="button"
               value={ACTION_CREATE_ENTRY_CANCEL} id={ACTION_CREATE_ENTRY_CANCEL}
               onClick={handleCreateEntryCancel}>Cancel</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="Content-title">
+            <Button variant="primary" type="button" size="sm"
+              value={ACTION_TOGGLE_ENTRY}
+              onClick={handleDisplayEntries}>Hide</Button>
           </Col>
         </Row>
       </Form>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+
+import { ACTION_TOGGLE_VENUE } from '../../constants'
 
 import CreateEventVenue from './CreateEventVenue'
 import UpdateEventVenue from './UpdateEventVenue'
@@ -117,6 +119,22 @@ const EventVenues = (props) => {
               <Col><span>&nbsp;</span></Col>
             </Row>
               {venuesToDisplay()}
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+            <Row>
+              <Col>
+                <Container>
+                  <Row>
+                    <Col className="Content-title">
+                      <Button variant="primary" type="button" size="sm"
+                        value={ACTION_TOGGLE_VENUE}
+                        onClick={handleDisplayVenues}>Hide</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </Col>
+            </Row>
             <Row>
               <Col><span>&nbsp;</span></Col>
             </Row>

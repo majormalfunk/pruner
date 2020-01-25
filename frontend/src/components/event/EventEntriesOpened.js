@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import CreateEventEntry from './CreateEventEntry'
-import UpdateEventEntry from './UpdateEventEntry'
-import SelectEventEntryForm from './SelectEventEntryForm'
+import UpdateEventEntries from './UpdateEventEntries'
 
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
@@ -20,47 +19,6 @@ const EventEntriesOpened = (props) => {
 
   if (!display || !currentUser) {
     return null
-  }
-
-  let filteredEntries = entries
-
-  const itemsOnPage = 2000
-  const pages = Math.ceil(filteredEntries.length / itemsOnPage)
-
-  const entriesToDisplay = () => {
-    var offset = (currentPage - 1) * itemsOnPage
-    if (filteredEntries !== undefined && filteredEntries !== null) {
-      return (
-        filteredEntries.map((entry, index) => {
-          if (index >= offset && index < (offset + itemsOnPage)) {
-            if (selectedEntry && entry.id === selectedEntry.id) {
-              return (
-                <Row key={entry.id}>
-                  <Col>
-                    <UpdateEventEntry display={display}
-                      updateEventEntry={updateEventEntry} deleteEventEntry={deleteEventEntry}
-                      unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
-                  </Col>
-                </Row>
-              )
-            } else {
-              return (
-                <Row key={entry.id}>
-                  <Col>
-                    <SelectEventEntryForm display={display}
-                      unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
-                  </Col>
-                </Row>
-              )
-            }
-          } else {
-            return null
-          }
-        })
-      )
-    } else {
-      return null
-    }
   }
 
   return (
@@ -78,27 +36,9 @@ const EventEntriesOpened = (props) => {
       </Row>
       {(entries && entries.length > 0) ? (
         <>
-          <Row>
-            <Col>
-              <Container>
-                <Row>
-                  <Col><span>&nbsp;</span></Col>
-                </Row>
-                <Row>
-                  <Col className="Component-expl">
-                    Select an event entry to edit it
-                  </Col>
-                </Row>
-              </Container>
-            </Col>
-          </Row>
-          <Row>
-            <Col><span>&nbsp;</span></Col>
-          </Row>
-            {entriesToDisplay()}
-          <Row>
-            <Col><span>&nbsp;</span></Col>
-          </Row>
+          <UpdateEventEntries display={display} handleDisplayEntries={handleDisplayEntries} entries={entries}
+            updateEventEntry={updateEventEntry} deleteEventEntry={deleteEventEntry}
+            selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry} />
         </>
       ) : (
         <Row>
