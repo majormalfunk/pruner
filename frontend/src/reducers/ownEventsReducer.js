@@ -244,6 +244,13 @@ const ownEventsReducer = (state = [], action) => {
           return (venue.id === action.data.updatedVenue.id ? action.data.updatedVenue : venue)
         })
         event.venues = newVenues
+        const newEntries = event.entries.map((entry) => {
+          if (entry.venue.id === action.data.updatedVenue.id) {
+            entry.venue = action.data.updatedVenue
+          }
+          return entry
+        })
+        event.entries = newEntries
         return event
       })
     case 'REMOVE_VENUE_FROM_OWN_EVENTS':
@@ -272,6 +279,13 @@ const ownEventsReducer = (state = [], action) => {
           return (show.id === action.data.updatedShow.id ? action.data.updatedShow : show)
         })
         event.shows = newShows
+        const newEntries = event.entries.map((entry) => {
+          if (entry.show.id === action.data.updatedShow.id) {
+            entry.show = action.data.updatedShow
+          }
+          return entry
+        })
+        event.entries = newEntries
         return event
       })
     case 'REMOVE_SHOW_FROM_OWN_EVENTS':

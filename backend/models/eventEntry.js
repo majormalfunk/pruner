@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const mongooseUniqueValidator = require('mongoose-unique-validator')
+const autopopulate = require('mongoose-autopopulate')
 
 const eventEntrySchema = new mongoose.Schema({
   showtime: {
@@ -16,15 +17,18 @@ const eventEntrySchema = new mongoose.Schema({
   },
   venue: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'EventVenue' 
+    ref: 'EventVenue',
+    autopopulate: { select: ['venuename', 'event', 'recurrence', '_id'] }
   },
   show: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'EventShow' 
+    ref: 'EventShow',
+    autopopulate: { select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
   }
 })
 
 eventEntrySchema.plugin(mongooseUniqueValidator)
+eventEntrySchema.plugin(autopopulate)
 
 const EventEntry = mongoose.model('EventEntry', eventEntrySchema)
 

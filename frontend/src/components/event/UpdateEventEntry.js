@@ -12,7 +12,7 @@ import UpdateEventEntryForm from './UpdateEventEntryForm'
 const UpdateEventEntry = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, display,
-    showname, venuename, updateEntryInOwnEvents, removeEntryFromOwnEvents,
+    updateEntryInOwnEvents, removeEntryFromOwnEvents,
     updateEventEntry, deleteEventEntry, unfinishedEntry, setSelectedEntry } = props
 
   const [showtime, setShowtime] = useState(unfinishedEntry.showtime)
@@ -144,8 +144,7 @@ const UpdateEventEntry = (props) => {
 
   return (
     <UpdateEventEntryForm
-      showname={showname}
-      venuename={venuename}
+      entry={unfinishedEntry}
       showtime={showtime}
       handleShowtime={handleShowtime}
       handleUpdateEntryCancel={handleUpdateEntryCancel}

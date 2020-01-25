@@ -83,5 +83,8 @@
 | 18.01.2020    | Date picker component to Event entries                             |     6,5   |           |
 | 19.01.2020    | Event entries                                                      |     6,5   |           |
 | **WEEK  3**   | **TOTAL**                                                          |  **18,5** | **178,5** |
+| 23.01.2020    | Event entries                                                      |     1,0   |           |
+| 25.01.2020    | Event entries                                                      |     6,0   |           |
+| **WEEK  4**   | **TOTAL**                                                          |   **6,0** | **184,5** |
 
 

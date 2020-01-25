@@ -24,10 +24,10 @@ const SelectEventEntryForm = (props) => {
               {formatDate(unfinishedEntry.showtime)}
           </Col>
           <Col>
-            {unfinishedEntry.venue}
+            {unfinishedEntry.show.showname}
           </Col>
           <Col>
-            {unfinishedEntry.show}
+            {unfinishedEntry.venue.venuename}
           </Col>
         </Row>
       </Form>

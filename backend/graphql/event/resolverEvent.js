@@ -14,7 +14,7 @@ module.exports = {
     Mutation: {
       getOwnEvents: async (root, args, { currentUser, userId }) => {
 
-        //console.log('Trying to get own events for', args.username)
+        console.log('Trying to get own events for', args.username)
 
         if (currentUser) {
 
@@ -24,8 +24,6 @@ module.exports = {
             if (userId) {
               try {
                 const eventsFromDB = await Event.find({ owner: userId })
-                //console.log('Found events', eventsFromDB)
-                //console.log('With recurrs', eventsFromDB.recurrences)
                 return eventsFromDB
               } catch (error) {
                 console.log('Error trying to get own events from database')

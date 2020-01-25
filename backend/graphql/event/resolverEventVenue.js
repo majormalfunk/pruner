@@ -21,10 +21,10 @@ module.exports = {
 
             try {
 
-              console.log('Create venue for event', args.eventId)
+              //console.log('Create venue for event', args.eventId)
 
               let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
-              console.log('Event is', eventToUpdate)
+              //console.log('Event is', eventToUpdate)
 
               if (eventToUpdate && eventToUpdate !== null) {
 
@@ -49,7 +49,7 @@ module.exports = {
                   }
                 )
 
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return newVenue
               }
@@ -102,7 +102,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return updatedVenue
 
@@ -125,7 +125,7 @@ module.exports = {
       },
       deleteEventVenue: async (root, args, { currentUser, userId }) => {
 
-        console.log('Deleting an event venue')
+        //console.log('Deleting an event venue')
 
         if (currentUser) {
 
@@ -166,7 +166,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return result.deletedCount
 

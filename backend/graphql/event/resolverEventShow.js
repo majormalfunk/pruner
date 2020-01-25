@@ -47,7 +47,7 @@ module.exports = {
                 }
               )
 
-              console.log('Updated event is', updatedEvent)
+              //console.log('Updated event is', updatedEvent)
 
               return savedShow
             } catch (error) {
@@ -99,7 +99,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return updatedShow
 
@@ -123,7 +123,7 @@ module.exports = {
       },
       deleteEventShow: async (root, args, { currentUser, userId }) => {
 
-        console.log('Deleting an event show')
+        //console.log('Deleting an event show')
 
         if (currentUser) {
 
@@ -149,7 +149,7 @@ module.exports = {
                   { _id: args.id },
                 )
 
-                console.log('Delete count is', result.deletedCount)
+                //console.log('Delete count is', result.deletedCount)
 
                 const newShows = eventToUpdate.shows.filter(show => show.id !== args.id)
 
@@ -164,7 +164,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return result.deletedCount
 

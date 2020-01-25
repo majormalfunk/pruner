@@ -7,14 +7,6 @@ module.exports = {
       nickname: String!
       id: ID!
     }
-    type EventEntry {
-      showtime: Date!
-      event: ID!
-      recurrence: ID!
-      venue: ID!
-      show: ID!
-      id: ID!
-    }
     type EventShow {
       showname: String!
       description: String
@@ -28,6 +20,14 @@ module.exports = {
       venuename: String!
       event: ID!
       recurrence: ID!
+      id: ID!
+    }
+    type EventEntry {
+      showtime: Date!
+      event: ID!
+      recurrence: ID!
+      venue: EventVenue!
+      show: EventShow!
       id: ID!
     }
     type EventRecurrence {

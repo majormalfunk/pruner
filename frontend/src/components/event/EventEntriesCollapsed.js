@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 import { ACTION_TOGGLE_ENTRY } from '../../constants'
 
-const UpdateEventEntryCollapsed = (props) => {
+const EventEntriesCollapsed = (props) => {
 
   return (
     <Container>
@@ -22,4 +22,4 @@ const UpdateEventEntryCollapsed = (props) => {
 
 }
 
-export default UpdateEventEntryCollapsed
+export default EventEntriesCollapsed

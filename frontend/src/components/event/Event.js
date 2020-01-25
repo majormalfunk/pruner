@@ -57,18 +57,38 @@ const Event = (props) => {
   }
   const handleDisplayEvent = () => {
     setDisplayEvent(!displayEvent)
+    setDisplayRecurrence(false)
+    setDisplayVenues(false)
+    setDisplayShows(false)
+    setDisplayEntries(false)
   }
   const handleDisplayRecurrence = () => {
     setDisplayRecurrence(!displayRecurrence)
+    setDisplayEvent(false)
+    setDisplayVenues(false)
+    setDisplayShows(false)
+    setDisplayEntries(false)
   }
   const handleDisplayVenues = () => {
     setDisplayVenues(!displayVenues)
+    setDisplayEvent(false)
+    setDisplayRecurrence(false)
+    setDisplayShows(false)
+    setDisplayEntries(false)
   }
   const handleDisplayShows = () => {
     setDisplayShows(!displayShows)
+    setDisplayEvent(false)
+    setDisplayRecurrence(false)
+    setDisplayVenues(false)
+    setDisplayEntries(false)
   }
   const handleDisplayEntries = () => {
     setDisplayEntries(!displayEntries)
+    setDisplayEvent(false)
+    setDisplayRecurrence(false)
+    setDisplayVenues(false)
+    setDisplayShows(false)
   }
 
   const createEvent = useMutation(CREATE_EVENT, {
@@ -225,6 +245,8 @@ const Event = (props) => {
             createEventShow={createEventShow}
             updateEventShow={updateEventShow}
             deleteEventShow={deleteEventShow}
+            unfinishedEvent={event}
+            unfinishedRecurrence={recurrence}
             shows={unfinishedEvent.shows}
             selectedShow={selectedShow} setSelectedShow={setSelectedShow}
             displayShows={displayShows} handleDisplayShows={handleDisplayShows} />
@@ -232,6 +254,8 @@ const Event = (props) => {
             createEventEntry={createEventEntry}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}
+            unfinishedEvent={event}
+            unfinishedRecurrence={recurrence}
             venues={unfinishedEvent.venues}
             shows={unfinishedEvent.shows}
             entries={unfinishedEvent.entries}
@@ -245,27 +269,6 @@ const Event = (props) => {
     </Container>
   )
 }
-
-/*
-
-          <EventEntries display={page === PAGE_EVENT_CREATE}
-            updateEventEntry={updateEventEntry}
-            deleteEventEntry={deleteEventEntry}
-            venues={unfinishedEvent.venues}
-            shows={unfinishedEvent.shows}
-            entries={unfinishedEvent.entries}
-            selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry}
-            displayEntries={displayEntries} setDisplayEntries={setDisplayEntries} />
-          <CreateEventEntry display={page === PAGE_EVENT_CREATE}
-            createEventEntry={createEventEntry}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            venues={unfinishedEvent.venues}
-            shows={unfinishedEvent.shows}
-            displayEntries={displayEntries} />
-
-
-*/
 
 const mapStateToProps = (state) => {
   return {

@@ -47,8 +47,21 @@ export const ENTRY_DETAILS = gql`
     showtime
     event
     recurrence
-    venue
-    show
+    venue {
+      venuename
+      event
+      recurrence
+      id
+    }
+    show {
+      showname
+      description
+      link
+      duration
+      event
+      recurrence
+      id
+    }
     id
   }
 `

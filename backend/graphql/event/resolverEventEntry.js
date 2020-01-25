@@ -3,6 +3,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Event = require('../../models/event')
+const EventVenue = require('../../models/eventVenue')
+const EventShow = require('../../models/eventShow')
 const EventEntry = require('../../models/eventEntry')
 
 const { checkCurrentUser } = require('../../utils')
@@ -23,15 +25,21 @@ module.exports = {
             try {
 
               let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
+              const venueFromDB = await EventVenue.findOne({ _id: args.venueId, event: args.eventId })
+              const showFromDB = await EventShow.findOne({ _id: args.showId, event: args.eventId })
 
               let showtime = new Date(args.showtime)
+
+              if (!eventToUpdate || !venueFromDB || !showFromDB || !showtime) {
+                throw new UserInputError('Invelid parameters', { invalidArgs: args })
+              }
 
               const newEntry = new EventEntry({
                 showtime: showtime,
                 event: args.eventId,
                 recurrence: args.recurrenceId,
-                venue: args.venueId,
-                show: args.showId
+                venue: venueFromDB,
+                show: showFromDB
               })
               const savedEntry = await newEntry.save()
 
@@ -48,9 +56,7 @@ module.exports = {
                   new: true
                 }
               )
-
-              //console.log('Updated event is', updatedEvent)
-
+              //console.log('Saved entry', savedEntry)
               return savedEntry
             } catch (error) {
               throw new UserInputError(error.message, {
@@ -98,7 +104,6 @@ module.exports = {
                     new: true
                   }
                 )
-                //console.log('Updated event is', updatedEvent)
 
                 return updatedEntry
 

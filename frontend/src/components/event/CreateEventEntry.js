@@ -133,6 +133,8 @@ const CreateEventEntry = (props) => {
     if (show !== '' && venue !== '' && isValidDate(showtime)) {
       try {
         console.log('Trying')
+        console.log('Event:', unfinishedEvent)
+        console.log('Recurrence:', unfinishedRecurrence)
         const eventId = unfinishedEvent.id
         const recurrenceId = unfinishedRecurrence.id
         const showtimeint = showtime.getTime()
