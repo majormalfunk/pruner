@@ -6,6 +6,7 @@ export const EVENT_DETAILS = gql`
     description
     publicevent
     liveevent
+    launched
     id
   }
 `
@@ -118,10 +119,10 @@ export const CREATE_EVENT = gql`
 export const UPDATE_EVENT = gql`
   mutation updateEvent(
     $id: ID!, $eventname: String!, $description: String!,
-    $publicevent: Boolean!, $liveevent: Boolean!) {
+    $publicevent: Boolean!, $liveevent: Boolean!, $launched: Boolean!) {
     updateEvent(
       id: $id, eventname: $eventname, description: $description,
-      publicevent: $publicevent, liveevent: $liveevent) {
+      publicevent: $publicevent, liveevent: $liveevent, launched: $launched) {
         ...EventDetails
         recurrences { ...RecurrenceDetails }
         venues { ...VenueDetails }

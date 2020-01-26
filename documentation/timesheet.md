@@ -85,6 +85,8 @@
 | **WEEK  3**   | **TOTAL**                                                          |  **18,5** | **178,5** |
 | 23.01.2020    | Event entries                                                      |     1,0   |           |
 | 25.01.2020    | Event entries                                                      |     7,0   |           |
-| **WEEK  4**   | **TOTAL**                                                          |   **8,0** | **186,5** |
+| 26.01.2020    | Test data for event entries                                        |     2,0   |           |
+| 26.01.2020    | Sorting in schema, event launching                                 |     0,5   |           |
+| **WEEK  4**   | **TOTAL**                                                          |  **10,5** | **189,0** |
 
 

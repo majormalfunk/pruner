@@ -22,6 +22,7 @@ const UpdateEvent = (props) => {
   const [description, setDescription] = useState(unfinishedEvent.description)
   const [publicevent, setPublicevent] = useState(unfinishedEvent.publicevent)
   const [liveevent, setLiveevent] = useState(unfinishedEvent.liveevent)
+  const [launched, setLaunched] = useState(unfinishedEvent.launched)
 
   const controlEventname = () => {
     if (document.getElementById(FLD_UPD_HNT_EVE_NAM)) {
@@ -136,7 +137,7 @@ const UpdateEvent = (props) => {
       try {
         const id = unfinishedEvent.id
         const result = await updateEvent[0]({
-          variables: { id, eventname, description, publicevent, liveevent }
+          variables: { id, eventname, description, publicevent, liveevent, launched }
         })
         if (result) {
           const updatedEvent = result.data.updateEvent

@@ -18,12 +18,12 @@ const eventEntrySchema = new mongoose.Schema({
   venue: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventVenue',
-    autopopulate: { select: ['venuename', 'event', 'recurrence', '_id'] }
+    autopopulate: { options: { sort: { 'venuename': 1 }}, select: ['venuename', 'event', 'recurrence', '_id'] }
   },
   show: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventShow',
-    autopopulate: { select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
+    autopopulate: { options: { sort: { 'showname': 1 }}, select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
   }
 })
 

@@ -43,6 +43,7 @@ module.exports = {
       description: String!
       publicevent: Boolean!
       liveevent: Boolean!
+      launched: Boolean!
       recurrences: [EventRecurrence]
       venues: [EventVenue]
       shows: [EventShow]
@@ -70,6 +71,7 @@ module.exports = {
         description: String!
         publicevent: Boolean!
         liveevent: Boolean!
+        launched: Boolean!
         ): Event
     }
     extend type Mutation {
