@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col } from 'react-bootstrap'
@@ -10,16 +10,21 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const EventEntriesOpened = (props) => {
 
-  const { currentUser, display, handleDisplayEntries,
+  const { currentUser, display, ownEvents, handleDisplayEntries,
     createEventEntry, updateEventEntry, deleteEventEntry,
-    unfinishedEvent, unfinishedRecurrence, shows, venues, entries,
     selectedEntry, setSelectedEntry } = props
-
-  const [currentPage, setCurrentPage] = useState(1)
 
   if (!display || !currentUser) {
     return null
   }
+
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+    return !(recurrence.launched)
+  })
+  const entries = unfinishedEvent.entries.filter(entry => entry.recurrence === unfinishedRecurrence.id)
 
   return (
     <Container>
@@ -27,10 +32,6 @@ const EventEntriesOpened = (props) => {
         <Col>
           <CreateEventEntry display={display}
             createEventEntry={createEventEntry}
-            unfinishedEvent={unfinishedEvent}
-            unfinishedRecurrence={unfinishedRecurrence}
-            venues={venues}
-            shows={shows}
             handleDisplayEntries={handleDisplayEntries} />
         </Col>
       </Row>

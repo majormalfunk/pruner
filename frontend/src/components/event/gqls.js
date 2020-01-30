@@ -17,6 +17,7 @@ export const RECURRENCE_DETAILS = gql`
     description
     publicrecurrence
     liverecurrence
+    launched
     event
     id
   }
@@ -161,10 +162,10 @@ export const CREATE_EVENT_RECURRENCE = gql`
 export const UPDATE_EVENT_RECURRENCE = gql`
   mutation updateEventRecurrence(
     $id: ID!, $recurrencename: String!, $description: String!,
-    $publicrecurrence: Boolean!, $liverecurrence: Boolean!) {
+    $publicrecurrence: Boolean!, $liverecurrence: Boolean!, $launched: Boolean!) {
     updateEventRecurrence(
       id: $id, recurrencename: $recurrencename, description: $description,
-      publicrecurrence: $publicrecurrence, liverecurrence: $liverecurrence) {
+      publicrecurrence: $publicrecurrence, liverecurrence: $liverecurrence, launched: $launched) {
         ...RecurrenceDetails
     }
   }

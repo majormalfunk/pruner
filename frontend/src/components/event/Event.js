@@ -30,8 +30,6 @@ import CreateEventRecurrence from './CreateEventRecurrence'
 import UpdateEventRecurrence from './UpdateEventRecurrence'
 import EventVenues from './EventVenues'
 import EventShows from './EventShows'
-//import CreateEventEntry from './CreateEventEntry'
-//import UpdateEventEntry from './UpdateEventEntry'
 import EventEntries from './EventEntries'
 
 const Event = (props) => {
@@ -138,7 +136,7 @@ const Event = (props) => {
   })
 
   const unfinishedEvent = ownEvents.find(function (event) {
-    return ((event.recurrences && event.recurrences.length === 0) || !event.liveevent)
+    return !event.launched
   })
 
   useEffect(() => {
@@ -213,21 +211,17 @@ const Event = (props) => {
           createEvent={createEvent} setEvent={setEvent} />
       ) : (
         <UpdateEvent display={page === PAGE_EVENT_CREATE}
-          updateEvent={updateEvent} deleteEvent={deleteEvent}
-          unfinishedEvent={event} setEvent={setEvent}
+          updateEvent={updateEvent} deleteEvent={deleteEvent} setEvent={setEvent}
           displayEvent={displayEvent} handleDisplayEvent={handleDisplayEvent} />
       )}
       {(event && event.recurrences && event.recurrences.length === 0) && (
         <CreateEventRecurrence display={page === PAGE_EVENT_CREATE}
-          createEventRecurrence={createEventRecurrence}
-          unfinishedEvent={event} />
+          createEventRecurrence={createEventRecurrence} />
       )}
       {(event && event.recurrences && event.recurrences.length > 0) && (
         <UpdateEventRecurrence display={page === PAGE_EVENT_CREATE}
           updateEventRecurrence={updateEventRecurrence}
-          deleteEventRecurrence={deleteEventRecurrence}
-          unfinishedEvent={event}
-          unfinishedRecurrence={recurrence} setRecurrence={setRecurrence}
+          deleteEventRecurrence={deleteEventRecurrence} setRecurrence={setRecurrence}
           displayRecurrence={displayRecurrence} handleDisplayRecurrence={handleDisplayRecurrence} />
       )}
       {(event && event.recurrences && event.recurrences.length > 0 && event.venues && event.shows) &&
@@ -236,29 +230,19 @@ const Event = (props) => {
             createEventVenue={createEventVenue}
             updateEventVenue={updateEventVenue}
             deleteEventVenue={deleteEventVenue}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            venues={unfinishedEvent.venues}
             selectedVenue={selectedVenue} setSelectedVenue={setSelectedVenue}
             displayVenues={displayVenues} handleDisplayVenues={handleDisplayVenues} />
           <EventShows display={page === PAGE_EVENT_CREATE}
             createEventShow={createEventShow}
             updateEventShow={updateEventShow}
             deleteEventShow={deleteEventShow}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            shows={unfinishedEvent.shows}
             selectedShow={selectedShow} setSelectedShow={setSelectedShow}
             displayShows={displayShows} handleDisplayShows={handleDisplayShows} />
           <EventEntries display={page === PAGE_EVENT_CREATE}
             createEventEntry={createEventEntry}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}
-            unfinishedEvent={event}
-            unfinishedRecurrence={recurrence}
-            venues={unfinishedEvent.venues}
-            shows={unfinishedEvent.shows}
-            entries={unfinishedEvent.entries}
+            //entries={unfinishedEvent.entries}
             selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry}
             displayEntries={displayEntries} handleDisplayEntries={handleDisplayEntries} />
         </>

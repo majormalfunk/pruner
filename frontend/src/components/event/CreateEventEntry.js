@@ -15,13 +15,21 @@ const CreateEventEntry = (props) => {
 
   Settings.defaultLocale = 'fi'
 
-  const { displaySuccess, displayInfo, displayError, currentUser,
-    unfinishedEvent, unfinishedRecurrence, venues, shows,
+  const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
     addEntryToOwnEvents, createEventEntry, display, handleDisplayEntries } = props
 
   const [show, setShow] = useState('')
   const [venue, setVenue] = useState('')
   const [showtime, setShowtime] = useState(null)
+
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+    return !(recurrence.launched)
+  })
+  const venues = unfinishedEvent.venues.filter(venue => venue.recurrence === unfinishedRecurrence.id)
+  const shows = unfinishedEvent.shows.filter(show => show.recurrence === unfinishedRecurrence.id)
 
   const controlShow = () => {
     if (!shows || shows === null || shows.length === 0) {

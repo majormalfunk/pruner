@@ -14,9 +14,13 @@ import UpdateEventForm from './UpdateEventForm'
 
 const UpdateEvent = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser,
-    removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent, unfinishedEvent,
+  const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
+    removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent,
     display, setEvent, displayEvent, handleDisplayEvent } = props
+
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
 
   const [eventname, setEventname] = useState(unfinishedEvent.eventname)
   const [description, setDescription] = useState(unfinishedEvent.description)
@@ -225,36 +229,12 @@ const UpdateEvent = (props) => {
           )}
     </Container>
   )
-  /*
-  if (!displayEvent) {
-    return (
-      <UpdateEventCollapsed
-        eventname={eventname}
-        description={description}
-        handleDisplayEvent={handleDisplayEvent} />
-    )
-  } else {
-    return (
-      <UpdateEventForm
-        eventname={eventname}
-        handleEventname={handleEventname}
-        description={description}
-        handleDescription={handleDescription}
-        publicevent={publicevent}
-        handlePublicevent={handlePublicevent}
-        liveevent={liveevent}
-        handleLiveevent={handleLiveevent}
-        handleUpdateEventCancel={handleUpdateEventCancel}
-        handleUpdateEvent={handleUpdateEvent}
-        handleDeleteEvent={handleDeleteEvent} />
-    )
-  }
-  */
 }
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    ownEvents: state.ownEvents
   }
 }
 

@@ -35,6 +35,7 @@ module.exports = {
       description: String!
       publicrecurrence: Boolean!
       liverecurrence: Boolean!
+      launched: Boolean!
       event: ID!
       id: ID!
     }
@@ -95,6 +96,7 @@ module.exports = {
         description: String!
         publicrecurrence: Boolean!
         liverecurrence: Boolean!
+        launched: Boolean!
         ): EventRecurrence
     }
     extend type Mutation {

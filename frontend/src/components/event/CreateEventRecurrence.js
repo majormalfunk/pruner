@@ -13,8 +13,12 @@ import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
 
 const CreateEventRecurrence = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, unfinishedEvent,
+  const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
     addRecurrenceToOwnEvents, createEventRecurrence, display } = props
+
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
 
   const [recurrencename, setRecurrencename] = useState('')
   const [description, setDescription] = useState('')

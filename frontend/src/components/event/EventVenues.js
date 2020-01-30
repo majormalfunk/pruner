@@ -14,9 +14,17 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const EventVenues = (props) => {
 
-  const { currentUser, display, displayVenues, handleDisplayVenues,
+  const { currentUser, display, ownEvents, displayVenues, handleDisplayVenues,
     createEventVenue, updateEventVenue, deleteEventVenue,
-    unfinishedEvent, unfinishedRecurrence, venues, selectedVenue, setSelectedVenue } = props
+    selectedVenue, setSelectedVenue } = props
+    
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+    return !(recurrence.launched)
+  })
+  const venues = unfinishedEvent.venues.filter(venue => venue.recurrence === unfinishedRecurrence.id)
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -94,8 +102,6 @@ const EventVenues = (props) => {
           <Col>
             <CreateEventVenue display={display}
               createEventVenue={createEventVenue}
-              unfinishedEvent={unfinishedEvent}
-              unfinishedRecurrence={unfinishedRecurrence}
               handleDisplayVenues={handleDisplayVenues} />
           </Col>
         </Row>

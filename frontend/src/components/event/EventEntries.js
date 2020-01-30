@@ -11,8 +11,7 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 const EventEntries = (props) => {
 
   const { currentUser, display, displayEntries, handleDisplayEntries,
-    createEventEntry, updateEventEntry, deleteEventEntry,
-    unfinishedEvent, unfinishedRecurrence, shows, venues, entries,
+    createEventEntry, updateEventEntry, deleteEventEntry, entries,
     selectedEntry, setSelectedEntry } = props
 
   if (!display || !currentUser) {
@@ -30,16 +29,14 @@ const EventEntries = (props) => {
         <Col>
         {(!displayEntries ? (
             <EventEntriesCollapsed
-            entries={entries}
+            //entries={entries}
             handleDisplayEntries={handleDisplayEntries} />
           ) : (
             <EventEntriesOpened display={display}
             createEventEntry={createEventEntry}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}
-            unfinishedEvent={unfinishedEvent}
-            unfinishedRecurrence={unfinishedRecurrence}
-            venues={venues} shows={shows} entries={entries}
+            //entries={entries}
             selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry}
             handleDisplayEntries={handleDisplayEntries} />
           )

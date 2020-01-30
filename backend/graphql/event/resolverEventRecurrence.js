@@ -30,6 +30,7 @@ module.exports = {
                 description: args.description,
                 publicrecurrence: args.publicrecurrence,
                 liverecurrence: args.liverecurrence,
+                launched: false,
                 event: args.eventId
               })
               const savedRecurrence = await newRecurrence.save()
@@ -82,6 +83,7 @@ module.exports = {
                 recurrenceToUpdate.description = args.description
                 recurrenceToUpdate.publicrecurrence = args.publicrecurrence
                 recurrenceToUpdate.liverecurrence = args.liverecurrence
+                recurrenceToUpdate.launched = args.launched
 
                 const updatedRecurrence = await recurrenceToUpdate.save()
 

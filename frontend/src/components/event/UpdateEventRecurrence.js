@@ -14,14 +14,23 @@ import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
-    updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents, updateEventRecurrence, deleteEventRecurrence,
-    unfinishedEvent, unfinishedRecurrence, setRecurrence, displayRecurrence, handleDisplayRecurrence } = props
+  const { displaySuccess, displayInfo, displayError, currentUser, display, ownEvents,
+    updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents,
+    updateEventRecurrence, deleteEventRecurrence,
+    setRecurrence, displayRecurrence, handleDisplayRecurrence } = props
+
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+    return !(recurrence.launched)
+  })
 
   const [recurrencename, setRecurrencename] = useState(unfinishedRecurrence.recurrencename)
   const [description, setDescription] = useState(unfinishedRecurrence.description)
   const [publicrecurrence, setPublicrecurrence] = useState(unfinishedRecurrence.publicrecurrence)
   const [liverecurrence, setLiverecurrence] = useState(unfinishedRecurrence.liverecurrence)
+  const [launched, setLaunched] = useState(unfinishedRecurrence.launched)
 
   const controlRecurrencename = () => {
     if (document.getElementById(FLD_UPD_HNT_REC_NAM)) {
@@ -120,7 +129,7 @@ const UpdateEventRecurrence = (props) => {
     document.getElementById(FLD_UPD_SET_REC_NAM).value = unfinishedRecurrence.recurrencename
     setDescription(unfinishedRecurrence.description)
     document.getElementById(FLD_UPD_SET_REC_DES).value = unfinishedRecurrence.description
-    setPublicrecurrence(unfinishedRecurrence.publicevent)
+    setPublicrecurrence(unfinishedRecurrence.publicrecurrence)
     document.getElementById(FLD_UPD_SET_REC_PUB).checked = unfinishedRecurrence.publicrecurrence
     setLiverecurrence(unfinishedRecurrence.liverecurrence)
     document.getElementById(FLD_UPD_SET_REC_LIV).checked = unfinishedRecurrence.liverecurrence
@@ -138,7 +147,7 @@ const UpdateEventRecurrence = (props) => {
       try {
         const id = unfinishedRecurrence.id
         const result = await updateEventRecurrence[0]({
-          variables: { id, recurrencename, description, publicrecurrence, liverecurrence }
+          variables: { id, recurrencename, description, publicrecurrence, liverecurrence, launched }
         })
         //console.log('Result:', result)
         if (result) {
@@ -233,7 +242,8 @@ const UpdateEventRecurrence = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    ownEvents: state.ownEvents
   }
 }
 

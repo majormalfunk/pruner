@@ -29,22 +29,30 @@ const eventSchema = new mongoose.Schema({
   recurrences: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventRecurrence',
-    autopopulate: { options: { sort: { 'recurrencename': 1 }}, select: [ 'recurrencename', 'description', 'publicrecurrence', 'liverecurrence', 'event', '_id'] }
+    autopopulate: {
+      options: { sort: { 'recurrencename': 1 }},
+      select: [ 'recurrencename', 'description', 'publicrecurrence', 'liverecurrence', 'launched', 'event', '_id'] }
   }],
   venues: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventVenue',
-    autopopulate: { options: { sort: { 'venuename': 1 }}, select: ['venuename', 'event', 'recurrence', '_id'] }
+    autopopulate: {
+      options: { sort: { 'venuename': 1 }},
+      select: ['venuename', 'event', 'recurrence', '_id'] }
   }],
   shows: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventShow',
-    autopopulate: { options: { sort: { 'showname': 1 }}, select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
+    autopopulate: {
+      options: { sort: { 'showname': 1 }},
+      select: ['showname', 'description', 'link', 'duration', 'event', 'recurrence', '_id'] }
   }],
   entries: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'EventEntry',
-    autopopulate: { options: { sort: { 'showtime': 1 }}, select: ['showtime', 'event', 'recurrence', 'venue', 'show', '_id'] }
+    autopopulate: {
+      options: { sort: { 'showtime': 1 }},
+      select: ['showtime', 'event', 'recurrence', 'venue', 'show', '_id'] }
   }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,

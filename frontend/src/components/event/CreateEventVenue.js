@@ -13,10 +13,16 @@ import CreateEventVenueForm from './CreateEventVenueForm'
 
 const CreateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser,
-    unfinishedEvent, unfinishedRecurrence,
+  const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
     addVenueToOwnEvents, createEventVenue, display, handleDisplayVenues } = props
 
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+    return !(recurrence.launched)
+  })
+    
   const [venuename, setVenuename] = useState('')
 
   const controlVenuename = () => {
