@@ -49,7 +49,7 @@ module.exports = {
                 }
               )
 
-              console.log('Updated event is', updatedEvent)
+              //console.log('Updated event is', updatedEvent)
 
               return savedRecurrence
             } catch (error) {
@@ -102,7 +102,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return updatedRecurrence
 
@@ -166,7 +166,7 @@ module.exports = {
                   { _id: args.id },
                 )
 
-                console.log('Delete count is', result.deletedCount)
+                //console.log('Delete count is', result.deletedCount)
 
                 const newRecurrences = eventToUpdate.recurrences.filter(recurrence => recurrence.id !== args.id)
 
@@ -181,7 +181,7 @@ module.exports = {
                     new: true
                   }
                 )
-                console.log('Updated event is', updatedEvent)
+                //console.log('Updated event is', updatedEvent)
 
                 return result.deletedCount
 

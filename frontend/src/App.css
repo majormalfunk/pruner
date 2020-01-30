@@ -112,22 +112,14 @@
   padding: 5px;
 }
 
-/* DayPickerInput Original */
-/*
-.DayPickerInput {
-  display: inline-block;
+.btn-action {
+  color: #fff;
+  background-color: #880088;
+  border-color: #880088;
 }
 
-.DayPickerInput-OverlayWrapper {
-  position: relative;
+.btn-action:hover {
+  color: #fff;
+  background-color: #660066;
+  border-color: #660066;
 }
-
-.DayPickerInput-MyOverlay {
-  position: absolute;
-  left: 0;
-  z-index: 1;
-
-  background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-*/

@@ -151,7 +151,7 @@ module.exports = {
                   { _id: args.id },
                 )
 
-                console.log('Delete count is', result.deletedCount)
+                //console.log('Delete count is', result.deletedCount)
 
                 const newVenues = eventToUpdate.venues.filter(venue => venue.id !== args.id)
 

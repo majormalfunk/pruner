@@ -88,7 +88,7 @@
 | 26.01.2020    | Test data for Event entries                                        |     2,0   |           |
 | 26.01.2020    | Sorting in schema, Event launching                                 |     0,5   |           |
 | **WEEK  4**   | **TOTAL**                                                          |  **10,5** | **189,0** |
-| 30.01.2020    | Refactoring                                                        |     1,5   |           |
-| **WEEK  4**   | **TOTAL**                                                          |   **1,5** | **190,5** |
+| 30.01.2020    | Refactoring                                                        |     3,5   |           |
+| **WEEK  4**   | **TOTAL**                                                          |   **3,5** | **193,5** |
 
 

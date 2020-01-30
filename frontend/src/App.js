@@ -14,7 +14,7 @@ import { clearOwnEvents } from './reducers/ownEventsReducer'
 
 import Home from './components/home/Home'
 import Account from './components/account/Account'
-import Event from './components/event/Event'
+import Event from './components/event/event/Event'
 
 const App = (props) => {
 
