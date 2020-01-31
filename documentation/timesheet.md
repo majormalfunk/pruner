@@ -89,6 +89,7 @@
 | 26.01.2020    | Sorting in schema, Event launching                                 |     0,5   |           |
 | **WEEK  4**   | **TOTAL**                                                          |  **10,5** | **189,0** |
 | 30.01.2020    | Refactoring                                                        |     3,5   |           |
-| **WEEK  4**   | **TOTAL**                                                          |   **3,5** | **193,5** |
+| 31.01.2020    | Event launching                                                    |     0,5   |           |
+| **WEEK  4**   | **TOTAL**                                                          |   **4,0** | **193,0** |
 
 

@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const User = require('../../models/user')
 const Event = require('../../models/event')
+const EventRecurrence = require('../../models/eventRecurrence')
 //const EventVenue = require('../../models/eventVenue') // DELETE THIS WHEN TEST DATA OK
 //const EventShow = require('../../models/eventShow') // DELETE THIS WHEN TEST DATA OK
 //const EventEntry = require('../../models/eventEntry') // DELETE THIS WHEN TEST DATA OK
@@ -164,6 +165,60 @@ module.exports = {
             throw AuthenticationError('Failure decoding token.')
           }
         }
+      },
+      launchEvent: async (root, args, { currentUser, userId }) => {
+
+        if (currentUser) {
+
+          checkCurrentUser({ currentUser }, 'update an event')
+
+          if (userId && userId !== '') {
+
+            try {
+
+              let eventToUpdate = await Event.findOne({ _id: args.id, owner: userId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: args.recurrenceId, event: args.id })
+
+              if (!eventToUpdate || !recurrenceToUpdate) {
+                throw new UserInputError('Invelid parameters', { invalidArgs: args })
+              }
+
+              let updatedEvent = await Event.findOneAndUpdate(
+                { _id: args.id, owner: userId },
+                {
+                  $set: {
+                    launched: true
+                  }
+                },
+                {
+                  new: true
+                }
+              )
+              let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                { _id: args.recurrenceId, event: args.id },
+                {
+                  $set: {
+                    launched: true
+                  }
+                },
+                {
+                  new: true
+                }
+              )
+              //console.log('Updated event is', updatedEvent)
+
+              return updatedEvent
+            } catch (error) {
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
+
+          } else {
+            throw AuthenticationError('Failure decoding token.')
+          }
+        }
+
       }
     }
   }

@@ -81,6 +81,12 @@ module.exports = {
       ): Int!
     }
     extend type Mutation {
+      launchEvent(
+        id: ID!
+        recurrenceId: ID!
+        ): Event
+    }
+    extend type Mutation {
       createEventRecurrence(
         eventId: ID!
         recurrencename: String!

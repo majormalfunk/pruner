@@ -15,7 +15,7 @@ import UpdateEventForm from './UpdateEventForm'
 const UpdateEvent = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
-    removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent,
+    removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent, launchEvent,
     display, setEvent, displayEvent, handleDisplayEvent } = props
 
   const unfinishedEvent = ownEvents.find(function (event) {
@@ -144,7 +144,35 @@ const UpdateEvent = (props) => {
   const handleLaunchEvent = async (event) => {
     event.preventDefault()
     console.log('Launching event!')
-    displayInfo('Launching event!')
+    if (readyToLaunch) {
+      if (window.confirm(`Launch event ${eventname}?`)) {
+        try {
+          const eventId = unfinishedEvent.id
+          const recurrenceId = unfinishedRecurrence.id
+          console.log('Launching', eventId, ',', recurrenceId)
+          const result = await launchEvent[0]({
+            variables: { eventId, recurrenceId }
+          })
+          if (result) {
+            const launchedEvent = result.data.launchEvent
+            setEvent(launchedEvent)
+            updateInOwnEvents(launchedEvent)
+            displaySuccess('Event was launched')
+          } else {
+            displayError('Event was not launched')
+          }
+          return null
+        } catch (error) {
+          revertFields()
+          displayError(error)
+        }
+      } else {
+        displayInfo('Event launch was cancelled')
+      }
+    } else {
+      displayInfo('Event was not launched')
+    }
+
   }
 
   const handleUpdateEvent = async (event) => {
@@ -207,7 +235,7 @@ const UpdateEvent = (props) => {
 
   return (
     <Container>
-      {(true) ? (
+      {(readyToLaunch) ? (
         <Form>
           <Row>
             <Col className="Component-title">

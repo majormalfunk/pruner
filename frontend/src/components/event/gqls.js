@@ -146,6 +146,27 @@ export const DELETE_EVENT = gql`
   }
 `
 
+export const LAUNCH_EVENT = gql`
+  mutation launchEvent(
+    $eventId: ID!, $recurrenceId: ID!) {
+    launchEvent(
+      id: $eventId, recurrenceId: $recurrenceId) {
+        ...EventDetails
+        recurrences { ...RecurrenceDetails }
+        venues { ...VenueDetails }
+        shows { ...ShowDetails }
+        entries { ...EntryDetails }
+        owner { ...OwnerDetails }
+    }
+  }
+  ${EVENT_DETAILS}
+  ${RECURRENCE_DETAILS}
+  ${VENUE_DETAILS}
+  ${SHOW_DETAILS}
+  ${ENTRY_DETAILS}
+  ${OWNER_DETAILS}
+`
+
 export const CREATE_EVENT_RECURRENCE = gql`
   mutation createEventRecurrence(
     $eventId: ID!, $recurrencename: String!, $description: String!,

@@ -9,6 +9,7 @@ import { useMutation } from 'react-apollo-hooks'
 import { CREATE_EVENT } from '../gqls'
 import { UPDATE_EVENT } from '../gqls'
 import { DELETE_EVENT } from '../gqls'
+import { LAUNCH_EVENT } from '../gqls'
 import { CREATE_EVENT_RECURRENCE } from '../gqls'
 import { UPDATE_EVENT_RECURRENCE } from '../gqls'
 import { DELETE_EVENT_RECURRENCE } from '../gqls'
@@ -96,6 +97,9 @@ const Event = (props) => {
     onError: handleError
   })
   const deleteEvent = useMutation(DELETE_EVENT, {
+    onError: handleError
+  })
+  const launchEvent = useMutation(LAUNCH_EVENT, {
     onError: handleError
   })
   const createEventRecurrence = useMutation(CREATE_EVENT_RECURRENCE, {
@@ -211,8 +215,8 @@ const Event = (props) => {
           createEvent={createEvent} setEvent={setEvent} />
       ) : (
         <UpdateEvent display={page === PAGE_EVENT_CREATE}
-          updateEvent={updateEvent} deleteEvent={deleteEvent} setEvent={setEvent}
-          displayEvent={displayEvent} handleDisplayEvent={handleDisplayEvent} />
+          updateEvent={updateEvent} deleteEvent={deleteEvent} launchEvent={launchEvent}
+          setEvent={setEvent} displayEvent={displayEvent} handleDisplayEvent={handleDisplayEvent} />
       )}
       {(event && event.recurrences && event.recurrences.length === 0) && (
         <CreateEventRecurrence display={page === PAGE_EVENT_CREATE}
