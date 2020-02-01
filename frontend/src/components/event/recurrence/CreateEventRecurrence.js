@@ -14,7 +14,7 @@ import CreateEventRecurrenceForm from './CreateEventRecurrenceForm'
 const CreateEventRecurrence = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
-    addRecurrenceToOwnEvents, createEventRecurrence, display } = props
+    addRecurrenceToOwnEvents, createEventRecurrence } = props
 
   const unfinishedEvent = ownEvents.find(function (event) {
     return !(event.launched)
@@ -92,7 +92,7 @@ const CreateEventRecurrence = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

@@ -24,9 +24,9 @@ const Home = ({ display, handleSetPage }) => {
     }
   }, [cardColumns])
 
-  if (!display) {
-    return null
-  }
+  //if (!display) {
+  //  return null
+  //}
 
   if (cardColumns === 3) {
     return (

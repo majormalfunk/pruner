@@ -14,7 +14,7 @@ import CreateEventForm from './CreateEventForm'
 const CreateEvent = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser,
-    addToOwnEvents, createEvent, display, setEvent } = props
+    addToOwnEvents, createEvent, setEvent } = props
 
   const [eventname, setEventname] = useState('')
   const [description, setDescription] = useState('')
@@ -80,10 +80,9 @@ const CreateEvent = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
-
 
   const handleEventname = (event) => {
     setEventname(event.target.value)

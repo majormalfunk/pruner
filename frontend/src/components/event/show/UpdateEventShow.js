@@ -12,7 +12,7 @@ import UpdateEventShowForm from './UpdateEventShowForm'
 
 const UpdateEventShow = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
+  const { displaySuccess, displayInfo, displayError, currentUser,
     updateShowInOwnEvents, removeShowFromOwnEvents,
     updateEventShow, deleteEventShow, unfinishedShow, setSelectedShow } = props
 
@@ -84,7 +84,7 @@ const UpdateEventShow = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

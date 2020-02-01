@@ -16,7 +16,7 @@ const CreateEventEntry = (props) => {
   Settings.defaultLocale = 'fi'
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
-    addEntryToOwnEvents, createEventEntry, display, handleDisplayEntries } = props
+    addEntryToOwnEvents, createEventEntry, handleDisplayEntries } = props
 
   const [show, setShow] = useState('')
   const [venue, setVenue] = useState('')
@@ -89,7 +89,7 @@ const CreateEventEntry = (props) => {
     return d instanceof Date && !isNaN(d);
   }
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
   if (!venues || venues === null || venues.length === 0) {

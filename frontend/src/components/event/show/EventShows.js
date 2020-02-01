@@ -14,7 +14,7 @@ import { displaySuccess, displayInfo, displayError } from '../../../reducers/not
 
 const EventShows = (props) => {
 
-  const { currentUser, display, ownEvents, displayShows, handleDisplayShows,
+  const { currentUser, ownEvents, displayShows, handleDisplayShows,
     createEventShow, updateEventShow, deleteEventShow,
     selectedShow, setSelectedShow } = props
 
@@ -28,7 +28,7 @@ const EventShows = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -47,8 +47,7 @@ const EventShows = (props) => {
               return (
                 <Row key={show.id}>
                   <Col>
-                    <UpdateEventShow display={display}
-                      updateEventShow={updateEventShow}
+                    <UpdateEventShow updateEventShow={updateEventShow}
                       deleteEventShow={deleteEventShow}
                       unfinishedShow={show} setSelectedShow={setSelectedShow} />
                   </Col>
@@ -58,8 +57,7 @@ const EventShows = (props) => {
               return (
                 <Row key={show.id}>
                   <Col>
-                    <SelectEventShowForm display={display}
-                      unfinishedShow={show} setSelectedShow={setSelectedShow} />
+                    <SelectEventShowForm unfinishedShow={show} setSelectedShow={setSelectedShow} />
                   </Col>
                 </Row>
               )
@@ -104,9 +102,7 @@ const EventShows = (props) => {
         </Row>
         <Row>
           <Col>
-            <CreateEventShow display={display}
-              createEventShow={createEventShow}
-              handleDisplayShows={handleDisplayShows} />
+            <CreateEventShow createEventShow={createEventShow} handleDisplayShows={handleDisplayShows} />
           </Col>
         </Row>
         {(shows && shows.length > 0) ? (

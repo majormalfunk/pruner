@@ -17,6 +17,8 @@ const EventEntriesCollapsed = (props) => {
   })
   const entries = unfinishedEvent.entries.filter(entry => entry.recurrence === unfinishedRecurrence.id)
 
+  const entriesExist = (entries.length > 0)
+  
   return (
     <Container>
       <Form>
@@ -24,9 +26,9 @@ const EventEntriesCollapsed = (props) => {
           <Col className="Content-title">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_ENTRY}
-              onClick={handleDisplayEntries}>Show</Button>
+              onClick={handleDisplayEntries}>{(entriesExist ? 'Show' : 'Create')}</Button>
               &nbsp;
-              {entries.length} entries
+              {(entriesExist ? ( `${entries.length} entries` ) : ( '' ) )}
           </Col>
         </Row>
       </Form>

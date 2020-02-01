@@ -10,11 +10,11 @@ import { displaySuccess, displayInfo, displayError } from '../../../reducers/not
 
 const EventEntriesOpened = (props) => {
 
-  const { currentUser, display, ownEvents, handleDisplayEntries,
+  const { currentUser, ownEvents, handleDisplayEntries,
     createEventEntry, updateEventEntry, deleteEventEntry,
     selectedEntry, setSelectedEntry } = props
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -30,14 +30,12 @@ const EventEntriesOpened = (props) => {
     <Container>
       <Row>
         <Col>
-          <CreateEventEntry display={display}
-            createEventEntry={createEventEntry}
-            handleDisplayEntries={handleDisplayEntries} />
+          <CreateEventEntry createEventEntry={createEventEntry} handleDisplayEntries={handleDisplayEntries} />
         </Col>
       </Row>
       {(entries && entries.length > 0) ? (
         <>
-          <UpdateEventEntries display={display} handleDisplayEntries={handleDisplayEntries} entries={entries}
+          <UpdateEventEntries handleDisplayEntries={handleDisplayEntries} entries={entries}
             updateEventEntry={updateEventEntry} deleteEventEntry={deleteEventEntry}
             selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry} />
         </>

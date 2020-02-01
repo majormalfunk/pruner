@@ -4,6 +4,7 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap'
 
 import { displaySuccess, displayInfo, displayError } from '../../../reducers/notificationReducer'
 import { updateInOwnEvents, removeFromOwnEvents } from '../../../reducers/ownEventsReducer'
+import { setPageHome } from '../../../reducers/pageReducer'
 
 import { EVENTNAME_LENGTH, DESCRIPTION_LENGTH } from '../../../constants'
 import { ACTION_UPDATE_EVENT, ACTION_DELETE_EVENT, ACTION_LAUNCH_EVENT } from '../../../constants'
@@ -16,24 +17,7 @@ const UpdateEvent = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
     removeFromOwnEvents, updateInOwnEvents, updateEvent, deleteEvent, launchEvent,
-    display, setEvent, displayEvent, handleDisplayEvent } = props
-
-  const unfinishedEvent = ownEvents.find(function (event) {
-    return !(event.launched)
-  })
-  const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
-    return !(recurrence.launched)
-  })
-  const venuesExist = unfinishedEvent.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
-  const showsExist = unfinishedEvent.shows.some(show => show.recurrence === unfinishedRecurrence.id)
-  const entriesExist = unfinishedEvent.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
-  const readyToLaunch = (venuesExist && showsExist && entriesExist)
-  
-  const [eventname, setEventname] = useState(unfinishedEvent.eventname)
-  const [description, setDescription] = useState(unfinishedEvent.description)
-  const [publicevent, setPublicevent] = useState(unfinishedEvent.publicevent)
-  const [liveevent, setLiveevent] = useState(unfinishedEvent.liveevent)
-  const [launched, setLaunched] = useState(unfinishedEvent.launched)
+    setEvent, displayEvent, handleDisplayEvent, handleClear, setPageHome } = props
 
   const controlEventname = () => {
     if (document.getElementById(FLD_UPD_HNT_EVE_NAM)) {
@@ -97,7 +81,28 @@ const UpdateEvent = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  let readyToLaunch = false
+  const unfinishedEvent = ownEvents.find(function (event) {
+    return !(event.launched)
+  })
+  const [eventname, setEventname] = useState(unfinishedEvent ? unfinishedEvent.eventname : '')
+  const [description, setDescription] = useState(unfinishedEvent ? unfinishedEvent.description : '')
+  const [publicevent, setPublicevent] = useState(unfinishedEvent ? unfinishedEvent.publicevent : false)
+  const [liveevent, setLiveevent] = useState(unfinishedEvent ? unfinishedEvent.liveevent : false)
+  const [launched, setLaunched] = useState(unfinishedEvent ? unfinishedEvent.launched : false)
+
+  let unfinishedRecurrence = undefined
+  if (unfinishedEvent) {
+    unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
+      return !(recurrence.launched)
+    })
+    const venuesExist = unfinishedEvent.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+    const showsExist = unfinishedEvent.shows.some(show => show.recurrence === unfinishedRecurrence.id)
+    const entriesExist = unfinishedEvent.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
+    readyToLaunch = (unfinishedRecurrence && venuesExist && showsExist && entriesExist)
+  }
+  
+  if (!currentUser) {
     return null
   }
 
@@ -155,8 +160,13 @@ const UpdateEvent = (props) => {
           })
           if (result) {
             const launchedEvent = result.data.launchEvent
-            setEvent(launchedEvent)
+            console.log('Next update in own')
             updateInOwnEvents(launchedEvent)
+            console.log('Next clear')
+            handleClear()
+            console.log('Next set page')
+            setPageHome()
+            console.log('Display success')
             displaySuccess('Event was launched')
           } else {
             displayError('Event was not launched')
@@ -300,7 +310,8 @@ const mapDispatchToProps = {
   displayInfo,
   displayError,
   updateInOwnEvents,
-  removeFromOwnEvents
+  removeFromOwnEvents,
+  setPageHome
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateEvent)

@@ -14,7 +14,7 @@ module.exports = {
     Mutation: {
       createEventEntry: async (root, args, { currentUser, userId }) => {
 
-        console.log('Trying to create an event entry')
+        //console.log('Trying to create an event entry')
 
         if (currentUser) {
 

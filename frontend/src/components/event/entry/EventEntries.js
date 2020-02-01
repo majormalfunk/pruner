@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col } from 'react-bootstrap'
@@ -10,11 +10,11 @@ import { displaySuccess, displayInfo, displayError } from '../../../reducers/not
 
 const EventEntries = (props) => {
 
-  const { currentUser, display, displayEntries, handleDisplayEntries,
-    createEventEntry, updateEventEntry, deleteEventEntry, entries,
+  const { currentUser, displayEntries, handleDisplayEntries,
+    createEventEntry, updateEventEntry, deleteEventEntry,
     selectedEntry, setSelectedEntry } = props
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -31,8 +31,7 @@ const EventEntries = (props) => {
             <EventEntriesCollapsed
             handleDisplayEntries={handleDisplayEntries} />
           ) : (
-            <EventEntriesOpened display={display}
-            createEventEntry={createEventEntry}
+            <EventEntriesOpened createEventEntry={createEventEntry}
             updateEventEntry={updateEventEntry}
             deleteEventEntry={deleteEventEntry}
             selectedEntry={selectedEntry} setSelectedEntry={setSelectedEntry}

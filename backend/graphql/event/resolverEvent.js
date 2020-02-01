@@ -16,7 +16,7 @@ module.exports = {
     Mutation: {
       getOwnEvents: async (root, args, { currentUser, userId }) => {
 
-        console.log('Trying to get own events for', args.username)
+        //console.log('Trying to get own events for', args.username)
 
         if (currentUser) {
 

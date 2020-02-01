@@ -197,8 +197,6 @@ const ownEventsReducer = (state = [], action) => {
       })
     case 'REMOVE_FROM_OWN_EVENTS':
       return state.filter(event => event.id !== action.data.id)
-    case 'LAUNCH_OWN_EVENT':
-
     case 'CLEAR_OWN_EVENTS':
       return []
     case 'ADD_RECURRENCE_TO_OWN_EVENTS':

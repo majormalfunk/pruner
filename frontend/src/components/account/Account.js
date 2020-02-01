@@ -17,7 +17,7 @@ import Relogin from './Relogin'
 
 const Account = (props) => {
 
-  const { displayError, currentUser, display, logout} = props
+  const { displayError, currentUser, logout} = props
 
   const handleError = (error) => {
     displayError(error)
@@ -42,10 +42,6 @@ const Account = (props) => {
     onError: handleError,
     options: { fetchPolicy: 'network-only' }
   })
-
-  if (!display) {
-    return null
-  }
 
   if (currentUser && currentUser !== null) {
 

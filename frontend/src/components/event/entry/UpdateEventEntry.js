@@ -11,7 +11,7 @@ import UpdateEventEntryForm from './UpdateEventEntryForm'
 
 const UpdateEventEntry = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
+  const { displaySuccess, displayInfo, displayError, currentUser,
     updateEntryInOwnEvents, removeEntryFromOwnEvents,
     updateEventEntry, deleteEventEntry, unfinishedEntry, setSelectedEntry } = props
 
@@ -42,7 +42,7 @@ const UpdateEventEntry = (props) => {
     return d instanceof Date && !isNaN(d);
   }
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

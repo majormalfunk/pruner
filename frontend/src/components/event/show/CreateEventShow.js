@@ -14,7 +14,7 @@ import CreateEventShowForm from './CreateEventShowForm'
 const CreateEventShow = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
-    addShowToOwnEvents, createEventShow, display, handleDisplayShows } = props
+    addShowToOwnEvents, createEventShow, handleDisplayShows } = props
 
   const unfinishedEvent = ownEvents.find(function (event) {
     return !(event.launched)
@@ -91,7 +91,7 @@ const CreateEventShow = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

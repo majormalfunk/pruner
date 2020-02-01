@@ -90,6 +90,7 @@
 | **WEEK  4**   | **TOTAL**                                                          |  **10,5** | **189,0** |
 | 30.01.2020    | Refactoring                                                        |     3,5   |           |
 | 31.01.2020    | Event launching                                                    |     0,5   |           |
-| **WEEK  4**   | **TOTAL**                                                          |   **4,0** | **193,0** |
+| 01.02.2020    | Refactoring, Event launching                                       |     6,0   |           |
+| **WEEK  4**   | **TOTAL**                                                          |  **10,0** | **199,0** |
 
 

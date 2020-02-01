@@ -4,6 +4,10 @@ import { ACTION_TOGGLE_SHOW } from '../../../constants'
 
 const UpdateEventShowCollapsed = (props) => {
 
+  const { handleDisplayShows, shows } = props
+
+  const showsExist = (shows.length > 0)
+
   return (
     <Container>
       <Form>
@@ -11,9 +15,9 @@ const UpdateEventShowCollapsed = (props) => {
           <Col className="Content-title">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_SHOW}
-              onClick={props.handleDisplayShows}>Show</Button>
+              onClick={handleDisplayShows}>{(showsExist ? 'Show' : 'Create')}</Button>
               &nbsp;
-              {props.shows.length} shows
+              {(showsExist ? ( `${shows.length} shows` ) : ( '' ) )}
           </Col>
         </Row>
       </Form>

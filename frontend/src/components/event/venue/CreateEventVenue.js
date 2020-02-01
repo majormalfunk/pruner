@@ -14,7 +14,7 @@ import CreateEventVenueForm from './CreateEventVenueForm'
 const CreateEventVenue = (props) => {
 
   const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
-    addVenueToOwnEvents, createEventVenue, display, handleDisplayVenues } = props
+    addVenueToOwnEvents, createEventVenue, handleDisplayVenues } = props
 
   const unfinishedEvent = ownEvents.find(function (event) {
     return !(event.launched)
@@ -47,7 +47,7 @@ const CreateEventVenue = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

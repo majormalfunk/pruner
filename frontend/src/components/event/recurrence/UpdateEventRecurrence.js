@@ -14,7 +14,7 @@ import UpdateEventRecurrenceForm from './UpdateEventRecurrenceForm'
 
 const UpdateEventRecurrence = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display, ownEvents,
+  const { displaySuccess, displayInfo, displayError, currentUser, ownEvents,
     updateRecurrenceInOwnEvents, removeRecurrenceFromOwnEvents,
     updateEventRecurrence, deleteEventRecurrence,
     setRecurrence, displayRecurrence, handleDisplayRecurrence } = props
@@ -95,7 +95,7 @@ const UpdateEventRecurrence = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 

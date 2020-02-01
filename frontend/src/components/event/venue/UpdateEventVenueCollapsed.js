@@ -4,6 +4,10 @@ import { ACTION_TOGGLE_VENUE } from '../../../constants'
 
 const UpdateEventVenueCollapsed = (props) => {
 
+  const { handleDisplayVenues, venues } = props
+
+  const venuesExist = (venues.length > 0)
+
   return (
     <Container>
       <Form>
@@ -11,9 +15,9 @@ const UpdateEventVenueCollapsed = (props) => {
           <Col className="Content-title">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_VENUE}
-              onClick={props.handleDisplayVenues}>Show</Button>
+              onClick={handleDisplayVenues}>{(venuesExist ? 'Show' : 'Create')}</Button>
               &nbsp;
-              {props.venues.length} venues
+              {(venuesExist ? ( `${venues.length} venues` ) : ( '' ) )}
           </Col>
         </Row>
       </Form>

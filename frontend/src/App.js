@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Navbar, Nav } from 'react-bootstrap'
 import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
 
 //import { USER_TOKEN } from './constants'
-import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT } from './constants'
+import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE } from './constants'
 
 import Notification from './components/Notification'
 import { displayInfo } from './reducers/notificationReducer'
 import { clearCurrentUser } from './reducers/userReducer'
+import { setPageHome, setPageAccount, setPageEventCreate } from './reducers/pageReducer'
 import { clearOwnEvents } from './reducers/ownEventsReducer'
 
 import Home from './components/home/Home'
@@ -18,23 +19,21 @@ import Event from './components/event/event/Event'
 
 const App = (props) => {
 
-  const { displayInfo, currentUser, clearCurrentUser, clearOwnEvents } = props
+  const { displayInfo, currentUser, clearCurrentUser, currentPage, clearOwnEvents,
+          setPageHome, setPageAccount } = props
 
-  const [page, setPage] = useState(PAGE_HOME)
   const client = useApolloClient()
-
-  const handleSetPage = (event) => {
-    setPage(event)
-  }
 
   const logout = () => {
     clearOwnEvents()
     clearCurrentUser()
     window.localStorage.clear()
     client.resetStore()
-    setPage(PAGE_HOME)
+    setPageHome()
     displayInfo('Logged out')
   }
+
+  console.log('Current page is', currentPage)
 
   return (
     <div className="App">
@@ -46,10 +45,10 @@ const App = (props) => {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Navbar.Brand className="Menu-brand">Pruner</Navbar.Brand>
               <Nav>
-                <button className="Menu-button" onClick={() => setPage(PAGE_HOME)}>Home</button>
+                <button className="Menu-button" onClick={() => setPageHome()}>Home</button>
               </Nav>
               <Nav>
-                <button className="Menu-button" onClick={() => setPage(PAGE_ACCOUNT)}>
+                <button className="Menu-button" onClick={() => setPageAccount()}>
                   {currentUser ? 'My Account' : 'Login'}
                 </button>
               </Nav>
@@ -62,11 +61,11 @@ const App = (props) => {
 
         <Notification />
 
-        <Home display={page === PAGE_HOME} handleSetPage={handleSetPage} />
+        {( currentPage === PAGE_HOME && <Home /> )}
 
-        <Account display={page === PAGE_ACCOUNT} logout={logout} />
+        {( currentPage === PAGE_ACCOUNT && <Account logout={logout} />)}
 
-        <Event display={page.startsWith(PAGE_EVENT)} page={page} />
+        {( currentPage === PAGE_EVENT_CREATE && <Event /> )}
 
       </div>
     </div>
@@ -75,13 +74,17 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    currentPage: state.currentPage
   }
 }
 
 const mapDispatchToProps = {
   displayInfo,
   clearCurrentUser,
+  setPageHome,
+  setPageAccount,
+  setPageEventCreate,
   clearOwnEvents
 }
 

@@ -14,7 +14,7 @@ import { displaySuccess, displayInfo, displayError } from '../../../reducers/not
 
 const EventVenues = (props) => {
 
-  const { currentUser, display, ownEvents, displayVenues, handleDisplayVenues,
+  const { currentUser, ownEvents, displayVenues, handleDisplayVenues,
     createEventVenue, updateEventVenue, deleteEventVenue,
     selectedVenue, setSelectedVenue } = props
     
@@ -28,7 +28,7 @@ const EventVenues = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -47,8 +47,7 @@ const EventVenues = (props) => {
               return (
                 <Row key={venue.id}>
                   <Col>
-                    <UpdateEventVenue display={display}
-                      updateEventVenue={updateEventVenue}
+                    <UpdateEventVenue updateEventVenue={updateEventVenue}
                       deleteEventVenue={deleteEventVenue}
                       unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
                   </Col>
@@ -58,8 +57,7 @@ const EventVenues = (props) => {
               return (
                 <Row key={venue.id}>
                   <Col>
-                    <SelectEventVenueForm display={display}
-                      unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
+                    <SelectEventVenueForm unfinishedVenue={venue} setSelectedVenue={setSelectedVenue} />
                   </Col>
                 </Row>
               )
@@ -82,9 +80,7 @@ const EventVenues = (props) => {
             Event venues
           </Col>
         </Row>
-        <UpdateEventVenueCollapsed
-          venues={venues}
-          handleDisplayVenues={handleDisplayVenues} />
+        <UpdateEventVenueCollapsed venues={venues} handleDisplayVenues={handleDisplayVenues} />
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
@@ -100,9 +96,7 @@ const EventVenues = (props) => {
         </Row>
         <Row>
           <Col>
-            <CreateEventVenue display={display}
-              createEventVenue={createEventVenue}
-              handleDisplayVenues={handleDisplayVenues} />
+            <CreateEventVenue createEventVenue={createEventVenue} handleDisplayVenues={handleDisplayVenues} />
           </Col>
         </Row>
         {(venues && venues.length > 0) ? (

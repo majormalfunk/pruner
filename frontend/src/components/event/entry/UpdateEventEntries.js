@@ -11,13 +11,13 @@ import { displaySuccess, displayInfo, displayError } from '../../../reducers/not
 
 const UpdateEventEntries = (props) => {
 
-  const { currentUser, display, handleDisplayEntries,
+  const { currentUser, handleDisplayEntries,
     updateEventEntry, deleteEventEntry, entries,
     selectedEntry, setSelectedEntry } = props
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -40,8 +40,7 @@ const UpdateEventEntries = (props) => {
           return (
             <Row key={entry.id}>
               <Col>
-                <UpdateEventEntry display={display}
-                  updateEventEntry={updateEventEntry} deleteEventEntry={deleteEventEntry}
+                <UpdateEventEntry updateEventEntry={updateEventEntry} deleteEventEntry={deleteEventEntry}
                   unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
               </Col>
             </Row>
@@ -50,8 +49,7 @@ const UpdateEventEntries = (props) => {
           return (
             <Row key={entry.id}>
               <Col>
-                <SelectEventEntryForm display={display}
-                  unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
+                <SelectEventEntryForm unfinishedEntry={entry} setSelectedEntry={setSelectedEntry} />
               </Col>
             </Row>
           )
