@@ -1,4 +1,4 @@
-import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE } from '../constants'
+import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE, PAGE_PLAN_CREATE } from '../constants'
 
 //export const PAGE_CREATE_ACCOUNT = "page-create-account"
 //export const PAGE_LOGIN = "page-login"
@@ -27,6 +27,15 @@ export const setPageEventCreate = () => {
     dispatch({
       type: 'SET_PAGE',
       data: PAGE_EVENT_CREATE
+    })
+  }
+}
+
+export const setPagePlanCreate = () => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: PAGE_PLAN_CREATE
     })
   }
 }

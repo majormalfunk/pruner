@@ -7,7 +7,8 @@ const eventSchema = new mongoose.Schema({
   eventname: {
     type: String,
     required: true,
-    minlength: constants.EVENTNAME_LENGTH
+    minlength: constants.EVENTNAME_LENGTH,
+    index: true
   },
   description: {
     type: String,
@@ -16,15 +17,18 @@ const eventSchema = new mongoose.Schema({
   },
   publicevent: {
     type: Boolean,
-    required: true
+    required: true,
+    index: true
   },
   liveevent: {
     type: Boolean,
-    required: true
+    required: true,
+    index: true
   },
   launched: {
     type: Boolean,
-    required: true
+    required: true,
+    index: true
   },
   recurrences: [{ 
     type: mongoose.Schema.Types.ObjectId,
@@ -59,7 +63,7 @@ const eventSchema = new mongoose.Schema({
     ref: 'User',
     autopopulate: { select: 'nickname' } 
   }
-})
+}, { autoIndex: true })
 
 eventSchema.plugin(mongooseUniqueValidator)
 eventSchema.plugin(autopopulate)

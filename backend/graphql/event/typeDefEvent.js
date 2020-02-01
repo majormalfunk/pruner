@@ -53,6 +53,11 @@ module.exports = {
       id: ID!
     }
     extend type Mutation {
+      getAvailableEvents(
+        username: String
+      ): [Event]
+    }
+    extend type Mutation {
       getOwnEvents(
         username: String!
       ): [Event]

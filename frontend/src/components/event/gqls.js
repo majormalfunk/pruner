@@ -75,6 +75,25 @@ export const OWNER_DETAILS = gql`
   }
 `
 
+export const GET_AVAILABLE_EVENTS = gql`
+  mutation getAvailableEvents($username: String) {
+    getAvailableEvents(username: $username) {
+      ...EventDetails
+      recurrences { ...RecurrenceDetails }
+      venues { ...VenueDetails }
+      shows { ...ShowDetails }
+      entries { ...EntryDetails }
+      owner { ...OwnerDetails }
+    }
+  }
+  ${EVENT_DETAILS}
+  ${RECURRENCE_DETAILS}
+  ${VENUE_DETAILS}
+  ${SHOW_DETAILS}
+  ${ENTRY_DETAILS}
+  ${OWNER_DETAILS}
+`
+
 export const GET_OWN_EVENTS = gql`
   mutation getOwnEvents($username: String!) {
     getOwnEvents(username: $username) {

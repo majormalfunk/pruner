@@ -7,7 +7,7 @@ import UpcomingEventsCard from './UpcomingEventsCard'
 import PastEventsCard from './PastEventsCard'
 import MyEventsCard from './MyEventsCard'
 
-const Home = ({ display, handleSetPage }) => {
+const Home = () => {
 
   const [cardColumns, setCardColumns] = useState(window.innerWidth >= 576 ? 3 : 2)
 
@@ -33,16 +33,16 @@ const Home = ({ display, handleSetPage }) => {
       <Container>
         <Row>
           <CardDeck>
-            <NewPlanCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
-            <UpcomingEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
-            <NewEventCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <NewPlanCard cardStyle="Home-card-large" />
+            <UpcomingEventsCard cardStyle="Home-card-large" />
+            <NewEventCard cardStyle="Home-card-large" />
           </CardDeck>
         </Row>
         <Row>
           <CardDeck>
-            <MyPlansCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
-            <PastEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
-            <MyEventsCard cardStyle="Home-card-large" handleSetPage={handleSetPage} />
+            <MyPlansCard cardStyle="Home-card-large" />
+            <PastEventsCard cardStyle="Home-card-large" />
+            <MyEventsCard cardStyle="Home-card-large" />
           </CardDeck>
         </Row>
       </Container>
@@ -53,16 +53,16 @@ const Home = ({ display, handleSetPage }) => {
         <Row>
           <Col>
             <CardColumns>
-              <NewPlanCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
-              <UpcomingEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
-              <MyPlansCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <NewPlanCard cardStyle="Home-card-small" />
+              <UpcomingEventsCard cardStyle="Home-card-small" />
+              <MyPlansCard cardStyle="Home-card-small" />
             </CardColumns>
           </Col>
           <Col>
             <CardColumns>
-              <NewEventCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
-              <PastEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
-              <MyEventsCard cardStyle="Home-card-small" handleSetPage={handleSetPage} />
+              <NewEventCard cardStyle="Home-card-small" />
+              <PastEventsCard cardStyle="Home-card-small" />
+              <MyEventsCard cardStyle="Home-card-small" />
             </CardColumns>
           </Col>
         </Row>

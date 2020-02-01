@@ -1,4 +1,5 @@
 if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line
   require('dotenv').config()
 }
 const { UserInputError, AuthenticationError } = require('apollo-server')
@@ -14,6 +15,30 @@ const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 module.exports = {
   resolvers: {
     Mutation: {
+      getAvailableEvents: async (root, args, { currentUser, userId }) => {
+
+        //console.log('Trying to get own events for', args.username)
+
+        checkCurrentUserIsCorrect({ currentUser }, args.username, 'get available events')
+
+        try {
+          try {
+            const eventsFromDB = await Event.find({ liveevent: true, launched: true }).
+              or([{ owner: userId }, { public: true }]).
+              sort({ eventname: 1 })
+            return eventsFromDB
+          } catch (error) {
+            console.log('Error trying to get own events from database')
+            throw error
+          }
+        } catch (error) {
+          console.log('Error getting current user from database')
+          console.log(error)
+          throw error
+        }
+
+
+      },
       getOwnEvents: async (root, args, { currentUser, userId }) => {
 
         //console.log('Trying to get own events for', args.username)
@@ -25,7 +50,8 @@ module.exports = {
           try {
             if (userId) {
               try {
-                const eventsFromDB = await Event.find({ owner: userId })
+                const eventsFromDB = await Event.find({ owner: userId }).
+                  sort({ eventname: 1 })
                 return eventsFromDB
               } catch (error) {
                 console.log('Error trying to get own events from database')
