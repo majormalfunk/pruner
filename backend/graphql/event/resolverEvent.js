@@ -18,8 +18,7 @@ module.exports = {
       getAvailableEvents: async (root, args, { currentUser, userId }) => {
 
         //console.log('Trying to get own events for', args.username)
-
-        checkCurrentUserIsCorrect({ currentUser }, args.username, 'get available events')
+        //checkCurrentUserIsCorrect({ currentUser }, args.username, 'get available events')
 
         try {
           try {

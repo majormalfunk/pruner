@@ -97,6 +97,7 @@ export const TimeField = (props) => {
         <DatePicker className="form-control" id={props.settime}
           selected={showtime}
           onChange={props.trigger}
+          popperPlacement="right"
           showTimeSelect
           locale="en-GB"
           timeFormat="HH:mm"
@@ -109,6 +110,11 @@ export const TimeField = (props) => {
     </>
   )
 }
+
+// Consider a time range picker
+// selectsStart
+// startDate={startDate}
+// endDate={endDate}
 
 export const VenueSelectField = (props) => {
 

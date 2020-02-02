@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { ShowSelectField, VenueSelectField, TimeField } from '../InputFields'
+import { ShowSelectField, VenueSelectField, TimeField } from '../../../utils/InputFields'
 import { ACTION_CREATE_ENTRY, ACTION_CREATE_ENTRY_CANCEL, ACTION_TOGGLE_ENTRY } from '../../../constants'
 import { FLD_CRE_HNT_ENT_TIM, FLD_CRE_HNT_ENT_SHO, FLD_CRE_HNT_ENT_VEN } from '../../../constants'
 import { FLD_CRE_SET_ENT_TIM, FLD_CRE_SET_ENT_SHO, FLD_CRE_SET_ENT_VEN } from '../../../constants'

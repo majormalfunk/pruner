@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { NameField, DescriptionField, IsPublicField, IsLiveField } from '../InputFields'
+import { NameField, DescriptionField, IsPublicField, IsLiveField } from '../../../utils/InputFields'
 import { ACTION_UPDATE_RECURRENCE, ACTION_UPDATE_RECURRENCE_CANCEL, ACTION_DELETE_RECURRENCE } from '../../../constants'
 import { ACTION_TOGGLE_RECURRENCE } from '../../../constants'
 import { FLD_UPD_HNT_REC_DES, FLD_UPD_HNT_REC_NAM, FLD_UPD_HNT_REC_LIV, FLD_UPD_HNT_REC_PUB } from '../../../constants'

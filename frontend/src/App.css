@@ -98,6 +98,12 @@
   color: #ffffff;
 }
 
+.Component-small {
+  font-size: 12px;
+  font-weight: normal;
+  color: #ffffff;
+}
+
 .Content-title {
   font-size: 16px;
   font-weight: bold;

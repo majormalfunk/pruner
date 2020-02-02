@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { TimeField } from '../InputFields'
+import { TimeField } from '../../../utils/InputFields'
 import { ACTION_UPDATE_ENTRY, ACTION_UPDATE_ENTRY_CANCEL, ACTION_DELETE_ENTRY } from '../../../constants'
 import { FLD_UPD_HNT_ENT_TIM } from '../../../constants'
 import { FLD_UPD_SET_ENT_TIM } from '../../../constants'

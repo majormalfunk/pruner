@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { NameField } from '../InputFields'
+import { NameField } from '../../../utils/InputFields'
 import { ACTION_UPDATE_VENUE, ACTION_UPDATE_VENUE_CANCEL, ACTION_DELETE_VENUE } from '../../../constants'
 import { FLD_UPD_HNT_VEN_NAM } from '../../../constants'
 import { FLD_UPD_SET_VEN_NAM } from '../../../constants'

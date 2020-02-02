@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap'
-import { NameField, DescriptionField, DurationField, LinkField } from '../InputFields'
+import { NameField, DescriptionField, DurationField, LinkField } from '../../../utils/InputFields'
 import { ACTION_CREATE_SHOW, ACTION_CREATE_SHOW_CANCEL, ACTION_TOGGLE_SHOW } from '../../../constants'
 import { FLD_CRE_HNT_SHO_DES, FLD_CRE_HNT_SHO_NAM, FLD_CRE_HNT_SHO_LNK, FLD_CRE_HNT_SHO_DUR } from '../../../constants'
 import { FLD_CRE_SET_SHO_DES, FLD_CRE_SET_SHO_NAM, FLD_CRE_SET_SHO_LNK, FLD_CRE_SET_SHO_DUR } from '../../../constants'

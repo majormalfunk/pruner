@@ -92,6 +92,7 @@
 | 31.01.2020    | Event launching                                                    |     0,5   |           |
 | 01.02.2020    | Refactoring, Event launching                                       |     6,0   |           |
 | 01.02.2020    | Page for making a plan                                             |     2,0   |           |
-| **WEEK  4**   | **TOTAL**                                                          |  **12,0** | **201,0** |
+| 02.02.2020    | Selecting Event and dates in a plan                                |     5,0   |           |
+| **WEEK  4**   | **TOTAL**                                                          |  **17,0** | **206,0** |
 
 
