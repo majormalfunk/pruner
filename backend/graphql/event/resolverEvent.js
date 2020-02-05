@@ -6,9 +6,6 @@ const { UserInputError, AuthenticationError } = require('apollo-server')
 const User = require('../../models/user')
 const Event = require('../../models/event')
 const EventRecurrence = require('../../models/eventRecurrence')
-//const EventVenue = require('../../models/eventVenue') // DELETE THIS WHEN TEST DATA OK
-//const EventShow = require('../../models/eventShow') // DELETE THIS WHEN TEST DATA OK
-//const EventEntry = require('../../models/eventEntry') // DELETE THIS WHEN TEST DATA OK
 
 const { checkCurrentUser, checkCurrentUserIsCorrect } = require('../../utils')
 
@@ -94,9 +91,6 @@ module.exports = {
                   liveevent: args.liveevent,
                   launched: false,
                   recurrences: [],
-                  venues: [],
-                  shows: [],
-                  entries: [],
                   owner: userId
                 })
                 const savedEvent = await newEvent.save().then(newEvent => newEvent.populate('owner', 'nickname').execPopulate())
@@ -121,10 +115,6 @@ module.exports = {
 
           checkCurrentUser({ currentUser }, 'update an event')
 
-          //let shows = await EventShow.find({ event: args.id }) // DELETE THIS WHEN TEST DATA OK
-          //let venues = await EventVenue.find({ event: args.id }) // DELETE THIS WHEN TEST DATA OK
-          //let entries = await EventEntry.find({ event: args.id }) // DELETE THIS WHEN TEST DATA OK
-
           if (userId && userId !== '') {
 
             try {
@@ -138,9 +128,6 @@ module.exports = {
                     publicevent: args.publicevent,
                     liveevent: args.liveevent,
                     launched: args.launched,
-                    //venues: venues, // DELETE THIS WHEN TEST DATA OK
-                    //shows: shows, // DELETE THIS WHEN TEST DATA OK
-                    //entries: entries // DELETE THIS WHEN TEST DATA OK
                   }
                 },
                 {

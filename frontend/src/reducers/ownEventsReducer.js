@@ -185,7 +185,6 @@ export const removeEntryFromOwnEvents = (eventId, id) => {
 }
 
 const ownEventsReducer = (state = [], action) => {
-  console.log('Reducer switch, action:', action.type)
   switch (action.type) {
     case 'SET_OWN_EVENTS':
       return action.data

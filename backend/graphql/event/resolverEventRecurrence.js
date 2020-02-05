@@ -31,6 +31,9 @@ module.exports = {
                 publicrecurrence: args.publicrecurrence,
                 liverecurrence: args.liverecurrence,
                 launched: false,
+                venues: [],
+                shows: [],
+                entries: [],
                 event: args.eventId
               })
               const savedRecurrence = await newRecurrence.save()
@@ -77,6 +80,10 @@ module.exports = {
               let recurrenceToUpdate = await EventRecurrence.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: recurrenceToUpdate.event, owner: userId })
 
+              //let shows = await EventShow.find({ event: recurrenceToUpdate.event }) // DELETE THIS WHEN TEST DATA OK
+              //let venues = await EventVenue.find({ event: recurrenceToUpdate.event }) // DELETE THIS WHEN TEST DATA OK
+              //let entries = await EventEntry.find({ event: recurrenceToUpdate.event }) // DELETE THIS WHEN TEST DATA OK
+
               if (eventToUpdate && recurrenceToUpdate) {
 
                 recurrenceToUpdate.recurrencename = args.recurrencename
@@ -84,6 +91,9 @@ module.exports = {
                 recurrenceToUpdate.publicrecurrence = args.publicrecurrence
                 recurrenceToUpdate.liverecurrence = args.liverecurrence
                 recurrenceToUpdate.launched = args.launched
+                //recurrenceToUpdate.venues = venues // DELETE THIS WHEN TEST DATA OK
+                //recurrenceToUpdate.shows = shows // DELETE THIS WHEN TEST DATA OK
+                //recurrenceToUpdate.entries = entries // DELETE THIS WHEN TEST DATA OK
 
                 const updatedRecurrence = await recurrenceToUpdate.save()
 

@@ -14,7 +14,6 @@ export const clearAvailableEvents = () => {
 }
 
 const availableEventsReducer = (state = [], action) => {
-  console.log('Reducer switch, action:', action.type)
   switch (action.type) {
     case 'SET_AVAILABLE_EVENTS':
       return action.data

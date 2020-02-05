@@ -36,6 +36,9 @@ module.exports = {
       publicrecurrence: Boolean!
       liverecurrence: Boolean!
       launched: Boolean!
+      venues: [EventVenue]
+      shows: [EventShow]
+      entries: [EventEntry]
       event: ID!
       id: ID!
     }
