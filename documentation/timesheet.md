@@ -95,7 +95,8 @@
 | 02.02.2020    | Selecting Event and dates in a plan                                |     5,0   |           |
 | **WEEK  5**   | **TOTAL**                                                          |  **17,0** | **206,0** |
 | 05.02.2020    | Restructuring models and database                                  |     0,5   |           |
-| **WEEK  6**   | **TOTAL**                                                          |   **0,5** | **206,5** |
+| 06.02.2020    | Restructuring backend and graphql                                  |     1,5   |           |
+| **WEEK  6**   | **TOTAL**                                                          |   **2,0** | **208,0** |
 
 
 

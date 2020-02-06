@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Event = require('../../models/event')
+const EventRecurrence = require('../../models/eventRecurrence')
 const EventVenue = require('../../models/eventVenue')
 const EventShow = require('../../models/eventShow')
 const EventEntry = require('../../models/eventEntry')
@@ -25,12 +26,13 @@ module.exports = {
             try {
 
               let eventToUpdate = await Event.findOne({ _id: args.eventId, owner: userId })
-              const venueFromDB = await EventVenue.findOne({ _id: args.venueId, event: args.eventId })
-              const showFromDB = await EventShow.findOne({ _id: args.showId, event: args.eventId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: args.recurrenceId })
+              const venueFromDB = await EventVenue.findOne({ _id: args.venueId, recurrence: args.recurrenceId })
+              const showFromDB = await EventShow.findOne({ _id: args.showId, recurrence: args.recurrenceId })
 
               let showtime = new Date(args.showtime)
 
-              if (!eventToUpdate || !venueFromDB || !showFromDB || !showtime) {
+              if (!eventToUpdate || !recurrenceToUpdate || !venueFromDB || !showFromDB || !showtime) {
                 throw new UserInputError('Invelid parameters', { invalidArgs: args })
               }
 
@@ -43,10 +45,10 @@ module.exports = {
               })
               const savedEntry = await newEntry.save()
 
-              let newEntries = eventToUpdate.entries.concat(savedEntry)
+              let newEntries = recurrenceToUpdate.entries.concat(savedEntry)
 
-              let updatedEvent = await Event.findOneAndUpdate(
-                { _id: args.eventId, owner: userId },
+              let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                { _id: args.recurrenceId },
                 {
                   $set: {
                     entries: newEntries
@@ -82,19 +84,20 @@ module.exports = {
 
               let entryToUpdate = await EventEntry.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: entryToUpdate.event, owner: userId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: entryToUpdate.recurrence })
 
-              if (eventToUpdate && entryToUpdate) {
+              if (eventToUpdate && recurrenceToUpdate && entryToUpdate) {
 
                 entryToUpdate.showtime = args.showtime
 
                 const updatedEntry = await entryToUpdate.save()
 
-                const newEntries = eventToUpdate.entries.map((entry) => {
+                const newEntries = recurrenceToUpdate.entries.map((entry) => {
                   return (entry.id === args.id ? updatedEntry : entry)
                 })
 
-                let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: eventToUpdate._id, owner: userId },
+                let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                  { _id: recurrenceToUpdate._id },
                   {
                     $set: {
                       entries: newEntries
@@ -139,8 +142,9 @@ module.exports = {
 
               let entryToDelete = await EventEntry.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: entryToDelete.event, owner: userId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: entryToDelete.recurrence })
 
-              if (eventToUpdate && entryToDelete) {
+              if (eventToUpdate && recurrenceToUpdate && entryToDelete) {
 
                 const result = await EventEntry.deleteOne(
                   { _id: args.id },
@@ -148,10 +152,13 @@ module.exports = {
 
                 console.log('Delete count is', result.deletedCount)
 
-                const newEntries = eventToUpdate.entries.filter(entry => entry.id !== args.id)
+                if (result.deletedCount === 0) {
+                  return 0
+                }
+                const newEntries = recurrenceToUpdate.entries.filter(entry => entry.id !== args.id)
 
-                let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: eventToUpdate._id, owner: userId },
+                let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                  { _id: recurrenceToUpdate._id },
                   {
                     $set: {
                       entries: newEntries
@@ -161,7 +168,6 @@ module.exports = {
                     new: true
                   }
                 )
-                //console.log('Updated event is', updatedEvent)
 
                 return result.deletedCount
 

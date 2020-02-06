@@ -43,6 +43,28 @@ const Plan = (props) => {
       const eventsResult = await getAvailableEvents[0]({
         variables: { username }
       })
+      if (eventsResult.loading) {
+        return (
+          <Container>
+          <Row>
+            <Col className="Component-title">
+              Create a new plan
+            </Col>
+          </Row>
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+          <Row>
+            <Col>
+              <span>Loading...</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+          </Container>
+        )
+      } 
       if (eventsResult.data) {
         console.log('Ava:', eventsResult.data.getAvailableEvents)
         setAvailableEvents(eventsResult.data.getAvailableEvents)
@@ -73,7 +95,7 @@ const Plan = (props) => {
         <Row>
           <Col>
             {(!availableEvents || availableEvents === null || availableEvents.length === 0) ? (
-              <span>Loading...</span>
+              <span>There seem to be no available events.</span>
             ) : (
               <PlanEvents displayEvents={displayEvents} handleDisplayEvents={handleDisplayEvents}
                 eventId={eventId} setEventId={setEventId} />

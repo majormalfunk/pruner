@@ -18,6 +18,42 @@ export const RECURRENCE_DETAILS = gql`
     publicrecurrence
     liverecurrence
     launched
+    venues {
+      venuename
+      event
+      recurrence
+      id
+    }
+    shows {
+      showname
+      description
+      link
+      duration
+      event
+      recurrence
+      id
+    }
+    entries {
+      showtime
+      event
+      recurrence
+      venue {
+        venuename
+        event
+        recurrence
+        id
+      }
+      show {
+        showname
+        description
+        link
+        duration
+        event
+        recurrence
+        id
+      }
+      id
+    }
     event
     id
   }

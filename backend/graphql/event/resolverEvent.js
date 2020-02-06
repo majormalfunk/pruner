@@ -160,6 +160,14 @@ module.exports = {
 
             try {
 
+              let recurrencesExist = await EventRecurrence.find({ event: args.id })
+
+              if (recurrencesExist && recurrencesExist.length > 0 ) {
+                // Should probably throw an error and tell the user why can't delete
+                console.log('Not deleting. Event', args.id, 'has', recurrencesExist.length, 'recurrences.')
+                return 0
+              }
+
               const result = await Event.deleteOne(
                 { _id: args.id, owner: userId },
               )
@@ -188,10 +196,10 @@ module.exports = {
 
             try {
 
-              let eventToUpdate = await Event.findOne({ _id: args.id, owner: userId })
-              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: args.recurrenceId, event: args.id })
+              let eventToLaunch = await Event.findOne({ _id: args.id, owner: userId })
+              let recurrenceToLaunch = await EventRecurrence.findOne({ _id: args.recurrenceId, event: args.id })
 
-              if (!eventToUpdate || !recurrenceToUpdate) {
+              if (!eventToLaunch || !recurrenceToLaunch) {
                 throw new UserInputError('Invelid parameters', { invalidArgs: args })
               }
 

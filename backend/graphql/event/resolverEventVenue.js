@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Event = require('../../models/event')
+const EventRecurrence = require('../../models/eventRecurrence')
 const EventVenue = require('../../models/eventVenue')
 const EventEntry = require('../../models/eventEntry')
 
@@ -28,30 +29,36 @@ module.exports = {
 
               if (eventToUpdate && eventToUpdate !== null) {
 
-                const newVenue = new EventVenue({
-                  venuename: args.venuename,
-                  event: args.eventId,
-                  recurrence: args.recurrenceId
-                })
-                const savedVenue = await newVenue.save()
+                let recurrenceToUpdate = await EventRecurrence.findOne({ event: args.eventId, _id: args.recurrenceId })
 
-                let newVenues = eventToUpdate.venues.concat(savedVenue)
+                if (recurrenceToUpdate && recurrenceToUpdate !== null) {
 
-                let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: args.eventId },
-                  {
-                    $set: {
-                      venues: newVenues
+                  const newVenue = new EventVenue({
+                    venuename: args.venuename,
+                    event: args.eventId,
+                    recurrence: args.recurrenceId
+                  })
+                  const savedVenue = await newVenue.save()
+
+                  let newVenues = recurrenceToUpdate.venues.concat(savedVenue)
+
+                  let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                    { _id: args.recurrenceId },
+                    {
+                      $set: {
+                        venues: newVenues
+                      }
+                    },
+                    {
+                      new: true
                     }
-                  },
-                  {
-                    new: true
-                  }
-                )
+                  )
 
-                //console.log('Updated event is', updatedEvent)
+                  //console.log('Updated event is', updatedEvent)
 
-                return newVenue
+                  return newVenue
+                }
+
               }
 
               return null
@@ -80,8 +87,9 @@ module.exports = {
 
               let venueToUpdate = await EventVenue.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: venueToUpdate.event, owner: userId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ recurrence: venueToUpdate.recurrence })
 
-              if (eventToUpdate && venueToUpdate) {
+              if (eventToUpdate && venueToUpdate && recurrenceToUpdate) {
 
                 venueToUpdate.venuename = args.venuename
 
@@ -91,8 +99,8 @@ module.exports = {
                   return (venue.id === args.id ? updatedVenue : venue)
                 })
 
-                let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: eventToUpdate._id, owner: userId },
+                let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                  { _id: recurrenceToUpdate._id },
                   {
                     $set: {
                       venues: newVenues
@@ -102,7 +110,6 @@ module.exports = {
                     new: true
                   }
                 )
-                //console.log('Updated event is', updatedEvent)
 
                 return updatedVenue
 
@@ -111,6 +118,8 @@ module.exports = {
                 throw new AuthenticationError('The event is not yours to update')
 
               }
+
+            return null
 
             } catch (error) {
               throw new UserInputError(error.message, {
@@ -144,8 +153,9 @@ module.exports = {
 
               let venueToDelete = await EventVenue.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: venueToDelete.event, owner: userId })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: venueToDelete.recurrence })
 
-              if (eventToUpdate && venueToDelete) {
+              if (eventToUpdate && recurrenceToUpdate && venueToDelete) {
 
                 const result = await EventVenue.deleteOne(
                   { _id: args.id },
@@ -153,10 +163,14 @@ module.exports = {
 
                 //console.log('Delete count is', result.deletedCount)
 
-                const newVenues = eventToUpdate.venues.filter(venue => venue.id !== args.id)
+                if (result.deletedCount === 0) {
+                  return 0
+                }
 
-                let updatedEvent = await Event.findOneAndUpdate(
-                  { _id: eventToUpdate._id, owner: userId },
+                const newVenues = recurrenceToUpdate.venues.filter(venue => venue.id !== args.id)
+
+                let updatedRecurrence = await EventRecurrence.findOneAndUpdate(
+                  { _id: recurrenceToUpdate._id },
                   {
                     $set: {
                       venues: newVenues

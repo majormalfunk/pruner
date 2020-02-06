@@ -146,6 +146,8 @@ module.exports = {
 
             try {
 
+              // Probably should throw error and tell user why not deleting:
+
               let venuesExist = await EventVenue.find({ recurrence: args.id })
 
               if (venuesExist && venuesExist.length > 0 ) {
