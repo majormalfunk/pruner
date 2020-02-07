@@ -85,7 +85,7 @@ module.exports = {
 
               let showToUpdate = await EventShow.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: showToUpdate.event, owner: userId })
-              let recurrenceToUpdate = await EventRecurrence.findOne({ recurrence: showToUpdate.recurrence })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: showToUpdate.recurrence })
 
               if (eventToUpdate && showToUpdate && recurrenceToUpdate) {
 

@@ -24,7 +24,7 @@ const EventEntriesOpened = (props) => {
   const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
     return !(recurrence.launched)
   })
-  const entries = unfinishedEvent.entries.filter(entry => entry.recurrence === unfinishedRecurrence.id)
+  const entries = unfinishedRecurrence.entries
 
   return (
     <Container>

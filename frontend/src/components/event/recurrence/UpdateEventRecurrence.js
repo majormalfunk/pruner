@@ -90,7 +90,11 @@ const UpdateEventRecurrence = (props) => {
       document.getElementById(ACTION_UPDATE_RECURRENCE).disabled = !(nameOk && descriptionOk)
     }
     if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
-      const venuesExist = unfinishedEvent.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+      const venuesExist = unfinishedRecurrence.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+      document.getElementById(ACTION_DELETE_RECURRENCE).disabled = venuesExist
+    }
+    if (document.getElementById(ACTION_DELETE_RECURRENCE)) {
+      const venuesExist = unfinishedRecurrence.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
       document.getElementById(ACTION_DELETE_RECURRENCE).disabled = venuesExist
     }
   })

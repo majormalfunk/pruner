@@ -87,7 +87,7 @@ module.exports = {
 
               let venueToUpdate = await EventVenue.findOne({ _id: args.id })
               let eventToUpdate = await Event.findOne({ _id: venueToUpdate.event, owner: userId })
-              let recurrenceToUpdate = await EventRecurrence.findOne({ recurrence: venueToUpdate.recurrence })
+              let recurrenceToUpdate = await EventRecurrence.findOne({ _id: venueToUpdate.recurrence })
 
               if (eventToUpdate && venueToUpdate && recurrenceToUpdate) {
 
@@ -95,7 +95,7 @@ module.exports = {
 
                 const updatedVenue = await venueToUpdate.save()
 
-                const newVenues = eventToUpdate.venues.map((venue) => {
+                const newVenues = recurrenceToUpdate.venues.map((venue) => {
                   return (venue.id === args.id ? updatedVenue : venue)
                 })
 

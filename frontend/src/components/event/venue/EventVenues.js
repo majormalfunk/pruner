@@ -24,7 +24,7 @@ const EventVenues = (props) => {
   const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
     return !(recurrence.launched)
   })
-  const venues = unfinishedEvent.venues.filter(venue => venue.recurrence === unfinishedRecurrence.id)
+  const venues = unfinishedRecurrence.venues
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -80,7 +80,13 @@ const EventVenues = (props) => {
             Event venues
           </Col>
         </Row>
-        <UpdateEventVenueCollapsed venues={venues} handleDisplayVenues={handleDisplayVenues} />
+        <Row>
+          <Col>
+          <UpdateEventVenueCollapsed
+            venues={venues}
+            handleDisplayVenues={handleDisplayVenues} />
+          </Col>
+        </Row>
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>

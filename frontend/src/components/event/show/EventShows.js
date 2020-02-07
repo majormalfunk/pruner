@@ -24,7 +24,7 @@ const EventShows = (props) => {
   const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
     return !(recurrence.launched)
   })
-  const shows = unfinishedEvent.shows.filter(show => show.recurrence === unfinishedRecurrence.id)
+  const shows = unfinishedRecurrence.shows
 
   const [currentPage, setCurrentPage] = useState(1)
 

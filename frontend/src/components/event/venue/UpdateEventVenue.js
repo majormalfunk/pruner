@@ -12,7 +12,7 @@ import UpdateEventVenueForm from './UpdateEventVenueForm'
 
 const UpdateEventVenue = (props) => {
 
-  const { displaySuccess, displayInfo, displayError, currentUser, display,
+  const { displaySuccess, displayInfo, displayError, currentUser,
     updateVenueInOwnEvents, removeVenueFromOwnEvents,
     updateEventVenue, deleteEventVenue, unfinishedVenue, setSelectedVenue } = props
 
@@ -40,7 +40,7 @@ const UpdateEventVenue = (props) => {
     }
   })
 
-  if (!display || !currentUser) {
+  if (!currentUser) {
     return null
   }
 
@@ -77,8 +77,9 @@ const UpdateEventVenue = (props) => {
         if (result) {
           const updatedVenue = result.data.updateEventVenue
           const eventId = unfinishedVenue.event
+          const recurrenceId = unfinishedVenue.recurrence
           setSelectedVenue(null)
-          updateVenueInOwnEvents(eventId, updatedVenue)
+          updateVenueInOwnEvents(eventId, recurrenceId, updatedVenue)
           displaySuccess('Venue info was updated')
         } else {
           displayError('Venue info was not updated')
@@ -106,10 +107,11 @@ const UpdateEventVenue = (props) => {
         if (result) {
           if(result.data.deleteEventVenue && result.data.deleteEventVenue === 1) {
             const eventId = unfinishedVenue.event
+            const recurrenceId = unfinishedVenue.recurrence
             try {
               clearFields()
               setSelectedVenue(null)
-              removeVenueFromOwnEvents(eventId, id)
+              removeVenueFromOwnEvents(eventId, recurrenceId, id)
               displaySuccess('Venue deleted')
               console.log('Venue deleted')
             } catch (error) {

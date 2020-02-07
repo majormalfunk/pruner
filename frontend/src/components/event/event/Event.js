@@ -163,27 +163,6 @@ const Event = (props) => {
         } else {
           setRecurrence(null)
         }
-        if (unfinishedEvent.venues.length > 0) {
-          // Select last on list
-          const unfinishedVenue = unfinishedEvent.venues[unfinishedEvent.venues.length - 1]
-          setVenue(unfinishedVenue)
-        } else {
-          setVenue(null)
-        }
-        if (unfinishedEvent.shows.length > 0) {
-          // Select last on list
-          const unfinishedShow = unfinishedEvent.shows[unfinishedEvent.shows.length - 1]
-          setShow(unfinishedShow)
-        } else {
-          setShow(null)
-        }
-        if (unfinishedEvent.entries.length > 0) {
-          // Select last on list
-          const unfinishedEntry = unfinishedEvent.entries[unfinishedEvent.entries.length - 1]
-          setEntry(unfinishedEntry)
-        } else {
-          setEntry(null)
-        }
       } else {
         setEvent(null)
       }
@@ -264,7 +243,7 @@ const Event = (props) => {
           deleteEventRecurrence={deleteEventRecurrence} setRecurrence={setRecurrence}
           displayRecurrence={displayRecurrence} handleDisplayRecurrence={handleDisplayRecurrence} />
       )}
-      {(event && event.recurrences && event.recurrences.length > 0 && event.venues && event.shows) &&
+      {(event && event.recurrences && event.recurrences.length > 0) &&
         <>
           <EventVenues createEventVenue={createEventVenue}
             updateEventVenue={updateEventVenue}

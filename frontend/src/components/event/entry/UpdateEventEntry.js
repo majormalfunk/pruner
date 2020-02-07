@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { parseISO } from 'date-fns'
 
 import { displaySuccess, displayInfo, displayError } from '../../../reducers/notificationReducer'
 import { updateEntryInOwnEvents, removeEntryFromOwnEvents } from '../../../reducers/ownEventsReducer'
@@ -15,8 +16,11 @@ const UpdateEventEntry = (props) => {
     updateEntryInOwnEvents, removeEntryFromOwnEvents,
     updateEventEntry, deleteEventEntry, unfinishedEntry, setSelectedEntry } = props
 
-  const [showtime, setShowtime] = useState(unfinishedEntry.showtime)
+  const [showtime, setShowtime] = useState(parseISO(unfinishedEntry.showtime))
   
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
 
   const controlShowtime = () => {
     if (document.getElementById(FLD_UPD_HNT_ENT_TIM)) {
@@ -37,10 +41,6 @@ const UpdateEventEntry = (props) => {
       document.getElementById(ACTION_UPDATE_ENTRY).disabled = !(timeOk)
     }
   })
-
-  function isValidDate(d) {
-    return d instanceof Date && !isNaN(d);
-  }
 
   if (!currentUser) {
     return null
@@ -90,8 +90,9 @@ const UpdateEventEntry = (props) => {
         if (result) {
           const updatedEntry = result.data.updateEventEntry
           const eventId = unfinishedEntry.event
+          const recurrenceId = unfinishedEntry.recurrence
           setSelectedEntry(null)
-          updateEntryInOwnEvents(eventId, updatedEntry)
+          updateEntryInOwnEvents(eventId, recurrenceId, updatedEntry)
           displaySuccess('Showtime was updated')
         } else {
           displayError('Showtime was not updated')
@@ -118,10 +119,11 @@ const UpdateEventEntry = (props) => {
         if (result) {
           if(result.data.deleteEventEntry && result.data.deleteEventEntry === 1) {
             const eventId = unfinishedEntry.event
+            const recurrenceId = unfinishedEntry.recurrence
             try {
               clearFields()
               setSelectedEntry(null)
-              removeEntryFromOwnEvents(eventId, id)
+              removeEntryFromOwnEvents(eventId, recurrenceId, id)
               displaySuccess('Entry deleted')
               console.log('Entry deleted')
             } catch (error) {

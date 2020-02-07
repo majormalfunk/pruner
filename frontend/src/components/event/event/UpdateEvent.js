@@ -96,9 +96,9 @@ const UpdateEvent = (props) => {
     unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
       return !(recurrence.launched)
     })
-    const venuesExist = unfinishedEvent.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
-    const showsExist = unfinishedEvent.shows.some(show => show.recurrence === unfinishedRecurrence.id)
-    const entriesExist = unfinishedEvent.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
+    const venuesExist = unfinishedRecurrence.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+    const showsExist = unfinishedRecurrence.shows.some(show => show.recurrence === unfinishedRecurrence.id)
+    const entriesExist = unfinishedRecurrence.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
     readyToLaunch = (unfinishedRecurrence && venuesExist && showsExist && entriesExist)
   }
   

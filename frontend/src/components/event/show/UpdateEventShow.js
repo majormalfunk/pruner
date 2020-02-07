@@ -147,8 +147,9 @@ const UpdateEventShow = (props) => {
         if (result) {
           const updatedShow = result.data.updateEventShow
           const eventId = unfinishedShow.event
+          const recurrenceId = unfinishedShow.recurrence
           setSelectedShow(null)
-          updateShowInOwnEvents(eventId, updatedShow)
+          updateShowInOwnEvents(eventId, recurrenceId, updatedShow)
           displaySuccess('Show info was updated')
         } else {
           displayError('Show info was not updated')
@@ -175,10 +176,11 @@ const UpdateEventShow = (props) => {
         if (result) {
           if(result.data.deleteEventShow && result.data.deleteEventShow === 1) {
             const eventId = unfinishedShow.event
+            const recurrenceId = unfinishedShow.recurrence
             try {
               clearFields()
               setSelectedShow(null)
-              removeShowFromOwnEvents(eventId, id)
+              removeShowFromOwnEvents(eventId, recurrenceId, id)
               displaySuccess('Show deleted')
               console.log('Show deleted')
             } catch (error) {

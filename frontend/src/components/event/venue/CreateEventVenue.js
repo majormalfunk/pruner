@@ -78,7 +78,7 @@ const CreateEventVenue = (props) => {
         if (result) {
           const createdVenue = result.data.createEventVenue
           clearFields()
-          addVenueToOwnEvents(eventId, createdVenue)
+          addVenueToOwnEvents(eventId, recurrenceId, createdVenue)
           console.log('Venue was added:')
           displaySuccess(`New venue created`)
           //setEvent(updatedEvent)

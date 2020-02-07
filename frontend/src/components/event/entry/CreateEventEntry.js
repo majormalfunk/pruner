@@ -28,8 +28,8 @@ const CreateEventEntry = (props) => {
   const unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
     return !(recurrence.launched)
   })
-  const venues = unfinishedEvent.venues.filter(venue => venue.recurrence === unfinishedRecurrence.id)
-  const shows = unfinishedEvent.shows.filter(show => show.recurrence === unfinishedRecurrence.id)
+  const venues = unfinishedRecurrence.venues
+  const shows = unfinishedRecurrence.shows
 
   const controlShow = () => {
     if (!shows || shows === null || shows.length === 0) {
@@ -154,7 +154,7 @@ const CreateEventEntry = (props) => {
           //console.log('Got result')
           const createdEntry = result.data.createEventEntry
           clearFields()
-          addEntryToOwnEvents(eventId, createdEntry)
+          addEntryToOwnEvents(eventId, recurrenceId, createdEntry)
           console.log('Entry was added:')
           displaySuccess(`New entry created`)
         } else {

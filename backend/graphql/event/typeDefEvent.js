@@ -49,9 +49,6 @@ module.exports = {
       liveevent: Boolean!
       launched: Boolean!
       recurrences: [EventRecurrence]
-      venues: [EventVenue]
-      shows: [EventShow]
-      entries: [EventEntry]
       owner: User!
       id: ID!
     }

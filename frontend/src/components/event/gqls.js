@@ -116,17 +116,11 @@ export const GET_AVAILABLE_EVENTS = gql`
     getAvailableEvents(username: $username) {
       ...EventDetails
       recurrences { ...RecurrenceDetails }
-      venues { ...VenueDetails }
-      shows { ...ShowDetails }
-      entries { ...EntryDetails }
       owner { ...OwnerDetails }
     }
   }
   ${EVENT_DETAILS}
   ${RECURRENCE_DETAILS}
-  ${VENUE_DETAILS}
-  ${SHOW_DETAILS}
-  ${ENTRY_DETAILS}
   ${OWNER_DETAILS}
 `
 
@@ -135,17 +129,11 @@ export const GET_OWN_EVENTS = gql`
     getOwnEvents(username: $username) {
       ...EventDetails
       recurrences { ...RecurrenceDetails }
-      venues { ...VenueDetails }
-      shows { ...ShowDetails }
-      entries { ...EntryDetails }
       owner { ...OwnerDetails }
     }
   }
   ${EVENT_DETAILS}
   ${RECURRENCE_DETAILS}
-  ${VENUE_DETAILS}
-  ${SHOW_DETAILS}
-  ${ENTRY_DETAILS}
   ${OWNER_DETAILS}
 `
 
@@ -158,17 +146,11 @@ export const CREATE_EVENT = gql`
       publicevent: $publicevent, liveevent: $liveevent) {
         ...EventDetails
         recurrences { ...RecurrenceDetails }
-        venues { ...VenueDetails }
-        shows { ...ShowDetails }
-        entries { ...EntryDetails }
         owner { ...OwnerDetails }
     }
   }
   ${EVENT_DETAILS}
   ${RECURRENCE_DETAILS}
-  ${VENUE_DETAILS}
-  ${SHOW_DETAILS}
-  ${ENTRY_DETAILS}
   ${OWNER_DETAILS}
 `
 
@@ -181,17 +163,11 @@ export const UPDATE_EVENT = gql`
       publicevent: $publicevent, liveevent: $liveevent, launched: $launched) {
         ...EventDetails
         recurrences { ...RecurrenceDetails }
-        venues { ...VenueDetails }
-        shows { ...ShowDetails }
-        entries { ...EntryDetails }
         owner { ...OwnerDetails }
     }
   }
   ${EVENT_DETAILS}
   ${RECURRENCE_DETAILS}
-  ${VENUE_DETAILS}
-  ${SHOW_DETAILS}
-  ${ENTRY_DETAILS}
   ${OWNER_DETAILS}
 `
 
@@ -208,17 +184,11 @@ export const LAUNCH_EVENT = gql`
       id: $eventId, recurrenceId: $recurrenceId) {
         ...EventDetails
         recurrences { ...RecurrenceDetails }
-        venues { ...VenueDetails }
-        shows { ...ShowDetails }
-        entries { ...EntryDetails }
         owner { ...OwnerDetails }
     }
   }
   ${EVENT_DETAILS}
   ${RECURRENCE_DETAILS}
-  ${VENUE_DETAILS}
-  ${SHOW_DETAILS}
-  ${ENTRY_DETAILS}
   ${OWNER_DETAILS}
 `
 

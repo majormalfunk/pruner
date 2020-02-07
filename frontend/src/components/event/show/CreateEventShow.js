@@ -142,7 +142,7 @@ const CreateEventShow = (props) => {
         if (result) {
           const createdShow = result.data.createEventShow
           clearFields()
-          addShowToOwnEvents(eventId, createdShow)
+          addShowToOwnEvents(eventId, recurrenceId, createdShow)
           console.log('Show was added:')
           displaySuccess(`New show created`)
         } else {
