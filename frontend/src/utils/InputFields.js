@@ -102,7 +102,6 @@ export const TimeField = (props) => {
           locale="en-GB"
           timeFormat="HH:mm"
           timeIntervals={5}
-          //timeCaption="Start"
           dateFormat="dd.MM.yyyy HH:mm"
         />
       </Form.Row>
@@ -111,10 +110,106 @@ export const TimeField = (props) => {
   )
 }
 
-// Consider a time range picker
-// selectsStart
-// startDate={startDate}
-// endDate={endDate}
+export const TimeRangeField = (props) => {
+
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+  const selectsStart = props.selectsStart
+  let minTime = null
+  let startTime = null
+  let endTime = null
+  let maxTime = null
+  try {
+    minTime = (isValidDate(props.minTime) ? props.minTime : parseISO(props.minTime))
+    maxTime = (isValidDate(props.maxTime) ? props.maxTime : parseISO(props.maxTime))
+    if (props.startTime === null) {
+      startTime = minTime
+    } else {
+      startTime = (isValidDate(props.startTime) ? props.startTime : parseISO(props.startTime))
+    }
+    if (props.endTime === null) {
+      endTime = maxTime
+    } else {
+      endTime = (isValidDate(props.endTime) ? props.endTime : parseISO(props.endTime))
+    }
+  } catch (error) {
+    console.log('Couldnt parse some date')
+  }
+
+  return (
+    <>
+      <Form.Label>{props.label}</Form.Label>
+      <Form.Row>&nbsp;
+        <DatePicker className="form-control" id={props.settime}
+          selected={selectsStart ? startTime : endTime}
+          onChange={props.trigger}
+          selectsStart={selectsStart}
+          selectsEnd={!selectsStart}
+          startDate={startTime}
+          endDate={endTime}
+          minDate={minTime}
+          maxDate={maxTime}
+          popperPlacement="right"
+          showTimeSelect
+          locale="en-GB"
+          timeFormat="HH:mm"
+          timeIntervals={5}
+          dateFormat="dd.MM.yyyy HH:mm" />
+      </Form.Row>
+      <Form.Text className="text-muted" id={props.timehint}></Form.Text>
+    </>
+
+  )
+}
+
+export const TimeRangeEndField = (props) => {
+
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+
+  let startTime = null
+  if (props.startTime) {
+    if (!isValidDate(props.startTime)) {
+      startTime = parseISO(props.startTime)
+    } else {
+      startTime = props.startTime
+    }
+  }
+  let endTime = null
+  if (props.endTime) {
+    if (!isValidDate(props.endTime)) {
+      endTime = parseISO(props.endTime)
+    } else {
+      endTime = props.endTime
+    }
+  }
+  
+  return (
+    <>
+      <Form.Label>{props.label}</Form.Label>
+      <Form.Row>&nbsp;
+        <DatePicker className="form-control" id={props.settime}
+          selected={endTime}
+          onChange={props.trigger}
+          selectsEnd={true}
+          startDate={startTime}
+          endDate={endTime}
+          minDate={props.minTime}
+          maxDate={props.maxTime}
+          popperPlacement="right"
+          showTimeSelect
+          locale="en-GB"
+          timeFormat="HH:mm"
+          timeIntervals={5}
+          dateFormat="dd.MM.yyyy HH:mm" />
+      </Form.Row>
+      <Form.Text className="text-muted" id={props.timehint}></Form.Text>
+    </>
+
+  )
+}
 
 export const VenueSelectField = (props) => {
 

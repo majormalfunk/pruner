@@ -5,7 +5,7 @@ import { parseISO, addMinutes } from 'date-fns'
 
 import { displayError } from '../../reducers/notificationReducer'
 
-import { TimeField } from '../../utils/InputFields'
+import { TimeRangeField, TimeRangeEndField, TimeField } from '../../utils/InputFields'
 import { FLD_SEL_HNT_PLA_STA, FLD_SEL_HNT_PLA_END } from '../../constants'
 import { FLD_SEL_SET_PLA_STA, FLD_SEL_SET_PLA_END } from '../../constants'
 import { ACTION_SELECT_START, ACTION_SELECT_END } from '../../constants'
@@ -21,32 +21,34 @@ const PlanSelectDatesForm = (props) => {
   const availableEntries = selectedRecurrence.entries.filter(entry => entry.recurrence === recurrenceId)
   const firstEntry = availableEntries[0]
   const lastEntry = availableEntries[availableEntries.length-1]
+  const firstShowStarts = parseISO(firstEntry.showtime)
+  const lastShowEnds = addMinutes(parseISO(lastEntry.showtime), Math.ceil(lastEntry.show.duration/5)*5)
 
   function isValidDate(d) {
     return d instanceof Date && !isNaN(d);
   }
 
   const controlShowtime = () => {
-    console.log('Controlling times')
+    //console.log('Controlling times')
     if (document.getElementById(FLD_SEL_HNT_PLA_STA)) {
       if (!isValidDate(startTime)) {
         document.getElementById(FLD_SEL_HNT_PLA_STA).innerHTML = 'Select start time of first show'
-        console.log('Not valid start time')
+        //console.log('Not valid start time')
         return false
       } else {
         document.getElementById(FLD_SEL_HNT_PLA_STA).innerHTML = 'First start time selected'
-        console.log('Is valid start time')
+        //console.log('Is valid start time')
         return true
       }
     }
     if (document.getElementById(FLD_SEL_HNT_PLA_END)) {
       if (!isValidDate(endTime)) {
         document.getElementById(FLD_SEL_HNT_PLA_END).innerHTML = 'Select end time of last show'
-        console.log('Not valid end time')
+        //console.log('Not valid end time')
         return false
       } else {
         document.getElementById(FLD_SEL_HNT_PLA_END).innerHTML = 'Last end time selected'
-        console.log('Is valid end time')
+        //console.log('Is valid end time')
         return true
       }
     }
@@ -54,31 +56,26 @@ const PlanSelectDatesForm = (props) => {
   }
 
   useEffect(() => {
-    console.log('DATES: Using effect')
+    //console.log('DATES: Using effect')
     if (startTime === null) {
-      setStartTime(firstEntry.showtime)
+      setStartTime(firstShowStarts)
     }
     if (endTime === null) {
-      const minutes = lastEntry.duration
-      const lastShow = parseISO(lastEntry.showtime)
-      console.log('Last show', lastShow)
-      const duration = lastEntry.show.duration
-      console.log('Duration', duration)
-      const upDuration = Math.ceil(duration/5)*5
-      console.log('Rounded', upDuration)
-      const lastShowEnds = addMinutes(lastShow, upDuration)
-      console.log('End time', lastShowEnds)
       setEndTime(lastShowEnds)
     }
     const timeOk = controlShowtime()
-    console.log('DATES: Effect used')
+    //console.log('DATES: Effect used')
   })//, [setStartTime, setEndTime, firstEntry, lastEntry])
 
   const handleSelectStartTime = async (event) => {
     try {
       if (isValidDate(event)) {
         setStartTime(event)
-        console.log('Selected start time:', event)
+        console.log('Selected start time:', startTime)
+        if (startTime > endTime) {
+          setEndTime(lastShowEnds)
+          console.log('End time moved to:', endTime)
+        }
       } else {
         console.log(event, 'was not a valid start time')
       }
@@ -92,7 +89,7 @@ const PlanSelectDatesForm = (props) => {
     try {
       if (isValidDate(event)) {
         setEndTime(event)
-        console.log('Selected end time:', event)
+        console.log('Selected end time:', endTime)
       } else {
         console.log(event, 'was not a valid end time')
       }
@@ -116,17 +113,36 @@ const PlanSelectDatesForm = (props) => {
             Selected dates
           </Col>
           <Col>
-            <TimeField label="Start attendance" showtime={startTime} trigger={handleSelectStartTime}
+            <TimeRangeField label="Start attendance" selectsStart={true}
+              startTime={startTime} endTime={endTime} trigger={handleSelectStartTime}
+              minTime={firstShowStarts} maxTime={lastShowEnds}
               timehint={FLD_SEL_HNT_PLA_STA} settime={FLD_SEL_SET_PLA_STA} />
           </Col>
           <Col>
-            <TimeField label="End attendance by" showtime={endTime} trigger={handleSelectEndTime}
+            <TimeRangeField label="End attendance by" selectsStart={false}
+              startTime={startTime} endTime={endTime} trigger={handleSelectEndTime}
+              minTime={startTime} maxTime={lastShowEnds}
               timehint={FLD_SEL_HNT_PLA_END} settime={FLD_SEL_SET_PLA_END} />
           </Col>
         </Row>
       </Form>
     </Container>
   )
+  /*
+    <Row>
+    <Col className="Component-title">
+      Selected dates
+    </Col>
+    <Col>
+      <TimeField label="Start attendance" showtime={startTime} trigger={handleSelectStartTime}
+        timehint={FLD_SEL_HNT_PLA_STA} settime={FLD_SEL_SET_PLA_STA} />
+    </Col>
+    <Col>
+      <TimeField label="End attendance by" showtime={endTime} trigger={handleSelectEndTime}
+        timehint={FLD_SEL_HNT_PLA_END} settime={FLD_SEL_SET_PLA_END} />
+    </Col>
+    </Row>
+  */
 
 }
 
