@@ -38,13 +38,13 @@ const PlanEventRecurrences = (props) => {
     return (
       <Container>
         <Row>
-          <Col className="Component-title">
+          <Col className="Content-title">
             Selected recurrence
           </Col>
-          <Col>
+          <Col className="Content-name">
             {selectedRecurrence.recurrencename}
           </Col>
-          <Col>
+          <Col className="Content-name">
             {selectedRecurrence.description}
           </Col>
         </Row>
@@ -85,7 +85,7 @@ const PlanEventRecurrences = (props) => {
               <Col>
                 <Container>
                   <Row>
-                    <Col className="Content-title">
+                    <Col className="Content-large">
                       <Button variant="primary" type="button" size="sm"
                         value={ACTION_TOGGLE_RECURRENCE}
                         onClick={handleDisplayRecurrences}>Hide</Button>

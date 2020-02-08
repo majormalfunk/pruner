@@ -8,14 +8,14 @@ const UpdateEventRecurrenceCollapsed = (props) => {
     <Container>
       <Form>
         <Row>
-          <Col className="Content-title">
+          <Col className="Content-large">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_RECURRENCE}
               onClick={props.handleDisplayRecurrence}>Show</Button>
               &nbsp;
               {props.recurrencename}
           </Col>
-          <Col className="Content-title">
+          <Col className="Content-large">
             {props.description}
           </Col>
         </Row>

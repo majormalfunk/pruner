@@ -96,8 +96,9 @@
 | **WEEK  5**   | **TOTAL**                                                          |  **17,0** | **206,0** |
 | 05.02.2020    | Restructuring models and database                                  |     0,5   |           |
 | 06.02.2020    | Restructuring backend and graphql                                  |     1,5   |           |
-| 07.02.2020    | Restructuring frontend                                             |     2,5   |           |
-| **WEEK  6**   | **TOTAL**                                                          |   **4,5** | **210,5** |
+| 07.02.2020    | Restructuring frontend and some bug fixes                          |     2,5   |           |
+| 08.02.2020    | Some bug fixes and date selection in plan                          |     2,0   |           |
+| **WEEK  6**   | **TOTAL**                                                          |   **6,5** | **212,5** |
 
 
 

@@ -12,7 +12,7 @@ const UpdateEventShowCollapsed = (props) => {
     <Container>
       <Form>
         <Row>
-          <Col className="Content-title">
+          <Col className="Content-large">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_SHOW}
               onClick={handleDisplayShows}>{(showsExist ? 'Show' : 'Create')}</Button>

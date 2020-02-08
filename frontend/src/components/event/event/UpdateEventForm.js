@@ -58,7 +58,7 @@ const UpdateEventForm = (props) => {
           <Col><span>&nbsp;</span></Col>
         </Row>
         <Row>
-          <Col className="Content-title">
+          <Col className="Content-large">
             <Button variant="primary" type="button" size="sm"
               value={ACTION_TOGGLE_EVENT}
               onClick={props.handleDisplayEvent}>Hide</Button>

@@ -107,6 +107,18 @@
 .Content-title {
   font-size: 16px;
   font-weight: bold;
+  color: #ebc20c;
+}
+
+.Content-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.Content-large {
+  font-size: 16px;
+  font-weight: bold;
   color: #ffffff;
 }
 

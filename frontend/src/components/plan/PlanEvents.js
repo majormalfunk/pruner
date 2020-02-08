@@ -37,13 +37,13 @@ const PlanEvents = (props) => {
     return (
       <Container>
         <Row>
-          <Col className="Component-title">
+          <Col className="Content-title">
             Selected event
           </Col>
-          <Col>
+          <Col className="Content-name">
             {selectedEvent.eventname}
           </Col>
-          <Col>
+          <Col className="Content-name">
             {selectedEvent.description}
           </Col>
         </Row>
@@ -84,7 +84,7 @@ const PlanEvents = (props) => {
               <Col>
                 <Container>
                   <Row>
-                    <Col className="Content-title">
+                    <Col className="Content-large">
                       <Button variant="primary" type="button" size="sm"
                         value={ACTION_TOGGLE_EVENT}
                         onClick={handleDisplayEvents}>Hide</Button>

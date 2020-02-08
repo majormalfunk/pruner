@@ -93,7 +93,7 @@ const UpdateEventEntries = (props) => {
         <Col>
           <Container>
             <Row>
-              <Col className="Content-title">
+              <Col className="Content-large">
                 <Button variant="primary" type="button" size="sm"
                   value={ACTION_TOGGLE_ENTRY}
                   onClick={handleDisplayEntries}>Hide</Button>
