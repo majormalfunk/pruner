@@ -122,6 +122,12 @@
   color: #ffffff;
 }
 
+.Content-small {
+  font-size: 12px;
+  font-weight: normal;
+  color: #ff00ff;
+}
+
 .FormAlignedBtn {
   margin-top: 32px;
 }

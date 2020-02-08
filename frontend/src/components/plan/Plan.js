@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { parseISO, compareAsc, addMinutes } from 'date-fns'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
@@ -9,7 +10,7 @@ import { displayError } from '../../reducers/notificationReducer'
 import { setAvailableEvents } from '../../reducers/availableEventsReducer'
 import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
-import PlanSelectEventDatesForm from './PlanSelectDatesForm'
+import PlanSelectDatesForm from './PlanSelectDatesForm'
 
 const Plan = (props) => {
 
@@ -43,28 +44,6 @@ const Plan = (props) => {
       const eventsResult = await getAvailableEvents[0]({
         variables: { username }
       })
-      if (eventsResult.loading) {
-        return (
-          <Container>
-          <Row>
-            <Col className="Component-title">
-              Create a new plan
-            </Col>
-          </Row>
-          <Row>
-            <Col><span>&nbsp;</span></Col>
-          </Row>
-          <Row>
-            <Col>
-              <span>Loading...</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col><span>&nbsp;</span></Col>
-          </Row>
-          </Container>
-        )
-      } 
       if (eventsResult.data) {
         console.log('Ava:', eventsResult.data.getAvailableEvents)
         setAvailableEvents(eventsResult.data.getAvailableEvents)
@@ -81,6 +60,75 @@ const Plan = (props) => {
     console.log('PLAN: Effect used')
     // eslint-disable-next-line
   }, [])
+
+  if ((getAvailableEvents[1]).loading) {
+    return (
+      <Container>
+      <Row>
+        <Col className="Component-title">
+          Create a new plan
+        </Col>
+      </Row>
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+      <Row>
+        <Col>
+          <span>Loading events to prune...</span>
+        </Col>
+      </Row>
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+      </Container>
+    )
+  }
+
+  function pruneStartTime(entry) {
+    return (compareAsc(startTime, parseISO(entry.showtime)) < 1)
+  }
+  function pruneEndTime(entry) {
+    return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
+  }
+
+  const selectedEvent = availableEvents.find(event => event.id === eventId)
+  let firstEntry = null
+  let lastEndingEntry = null
+  let availableEntries = []
+  let distinctCount = 0
+  let prunedCount = 0
+  let prunedDistinct = new Set()
+  if (selectedEvent) {
+    const selectedRecurrence = selectedEvent.recurrences.find(recurrence => recurrence.id === recurrenceId)
+    if (selectedRecurrence) {
+      availableEntries = selectedRecurrence.entries.filter((entry) => {
+        if (lastEndingEntry === null) {
+          lastEndingEntry = entry
+        } else {
+          if (compareAsc(
+            addMinutes(parseISO(lastEndingEntry.showtime), lastEndingEntry.show.duration),
+            addMinutes(parseISO(entry.showtime), entry.show.duration)) < 1) {
+              lastEndingEntry = entry
+          }
+        }
+        return entry.recurrence === recurrenceId
+      })
+      firstEntry = availableEntries[0]
+      distinctCount = selectedRecurrence.shows.length
+      let prunedEntries = availableEntries.filter((entry) => {
+        return pruneStartTime(entry) && pruneEndTime(entry)
+      })
+      prunedCount = prunedEntries.length
+      let dist = {}
+      prunedDistinct = prunedEntries.filter((entry) => {
+        if (dist[entry.show.id]) {
+          return false
+        }
+        dist[entry.show.id] = true
+        return true
+      })
+    }
+  }
 
   return (
       <Container>
@@ -110,14 +158,25 @@ const Plan = (props) => {
             )}
           </Col>
         </Row>
-        <Row>
-          <Col>
-            {(eventId && recurrenceId &&
-              <PlanSelectEventDatesForm eventId={eventId} recurrenceId={recurrenceId}
-                startTime={startTime} setStartTime={setStartTime} endTime={endTime} setEndTime={setEndTime} />
-            )}
-          </Col>
-        </Row>
+          {(eventId && recurrenceId &&
+          <>
+            <Row>
+              <Col>
+                <PlanSelectDatesForm firstEntry={firstEntry} lastEntry={lastEndingEntry}
+                  startTime={startTime} setStartTime={setStartTime}
+                  endTime={endTime} setEndTime={setEndTime} />
+              </Col>
+            </Row>
+            <Row>
+              <Col><span>&nbsp;</span></Col>
+            </Row>
+            <Row className="Content-small">
+              <Col><span>&nbsp;</span></Col>
+              <Col><span>Pruned {prunedCount} ({prunedDistinct.length} distinct) shows with the criteria.</span></Col>
+              <Col><span>Total of {availableEntries.length} ({distinctCount} distinct) shows in the event schedule</span></Col>
+            </Row>
+          </>
+          )}
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>

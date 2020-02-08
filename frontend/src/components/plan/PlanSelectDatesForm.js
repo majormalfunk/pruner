@@ -1,26 +1,20 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Container, Form, Row, Col, Button } from 'react-bootstrap'
+import { Container, Form, Row, Col } from 'react-bootstrap'
 import { parseISO, addMinutes } from 'date-fns'
 
 import { displayError } from '../../reducers/notificationReducer'
 
-import { TimeRangeField, TimeRangeEndField, TimeField } from '../../utils/InputFields'
+import { TimeRangeField } from '../../utils/InputFields'
 import { FLD_SEL_HNT_PLA_STA, FLD_SEL_HNT_PLA_END } from '../../constants'
 import { FLD_SEL_SET_PLA_STA, FLD_SEL_SET_PLA_END } from '../../constants'
-import { ACTION_SELECT_START, ACTION_SELECT_END } from '../../constants'
 
 import { formatDate } from '../../utils/dates'
 
 const PlanSelectDatesForm = (props) => {
 
-  const { availableEvents, eventId, recurrenceId, startTime, setStartTime, endTime, setEndTime } = props
+  const { firstEntry, lastEntry, startTime, setStartTime, endTime, setEndTime } = props
 
-  const selectedEvent = availableEvents.find(event => event.id === eventId)
-  const selectedRecurrence = selectedEvent.recurrences.find(recurrence => recurrence.id === recurrenceId)
-  const availableEntries = selectedRecurrence.entries.filter(entry => entry.recurrence === recurrenceId)
-  const firstEntry = availableEntries[0]
-  const lastEntry = availableEntries[availableEntries.length-1]
   const firstShowStarts = parseISO(firstEntry.showtime)
   const lastShowEnds = addMinutes(parseISO(lastEntry.showtime), Math.ceil(lastEntry.show.duration/5)*5)
 
@@ -106,7 +100,7 @@ const PlanSelectDatesForm = (props) => {
         <Row className="Component-small">
           <Col><span>&nbsp;</span></Col>
           <Col>First show starts {formatDate(firstEntry.showtime)}</Col>
-          <Col>Last show starts {formatDate(lastEntry.showtime)} ({lastEntry.show.duration} min)</Col>
+          <Col>Last ending show starts {formatDate(lastEntry.showtime)} ({lastEntry.show.duration} min)</Col>
         </Row>
         <Row>
           <Col className="Component-title">
@@ -128,28 +122,12 @@ const PlanSelectDatesForm = (props) => {
       </Form>
     </Container>
   )
-  /*
-    <Row>
-    <Col className="Component-title">
-      Selected dates
-    </Col>
-    <Col>
-      <TimeField label="Start attendance" showtime={startTime} trigger={handleSelectStartTime}
-        timehint={FLD_SEL_HNT_PLA_STA} settime={FLD_SEL_SET_PLA_STA} />
-    </Col>
-    <Col>
-      <TimeField label="End attendance by" showtime={endTime} trigger={handleSelectEndTime}
-        timehint={FLD_SEL_HNT_PLA_END} settime={FLD_SEL_SET_PLA_END} />
-    </Col>
-    </Row>
-  */
 
 }
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
-    availableEvents: state.availableEvents
+    currentUser: state.currentUser
   }
 }
 

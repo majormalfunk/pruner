@@ -163,54 +163,6 @@ export const TimeRangeField = (props) => {
   )
 }
 
-export const TimeRangeEndField = (props) => {
-
-  function isValidDate(d) {
-    return d instanceof Date && !isNaN(d);
-  }
-
-  let startTime = null
-  if (props.startTime) {
-    if (!isValidDate(props.startTime)) {
-      startTime = parseISO(props.startTime)
-    } else {
-      startTime = props.startTime
-    }
-  }
-  let endTime = null
-  if (props.endTime) {
-    if (!isValidDate(props.endTime)) {
-      endTime = parseISO(props.endTime)
-    } else {
-      endTime = props.endTime
-    }
-  }
-  
-  return (
-    <>
-      <Form.Label>{props.label}</Form.Label>
-      <Form.Row>&nbsp;
-        <DatePicker className="form-control" id={props.settime}
-          selected={endTime}
-          onChange={props.trigger}
-          selectsEnd={true}
-          startDate={startTime}
-          endDate={endTime}
-          minDate={props.minTime}
-          maxDate={props.maxTime}
-          popperPlacement="right"
-          showTimeSelect
-          locale="en-GB"
-          timeFormat="HH:mm"
-          timeIntervals={5}
-          dateFormat="dd.MM.yyyy HH:mm" />
-      </Form.Row>
-      <Form.Text className="text-muted" id={props.timehint}></Form.Text>
-    </>
-
-  )
-}
-
 export const VenueSelectField = (props) => {
 
   if (props.venues) {
