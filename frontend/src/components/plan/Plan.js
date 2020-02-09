@@ -8,9 +8,12 @@ import { GET_AVAILABLE_EVENTS } from '../event/gqls'
 
 import { displayError } from '../../reducers/notificationReducer'
 import { setAvailableEvents } from '../../reducers/availableEventsReducer'
+
 import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
 import PlanSelectDatesForm from './PlanSelectDatesForm'
+
+import { makePaths } from '../../utils/pruner'
 
 const Plan = (props) => {
 
@@ -90,6 +93,21 @@ const Plan = (props) => {
   function pruneEndTime(entry) {
     return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
   }
+  const handleMakePaths = (entries) => {
+    const maxEntries = 4
+    const minBreak = 5 // minutes
+    const maxBreak = 150 // minutes
+    const cutOffAfterMidnight = 0 // minutes
+    const paths = makePaths(entries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight)
+    console.log('Paths', paths.length)
+    paths.forEach((path, index) => {
+      console.log('Path #', index)
+      path.forEach((entry) => {
+        console.log('  ', entry.showtime, entry.venue.venuename, entry.show.showname)
+      })
+    })
+    return paths
+  }
 
   const selectedEvent = availableEvents.find(event => event.id === eventId)
   let firstEntry = null
@@ -118,6 +136,8 @@ const Plan = (props) => {
       let prunedEntries = availableEntries.filter((entry) => {
         return pruneStartTime(entry) && pruneEndTime(entry)
       })
+      const prunedPaths = handleMakePaths(prunedEntries)
+      console.log('Paths', prunedPaths.length)
       prunedCount = prunedEntries.length
       let dist = {}
       prunedDistinct = prunedEntries.filter((entry) => {

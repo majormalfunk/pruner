@@ -98,7 +98,8 @@
 | 06.02.2020    | Restructuring backend and graphql                                  |     1,5   |           |
 | 07.02.2020    | Restructuring frontend and some bug fixes                          |     2,5   |           |
 | 08.02.2020    | Some bug fixes and date selection in plan                          |     7,5   |           |
-| **WEEK  6**   | **TOTAL**                                                          |  **12,0** | **218,0** |
+| 09.02.2020    | Path finding algorithm                                             |     8,0   |           |
+| **WEEK  6**   | **TOTAL**                                                          |  **20,0** | **226,0** |
 
 
 
