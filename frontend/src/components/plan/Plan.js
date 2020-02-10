@@ -94,7 +94,7 @@ const Plan = (props) => {
     return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
   }
   const handleMakePaths = (entries) => {
-    const maxEntries = 4
+    const maxEntries = 5
     const minBreak = 5 // minutes
     const maxBreak = 150 // minutes
     const cutOffAfterMidnight = 0 // minutes
