@@ -100,8 +100,8 @@
 | 08.02.2020    | Some bug fixes and date selection in plan                          |     7,5   |           |
 | 09.02.2020    | Path finding algorithm                                             |     8,0   |           |
 | **WEEK  6**   | **TOTAL**                                                          |  **20,0** | **226,0** |
-| 10.02.2020    | Path finding algorithm                                             |     1,5   |           |
-| **WEEK  7**   | **TOTAL**                                                          |   **1,5** | **227,5** |
+| 10.02.2020    | Path finding algorithm                                             |     5,0   |           |
+| **WEEK  7**   | **TOTAL**                                                          |   **5,0** | **231,0** |
 
 
 

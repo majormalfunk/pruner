@@ -93,19 +93,19 @@ const Plan = (props) => {
   function pruneEndTime(entry) {
     return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
   }
-  const handleMakePaths = (entries) => {
+  const handleMakePaths = async (entries) => {
     const maxEntries = 5
     const minBreak = 5 // minutes
     const maxBreak = 150 // minutes
     const cutOffAfterMidnight = 0 // minutes
-    const paths = makePaths(entries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight)
+    const paths = await makePaths(entries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight)
     console.log('Paths', paths.length)
-    paths.forEach((path, index) => {
-      console.log('Path #', index)
-      path.forEach((entry) => {
-        console.log('  ', entry.showtime, entry.venue.venuename, entry.show.showname)
-      })
-    })
+    //paths.forEach((path, index) => {
+    //  console.log('Path #', index)
+    //  path.forEach((entry) => {
+    //    console.log('  ', entry.showtime, entry.venue.venuename, entry.show.showname)
+    //  })
+    //})
     return paths
   }
 
