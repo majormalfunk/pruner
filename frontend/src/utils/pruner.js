@@ -1,8 +1,13 @@
-import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
+import { parseISO, compareAsc, addMinutes, endOfDay, getDate } from 'date-fns'
 
-export const makePaths = async (entries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight) => {
+export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight) => {
+
+  console.log ('Trying for', entries.length, 'entries')
+
+  console.log('Start', new Date())
 
   let readyPaths = []
+  let maxQueueCount = 0
 
   if (!entries || entries.length === 0) {
     return readyPaths
@@ -33,9 +38,18 @@ export const makePaths = async (entries, maxEntries, minBreak, maxBreak, cutOffA
     // thisPath.map((entry) => {
     //   console.log('  In path:', entry.showtime, entry.show.showname)
     // })
-    if (thisPath.length >= maxEntries) {
+    const fullPath = (thisPath.length >= maxEntries)
+    const longEnough = ((thisPath.length >= minEntries) && (thisPath[thisPath.length - 1].ind >= entries.length))
+    const tooShort = ((thisPath.length < minEntries) && (thisPath[thisPath.length - 1].ind >= entries.length))
+    if (fullPath || longEnough) {
       // Add to ready list if number of maximum shows is reached
       readyPaths.push(thisPath)
+    } else if (tooShort) {
+      // Discard path and take the next on
+      console.log('Too short')
+      thisPath.map((entry) => {
+        console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
+      })
     } else {
       let lastEntry = thisPath[(thisPath.length - 1)]
       // Take the last show of this path to know when it ends
@@ -64,19 +78,28 @@ export const makePaths = async (entries, maxEntries, minBreak, maxBreak, cutOffA
             let newPath = thisPath.slice(0)
             newPath.push(nextEntry)
             workingPaths.push(newPath)
+            maxQueueCount = (workingPaths.length > maxQueueCount ? workingPaths.length : maxQueueCount)
           }
-        }
-        if (true) {
-          // If we run out of shows before max number of shows is reached.
         }
       }
     }
-    if (workingPaths.length > 100) {
+    if (workingPaths.length > 64000) {
       // Contingency plan to stop algo from running too long. Have to find a good limit.
       console.log('Reached too many working paths')
       break
     }
   }
-
-  return readyPaths
+  console.log('End', new Date())
+  console.log('Max queue', maxQueueCount)
+  if (readyPaths && readyPaths.length > 0) {
+    console.log('First path')
+    readyPaths[0].map((entry) => {
+      console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
+    })
+    console.log('Last path')
+    readyPaths[readyPaths.length - 1].map((entry) => {
+      console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
+    })
+  }
+return readyPaths
 }
