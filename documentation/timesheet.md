@@ -101,7 +101,8 @@
 | 09.02.2020    | Path finding algorithm                                             |     8,0   |           |
 | **WEEK  6**   | **TOTAL**                                                          |  **20,0** | **226,0** |
 | 10.02.2020    | Path finding algorithm                                             |     5,0   |           |
-| **WEEK  7**   | **TOTAL**                                                          |   **5,0** | **231,0** |
+| 11.02.2020    | Found solution to path finding algorithm                           |     0,5   |           |
+| **WEEK  7**   | **TOTAL**                                                          |   **5,5** | **231,5** |
 
 
 
