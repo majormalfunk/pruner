@@ -95,7 +95,7 @@ const Plan = (props) => {
   }
   const handleMakePaths = async (entries) => {
     const minEntries = 2
-    const maxEntries = 5
+    const maxEntries = 3
     const minBreak = 5 // minutes
     const maxBreak = 150 // minutes
     const cutOffAfterMidnight = 0 // minutes

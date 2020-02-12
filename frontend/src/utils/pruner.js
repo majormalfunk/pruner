@@ -1,4 +1,4 @@
-import { parseISO, compareAsc, addMinutes, endOfDay, getDate } from 'date-fns'
+import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
 
 export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight) => {
 
@@ -22,9 +22,9 @@ export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBr
     let nextStartTime = parseISO(entry.showtime)
     if (compareAsc(firstStartTime, nextStartTime) === 0) {
       // All shows as paths starting at the same time as the first show on the list are added
-      // console.log('Add to starting nodes', entry.show.showname)
       let path = []
       entry.ind = index // Mark entry with the index of its place in the orginal list. More of that later.
+      console.log('Add to starting nodes', entry.show.showname, 'from index', entry.ind)
       path.push(entry)
       workingPaths.push(path)
       return false
@@ -35,28 +35,26 @@ export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBr
   // Then we start going through the "queue" of paths (Array of arrays)
   while (workingPaths.length > 0) {
     let thisPath = workingPaths.shift()
-    // thisPath.map((entry) => {
-    //   console.log('  In path:', entry.showtime, entry.show.showname)
-    // })
+    //thisPath.map((entry) => {
+    //  console.log('  In path:', entry.showtime, entry.show.showname, 'with index', entry.ind)
+    //})
     const fullPath = (thisPath.length >= maxEntries)
-    const longEnough = ((thisPath.length >= minEntries) && (thisPath[thisPath.length - 1].ind >= entries.length))
-    const tooShort = ((thisPath.length < minEntries) && (thisPath[thisPath.length - 1].ind >= entries.length))
-    if (fullPath || longEnough) {
+    if (fullPath) {
       // Add to ready list if number of maximum shows is reached
       readyPaths.push(thisPath)
-    } else if (tooShort) {
-      // Discard path and take the next on
-      console.log('Too short')
+      console.log('Full path:')
       thisPath.map((entry) => {
-        console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
-      })
+        console.log('  ', parseISO(entry.showtime), addMinutes(parseISO(entry.showtime), entry.show.duration),
+        entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
+        })
     } else {
       let lastEntry = thisPath[(thisPath.length - 1)]
       // Take the last show of this path to know when it ends
       // console.log('Last entry:', lastEntry.showtime, lastEntry.show.showname)
       let thisStartTime = parseISO(lastEntry.showtime)
       let thisEndTime = addMinutes(thisStartTime, lastEntry.show.duration)
-      let first = true
+      let first = true // So we know to add tomorrows first show or not
+      let didAddToWorking = false // So we know if we should add paths long enough to ready list
       for (let e = lastEntry.ind + 1; e < entries.length; e++) {
         // Now take the next from the original list. We use the added ind of entry
         // so we know where it was int the orginal list and don't have to go through
@@ -75,12 +73,22 @@ export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBr
             // - doesn't start before the previous ends + marginal and doesn't leave a gap too long
             // - or we have a new path from the queue and the first encountered show is on the next day
             first = false
+            didAddToWorking = true // A longer path was found, don't add this to ready list
             let newPath = thisPath.slice(0)
             newPath.push(nextEntry)
             workingPaths.push(newPath)
             maxQueueCount = (workingPaths.length > maxQueueCount ? workingPaths.length : maxQueueCount)
           }
         }
+      }
+      if (!didAddToWorking && (thisPath.length >= minEntries)) {
+        // If the path is long enough and we didn't find longer paths
+        readyPaths.push(thisPath)
+        console.log('Long enough:')
+        thisPath.map((entry) => {
+          console.log('  ', parseISO(entry.showtime), addMinutes(parseISO(entry.showtime), entry.show.duration),
+            entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
+        })
       }
     }
     if (workingPaths.length > 64000) {
@@ -94,12 +102,14 @@ export const makePaths = async (entries, minEntries, maxEntries, minBreak, maxBr
   if (readyPaths && readyPaths.length > 0) {
     console.log('First path')
     readyPaths[0].map((entry) => {
-      console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
+      console.log(entry.showtime, entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
     })
     console.log('Last path')
     readyPaths[readyPaths.length - 1].map((entry) => {
-      console.log(entry.showtime, entry.venue.venuename, entry.show.showname)
+      console.log(entry.showtime, entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
     })
+    console.log('All paths')
+    console.log(readyPaths)
   }
 return readyPaths
 }
