@@ -129,6 +129,10 @@ export const FLD_SEL_SET_PLA_STA = "sel-set-pla-sta"
 export const FLD_SEL_HNT_PLA_STA = "sel-set-pla-sta"
 export const FLD_SEL_SET_PLA_END = "sel-set-pla-end"
 export const FLD_SEL_HNT_PLA_END = "sel-set-pla-end"
+export const FLD_SEL_SET_PLA_MIN = "sel-set-pla-min"
+export const FLD_SEL_HNT_PLA_MIN = "sel-set-pla-min"
+export const FLD_SEL_SET_PLA_MAX = "sel-set-pla-max"
+export const FLD_SEL_HNT_PLA_MAX = "sel-set-pla-max"
 
 // Navigation
 export const PAGE_HOME = "page-home"

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 
 // Date picker
 import DatePicker from 'react-datepicker'
@@ -222,4 +222,20 @@ export const ShowSelectField = (props) => {
     )
   }
 
+}
+
+export const NumberSelectField = (props) => {
+  return (
+    <Form.Group as={Row}>
+      <Col>
+        <Form.Label>{props.label}</Form.Label>
+      </Col>
+      <Col>
+        <Form.Control style={{width: '50%'}} type="number" step="1" min="1" max={props.totalShows}
+          required placeholder="Select" name="selectNumberField" id={props.setnumber}
+          defaultValue={props.number} onChange={props.trigger} />
+      </Col>
+      <Form.Text className="text-muted" id={props.numberhint}></Form.Text>
+    </Form.Group>
+  )
 }

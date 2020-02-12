@@ -97,11 +97,6 @@ const PlanSelectDatesForm = (props) => {
   return (
     <Container>
       <Form>
-        <Row className="Component-small">
-          <Col><span>&nbsp;</span></Col>
-          <Col>First show starts {formatDate(firstEntry.showtime)}</Col>
-          <Col>Last ending show starts {formatDate(lastEntry.showtime)} ({lastEntry.show.duration} min)</Col>
-        </Row>
         <Row>
           <Col className="Component-title">
             Selected dates
@@ -118,6 +113,11 @@ const PlanSelectDatesForm = (props) => {
               minTime={startTime} maxTime={lastShowEnds}
               timehint={FLD_SEL_HNT_PLA_END} settime={FLD_SEL_SET_PLA_END} />
           </Col>
+        </Row>
+        <Row className="Component-small">
+          <Col><span>&nbsp;</span></Col>
+          <Col>First show starts {formatDate(firstEntry.showtime)}</Col>
+          <Col>Last ending show starts {formatDate(lastEntry.showtime)} ({lastEntry.show.duration} min)</Col>
         </Row>
       </Form>
     </Container>

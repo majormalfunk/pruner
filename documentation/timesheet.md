@@ -104,7 +104,8 @@
 | 11.02.2020    | Found solution to path finding algorithm                           |     0,5   |           |
 | 11.02.2020    | Trying algorithm with different parameters                         |     1,5   |           |
 | 12.02.2020    | Fixed option for min length paths                                  |     0,5   |           |
-| **WEEK  7**   | **TOTAL**                                                          |   **7,5** | **233,5** |
+| 12.02.2020    | Choosing number of shows in plan                                   |     3,0   |           |
+| **WEEK  7**   | **TOTAL**                                                          |  **10,5** | **236,5** |
 
 
 

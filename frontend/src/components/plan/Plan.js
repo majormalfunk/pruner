@@ -12,8 +12,8 @@ import { setAvailableEvents } from '../../reducers/availableEventsReducer'
 import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
 import PlanSelectDatesForm from './PlanSelectDatesForm'
-
-import { makePaths } from '../../utils/pruner'
+import PlanSelectShowCountForm from './PlanSelectShowCountForm'
+import PlanPaths from './PlanPaths'
 
 const Plan = (props) => {
 
@@ -23,6 +23,8 @@ const Plan = (props) => {
   const [displayEvents, setDisplayEvents] = useState(true)
   const [recurrenceId, setRecurrenceId] = useState(null) // Here we are usind ids not objects
   const [displayRecurrences, setDisplayRecurrences] = useState(true)
+  const [minShows, setMinShows] = useState(1)
+  const [maxShows, setMaxShows] = useState(5) // What would be default max?
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
 
@@ -93,27 +95,12 @@ const Plan = (props) => {
   function pruneEndTime(entry) {
     return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
   }
-  const handleMakePaths = async (entries) => {
-    const minEntries = 2
-    const maxEntries = 3
-    const minBreak = 5 // minutes
-    const maxBreak = 150 // minutes
-    const cutOffAfterMidnight = 0 // minutes
-    const paths = await makePaths(entries, minEntries, maxEntries, minBreak, maxBreak, cutOffAfterMidnight)
-    console.log('Paths', paths.length)
-    //paths.forEach((path, index) => {
-    //  console.log('Path #', index)
-    //  path.forEach((entry) => {
-    //    console.log('  ', entry.showtime, entry.venue.venuename, entry.show.showname)
-    //  })
-    //})
-    return paths
-  }
 
   const selectedEvent = availableEvents.find(event => event.id === eventId)
   let firstEntry = null
   let lastEndingEntry = null
   let availableEntries = []
+  let prunedEntries = []
   let distinctCount = 0
   let prunedCount = 0
   let prunedDistinct = new Set()
@@ -134,11 +121,9 @@ const Plan = (props) => {
       })
       firstEntry = availableEntries[0]
       distinctCount = selectedRecurrence.shows.length
-      let prunedEntries = availableEntries.filter((entry) => {
+      prunedEntries = availableEntries.filter((entry) => {
         return pruneStartTime(entry) && pruneEndTime(entry)
       })
-      const prunedPaths = handleMakePaths(prunedEntries)
-      console.log('Paths', prunedPaths.length)
       prunedCount = prunedEntries.length
       let dist = {}
       prunedDistinct = prunedEntries.filter((entry) => {
@@ -183,6 +168,12 @@ const Plan = (props) => {
           <>
             <Row>
               <Col>
+                <PlanSelectShowCountForm minShows={minShows} setMinShows={setMinShows}
+                  maxShows={maxShows} setMaxShows={setMaxShows} totalShows={availableEntries.length} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
                 <PlanSelectDatesForm firstEntry={firstEntry} lastEntry={lastEndingEntry}
                   startTime={startTime} setStartTime={setStartTime}
                   endTime={endTime} setEndTime={setEndTime} />
@@ -198,6 +189,14 @@ const Plan = (props) => {
             </Row>
           </>
           )}
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+        <Row>
+          <Col>
+            {(prunedEntries.length > 0 && <PlanPaths prunedEntries={prunedEntries} />)}
+          </Col>
+        </Row>
         <Row>
           <Col><span>&nbsp;</span></Col>
         </Row>
