@@ -141,7 +141,8 @@ export const TimeRangeField = (props) => {
     <>
       <Form.Label>{props.label}</Form.Label>
       <Form.Row>&nbsp;
-        <DatePicker className="form-control" id={props.settime}
+        <DatePicker className="form-control" style={{width: '50%'}}
+          id={props.settime}
           selected={selectsStart ? startTime : endTime}
           onChange={props.trigger}
           selectsStart={selectsStart}
@@ -228,9 +229,7 @@ export const NumberSelectField = (props) => {
   return (
     <Form.Group as={Row}>
       <Col>
-        <Form.Label>{props.label}</Form.Label>
-      </Col>
-      <Col>
+        <Form.Label>{props.label}</Form.Label>&nbsp;
         <Form.Control style={{width: '50%'}} type="number" step="1" min="1" max={props.totalShows}
           required placeholder="Select" name="selectNumberField" id={props.setnumber}
           defaultValue={props.number} onChange={props.trigger} />

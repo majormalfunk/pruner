@@ -15,18 +15,12 @@ const Home = () => {
     window.addEventListener('resize', () => {
         setCardColumns(window.innerWidth >= 576 ? 3 : 2)
     })
-
     // This should be called when component is unmounted 
-    // It apparently gets called when cardColumns changes
-    // Point in that?
+    // It gets called when cardColumns changes
     return () => {
       window.removeEventListener('resize', () => { })
     }
   }, [cardColumns])
-
-  //if (!display) {
-  //  return null
-  //}
 
   if (cardColumns === 3) {
     return (

@@ -49,14 +49,13 @@ const PlanSelectShowCountForm = (props) => {
   })
 
   const handleSelectMinShows = async (event) => {
-    console.log(event.target.value)
     try {
       if (!isNaN(event.target.value)) {
-        setMinShows(event.target.value)
-        console.log('Selected min shows:', minShows)
-        if (minShows > maxShows) {
-          setMaxShows(minShows)
-          console.log('Max shows changed to:', maxShows)
+        const newMin = parseInt(event.target.value)
+        setMinShows(newMin)
+        if (newMin > document.getElementById(FLD_SEL_SET_PLA_MAX).value) {
+          document.getElementById(FLD_SEL_SET_PLA_MAX).value = newMin
+          setMaxShows(newMin)
         }
       } else {
         console.log(event.target.value, 'is not a valid number')
@@ -70,11 +69,11 @@ const PlanSelectShowCountForm = (props) => {
   const handleSelectMaxShows = async (event) => {
     try {
       if (!isNaN(event.target.value)) {
-        setMaxShows(event.target.value)
-        console.log('Selected max shows:', maxShows)
-        if (minShows > maxShows) {
-          setMinShows(maxShows)
-          console.log('Max shows changed to:', maxShows)
+        const newMax = parseInt(event.target.value)
+        setMaxShows(newMax)
+        if (newMax < document.getElementById(FLD_SEL_SET_PLA_MIN).value) {
+          document.getElementById(FLD_SEL_SET_PLA_MIN).value = newMax
+          setMinShows(newMax)
         }
       } else {
         console.log(event.target.value, 'is not a valid number')

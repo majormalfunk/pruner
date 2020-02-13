@@ -137,71 +137,81 @@ const Plan = (props) => {
   }
 
   return (
-      <Container>
-        <Row>
-          <Col className="Component-title">
-            Create a new plan
-          </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        <Row>
-          <Col>
-            {(!availableEvents || availableEvents === null || availableEvents.length === 0) ? (
-              <span>There seem to be no available events.</span>
-            ) : (
-              <PlanEvents displayEvents={displayEvents} handleDisplayEvents={handleDisplayEvents}
-                eventId={eventId} setEventId={setEventId} />
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {(eventId &&
-              <PlanEventRecurrences eventId={eventId}recurrenceId={recurrenceId} setRecurrenceId={setRecurrenceId}
-                displayRecurrences={displayRecurrences} handleDisplayrecurrences={handleDisplayRecurrences} />
-            )}
-          </Col>
-        </Row>
-          {(eventId && recurrenceId &&
-          <>
-            <Row>
-              <Col>
-                <PlanSelectShowCountForm minShows={minShows} setMinShows={setMinShows}
-                  maxShows={maxShows} setMaxShows={setMaxShows} totalShows={availableEntries.length} />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <PlanSelectDatesForm firstEntry={firstEntry} lastEntry={lastEndingEntry}
-                  startTime={startTime} setStartTime={setStartTime}
-                  endTime={endTime} setEndTime={setEndTime} />
-              </Col>
-            </Row>
-            <Row>
-              <Col><span>&nbsp;</span></Col>
-            </Row>
-            <Row className="Content-small">
-              <Col><span>&nbsp;</span></Col>
-              <Col><span>Pruned {prunedCount} ({prunedDistinct.length} distinct) shows with the criteria.</span></Col>
-              <Col><span>Total of {availableEntries.length} ({distinctCount} distinct) shows in the event schedule</span></Col>
-            </Row>
-          </>
+    <Container>
+      <Row>
+        <Col className="Component-title">
+          Create a new plan
+        </Col>
+      </Row>
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+      <Row>
+        <Col>
+          {(!availableEvents || availableEvents === null || availableEvents.length === 0) ? (
+            <span>There seem to be no available events.</span>
+          ) : (
+            <PlanEvents displayEvents={displayEvents} handleDisplayEvents={handleDisplayEvents}
+              eventId={eventId} setEventId={setEventId} />
           )}
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-        <Row>
-          <Col>
-            {(prunedEntries.length > 0 && <PlanPaths prunedEntries={prunedEntries} />)}
-          </Col>
-        </Row>
-        <Row>
-          <Col><span>&nbsp;</span></Col>
-        </Row>
-      </Container>
-    )
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {(eventId &&
+            <PlanEventRecurrences eventId={eventId} recurrenceId={recurrenceId}
+              setRecurrenceId={setRecurrenceId} displayRecurrences={displayRecurrences}
+              handleDisplayrecurrences={handleDisplayRecurrences} />
+          )}
+        </Col>
+      </Row>
+        {(eventId && recurrenceId &&
+        <>
+          <Row>
+            <Col>
+              <PlanSelectShowCountForm totalShows={availableEntries.length}
+                minShows={minShows} setMinShows={setMinShows}
+                maxShows={maxShows} setMaxShows={setMaxShows} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlanSelectDatesForm firstEntry={firstEntry} lastEntry={lastEndingEntry}
+                startTime={startTime} setStartTime={setStartTime}
+                endTime={endTime} setEndTime={setEndTime} />
+            </Col>
+          </Row>
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+          <Row className="Content-small">
+            <Col><span>&nbsp;</span></Col>
+            <Col><span>Pruned {prunedCount} ({prunedDistinct.length} distinct) shows with the criteria.</span></Col>
+            <Col><span>Total of {availableEntries.length} ({distinctCount} distinct) shows in the event schedule</span></Col>
+          </Row>
+        </>
+        )}
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+      <Row>
+        <Col>
+          {(prunedEntries.length > 0 &&
+          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows} />)}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Container>
+            <canvas id="myCanvas" width={window.innerWidth} height={window.innerHeight}></canvas>
+          </Container>
+        </Col>
+      </Row>
+      <Row>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+    </Container>
+  )
 
 }
 
