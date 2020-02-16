@@ -5,11 +5,19 @@ export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOf
   console.log ('Trying to make paths of', entries.length, 'entries')
 
   let results = {}
-  results.paths = []
-  results.interruptedPaths = []
+  results.paths = [] // All paths
+  results.interruptedPaths = [] // Interrupted paths
+  results.entryMap = new Map() // As keys each entry and as values count of show in paths
+  results.entrySets = [] // Sets of all entries at each path slot
 
   if (!entries || entries.length === 0) {
     return results
+  }
+
+  let shows = 0
+  while (shows < maxShows) {
+    results.entrySets.push(new Set())
+    shows++
   }
 
   // We're relying on the shows being in ascending order by showtime
@@ -37,8 +45,15 @@ export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOf
     let thisPath = workingPaths.shift()
     if (thisPath.length >= maxShows) {
       // Add to ready list if number of maximum shows is reached
-      // console.log('Ready:', thisPath)
       results.paths.push(thisPath)
+      thisPath.forEach((entry, index) => {
+        if (results.entryMap.has(entry)) {
+          results.entryMap.set(entry, (results.entryMap.get(entry) + 1))
+        } else {
+          results.entryMap.set(entry, 1)
+        }
+        results.entrySets[index].add(entry)
+      })
     } else if (flush) {
       results.interruptedPaths.push(thisPath)
     } else { 

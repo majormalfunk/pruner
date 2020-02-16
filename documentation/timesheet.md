@@ -106,7 +106,11 @@
 | 12.02.2020    | Fixed option for min length paths                                  |     0,5   |           |
 | 12.02.2020    | Choosing number of shows in a plan                                 |     3,0   |           |
 | 13.02.2020    | Trying ways out to display plans                                   |     3,5   |           |
-| **WEEK  7**   | **TOTAL**                                                          |  **14,0** | **240,0** |
+| 14.02.2020    | Bug hunting                                                        |     3,0   |           |
+| 15.02.2020    | Futile bug hunting                                                 |     6,0   |           |
+| 16.02.2020    | Found bug in drawing of graph and not in search algorithm          |     2,0   |           |
+| 16.02.2020    | Switched to svg from canvas                                        |     6,0   |           |
+| **WEEK  7**   | **TOTAL**                                                          |  **31,0** | **257,0** |
 
 
 

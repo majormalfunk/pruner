@@ -7,6 +7,7 @@ import { displayError } from '../../reducers/notificationReducer'
 
 import { makePaths } from '../../utils/pruner'
 import { drawGraph } from '../../utils/graph'
+import PlanGraph from './PlanGraph'
 
 const PlanPaths = (props) => {
 
@@ -46,7 +47,6 @@ const PlanPaths = (props) => {
 
   if (!prunedPaths || !prunedPaths.paths) {
     console.log('No paths to display')
-    drawGraph([])
     return (
       <Container>
         <Row>
@@ -63,7 +63,7 @@ const PlanPaths = (props) => {
 
   if (prunedPaths && prunedPaths.paths) {
 
-    drawGraph(prunedPaths.paths)
+    //drawGraph(prunedPaths)
 
     const pathfindingSummary = ((prunedPaths.paths.length === 1) ? 
       'Easy to choose! Just one possible path with your selected options!' :
@@ -75,7 +75,7 @@ const PlanPaths = (props) => {
           <Col><span>{pathfindingSummary}</span></Col>
         </Row>
         <Row>
-          <Col><span>&nbsp;</span></Col>
+          <Col><PlanGraph prunedPaths={prunedPaths} /></Col>
         </Row>
       </Container>
     )

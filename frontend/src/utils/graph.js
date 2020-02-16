@@ -1,45 +1,54 @@
+import { parseISO, differenceInMinutes, isSameDay } from 'date-fns'
 
 export const drawGraph = (prunedPaths) => {
 
+  const { paths, entryMap, entrySets } = prunedPaths
+  const ENTRY_WIDTH = 40
+  const ENTRY_GAP = 25
+
   function drawShow(ctx, x, y, width, height) {
-    ctx.fillStyle = "#FF0000"
+    ctx.fillStyle = "#880088"
     ctx.fillRect(x, y, width, height)
+  }
+
+  function maxWidth() {
+    let maxEntries = 0
+    entrySets.forEach((slot) => {
+      maxEntries = (slot.size > maxEntries ? slot.size : maxEntries)
+    })
+    return ENTRY_GAP + (maxEntries * (ENTRY_WIDTH + ENTRY_GAP))
+  }
+
+  function maxHeight() {
+    return paths.length * 101
   }
 
   const canvas = document.getElementById("myCanvas")
   let ctx = canvas.getContext("2d")
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-  if (prunedPaths && prunedPaths.length > 0) {
+  if (paths && paths.length > 0) {
 
-    ctx.canvas.height = prunedPaths.length * 101
-    ctx.canvas.width = prunedPaths[0].length * 150
-    let repeatedIds = []
-    //let paths = prunedPaths.slice()
-    prunedPaths.forEach((path, rowInd) => {
-      //let pathStr = `Path #${rowInd}: `
-      //path.forEach((entry) => {
-      //  pathStr = pathStr.concat(entry.id).concat(' -> ')
-      //})
-      //console.log(pathStr)
-      let start = 25
-      let repeats = 0
-      path.forEach((node, colInd) => {
-        /*
-        if (!repeatedIds.includes(node.id)) {
-          while (paths.length > 1 && rowInd < (prunedPaths.length - 1)) {
-            let next = paths[rowInd + 1].shift()
-            if (!next || (next.id !== node.id)) {
-              break
-            }
-            repeatedIds.push(node.id)
-            repeats++
-          }
-          drawShow(ctx, start, (25+(rowInd*50)), node.show.duration, 25)
+    const width = maxWidth()
+    ctx.canvas.height = maxHeight()
+    ctx.canvas.width = width
+
+    let firstShow = paths[0][0]
+    let firstShowAt = parseISO(firstShow.showtime)
+    entrySets.forEach((set) => {
+      let dayBreak = 0
+      const entriesInSet = set.size
+      let entryNum = 0
+      set.forEach((entry) => {
+        entryNum++
+        let showStartAt = parseISO(entry.showtime)
+        if (!isSameDay(showStartAt, firstShowAt)) {
+          dayBreak = 600
         }
-        */
-        drawShow(ctx, start, (25+(rowInd*50)), node.show.duration, 25)
-        start += node.show.duration + 10
+        const y = ENTRY_GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
+        const x = ENTRY_GAP + (entryNum * (width / (entriesInSet + 1))) - (ENTRY_WIDTH / 2)
+        console.log('( x , y ) = (', x, ',', y, ')')
+        drawShow(ctx, x, y, ENTRY_WIDTH, entry.show.duration)
       })
     })
 

@@ -201,13 +201,6 @@ const Plan = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col>
-          <Container>
-            <canvas id="myCanvas" width={window.innerWidth} height={window.innerHeight}></canvas>
-          </Container>
-        </Col>
-      </Row>
-      <Row>
         <Col><span>&nbsp;</span></Col>
       </Row>
     </Container>
