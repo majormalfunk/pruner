@@ -1,9 +1,5 @@
 import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE, PAGE_PLAN_CREATE } from '../constants'
 
-//export const PAGE_CREATE_ACCOUNT = "page-create-account"
-//export const PAGE_LOGIN = "page-login"
-//export const PAGE_EVENT = "page-event"
-
 export const setPageHome = () => {
   return async dispatch => {
     dispatch({

@@ -12,33 +12,22 @@ const PlanPaths = (props) => {
 
   const { displayError, prunedEntries, minShows, maxShows } = props
 
-  const [prunedPaths, setPrunedPaths] = useState([])
-
-  const handleMakePaths = async (entries) => {
-    const minBreak = 5 // minutes
-    const maxBreak = 150 // minutes
-    const cutOffAfterMidnight = 0 // minutes
-    const results = await makePaths(entries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight)
-    if (results) {
-      console.log('Ready paths', results.paths.length)
-      console.log('Interrupted paths', results.interruptedPaths.length)
-    }
-    setPrunedPaths(results.paths)
-    //results.interruptedPaths.forEach((path, index) => {
-    //  console.log('Path #', index)
-    //  path.forEach((entry) => {
-    //    console.log('  ', entry.showtime, entry.venue.venuename, entry.show.showname)
-    //  })
-    //})
-    return
-  }
+  const [prunedPaths, setPrunedPaths] = useState({})
 
   useEffect(() => {
-    console.log('PLAN: Using effect')
-    handleMakePaths(prunedEntries)
-    console.log('PLAN: Effect used')
-    // eslint-disable-next-line
-  }, [prunedEntries])
+    const handleMakePaths = () => {
+      const minBreak = 5 // minutes
+      const maxBreak = 150 // minutes
+      const cutOffAfterMidnight = 0 // minutes
+      const results = makePaths(prunedEntries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight)
+      setPrunedPaths(results)
+    }
+    handleMakePaths()
+  }, [prunedEntries, minShows, maxShows])
+
+  useEffect(() => {
+    console.log('Plans changed')
+  }, [prunedPaths])
 
   if (!prunedEntries || prunedEntries.length === 0) {
     console.log('No shows to display')
@@ -55,7 +44,7 @@ const PlanPaths = (props) => {
     )
   }
 
-  if (!prunedPaths || prunedPaths.length === 0) {
+  if (!prunedPaths || !prunedPaths.paths) {
     console.log('No paths to display')
     drawGraph([])
     return (
@@ -72,22 +61,38 @@ const PlanPaths = (props) => {
 
   console.log('We got something')
 
-  drawGraph(prunedPaths)
+  if (prunedPaths && prunedPaths.paths) {
 
-  const pathfindingSummary = (prunedPaths.length === 1 ? 
-    'Easy to choose! Just one possible path with your selected options!' :
-    `These options give you ${prunedPaths.length} different paths to choose from.`)
+    drawGraph(prunedPaths.paths)
+
+    const pathfindingSummary = ((prunedPaths.paths.length === 1) ? 
+      'Easy to choose! Just one possible path with your selected options!' :
+      `These options give you ${prunedPaths.paths.length} different paths to choose from.`)
+  
+    return (
+      <Container>
+        <Row className="Component-title">
+          <Col><span>{pathfindingSummary}</span></Col>
+        </Row>
+        <Row>
+          <Col><span>&nbsp;</span></Col>
+        </Row>
+      </Container>
+    )
+  
+  }
 
   return (
     <Container>
-      <Row className="Component-title">
-        <Col><span>{pathfindingSummary}</span></Col>
+      <Row>
+        <Col><span>Fell through</span></Col>
       </Row>
       <Row>
         <Col><span>&nbsp;</span></Col>
       </Row>
     </Container>
   )
+
 
 }
 

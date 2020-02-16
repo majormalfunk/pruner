@@ -1,15 +1,12 @@
 import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
 
-export const makePaths = async (entries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
+export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
 
-  console.log ('Trying for', entries.length, 'entries')
-
-  console.log('Start', new Date())
+  console.log ('Trying to make paths of', entries.length, 'entries')
 
   let results = {}
   results.paths = []
   results.interruptedPaths = []
-  let maxQueueCount = 0
 
   if (!entries || entries.length === 0) {
     return results
@@ -20,14 +17,14 @@ export const makePaths = async (entries, minShows, maxShows, minBreak, maxBreak,
   // First add all starting nodes to the "queue" (We're actually using an array like a queue)
   let workingPaths = []
   const firstStartTime = parseISO(entries[0].showtime)
-  await entries.some((entry, index) => {
+  entries.some((entry, index) => {
     let nextStartTime = parseISO(entry.showtime)
     if (compareAsc(firstStartTime, nextStartTime) === 0) {
       // All shows as paths starting at the same time as the first show on the list are added
       let path = []
-      entry.ind = index // Mark entry with the index of its place in the orginal list. More of that later.
-      //console.log('Add to starting nodes', entry.show.showname, 'from index', entry.ind)
-      path.push(entry)
+      let newEntry = {...entry}
+      newEntry.ind = index // Mark entry with the index of its place in the orginal list. More of that later.
+      path.push(newEntry)
       workingPaths.push(path)
       return false
     }
@@ -36,27 +33,17 @@ export const makePaths = async (entries, minShows, maxShows, minBreak, maxBreak,
 
   // Then we start going through the "queue" of paths (Array of arrays)
   let flush = false
-  while (workingPaths.length > 0) {
+  while (workingPaths.length) {
     let thisPath = workingPaths.shift()
-    //thisPath.map((entry) => {
-    //  console.log('  In path:', entry.showtime, entry.show.showname, 'with index', entry.ind)
-    //})
     if (thisPath.length >= maxShows) {
       // Add to ready list if number of maximum shows is reached
+      // console.log('Ready:', thisPath)
       results.paths.push(thisPath)
-      /*
-      console.log('Full path:')
-      thisPath.map((entry) => {
-        console.log('  ', parseISO(entry.showtime), addMinutes(parseISO(entry.showtime), entry.show.duration),
-        entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
-        })
-      */
     } else if (flush) {
       results.interruptedPaths.push(thisPath)
     } else { 
       let lastEntry = thisPath[(thisPath.length - 1)]
       // Take the last show of this path to know when it ends
-      // console.log('Last entry:', lastEntry.showtime, lastEntry.show.showname)
       let thisStartTime = parseISO(lastEntry.showtime)
       let thisEndTime = addMinutes(thisStartTime, lastEntry.show.duration)
       let first = true // So we know to add tomorrows first show or not
@@ -66,7 +53,6 @@ export const makePaths = async (entries, minShows, maxShows, minBreak, maxBreak,
         // so we know where it was int the orginal list and don't have to go through
         // the list from the beginning.
         let nextEntry = entries[e]
-        // console.log('  Next entry:', nextEntry.showtime, nextEntry.show.showname)
         nextEntry.ind = e
         if (nextEntry.id !== lastEntry.id) {
           // Don't add start node again (if we made a mistake)
@@ -80,47 +66,22 @@ export const makePaths = async (entries, minShows, maxShows, minBreak, maxBreak,
             // - or we have a new path from the queue and the first encountered show is on the next day
             first = false
             didAddToWorking = true // A longer path was found, don't add this to ready list
-            let newPath = thisPath.slice(0)
+            const newPath = thisPath.slice(0)
             newPath.push(nextEntry)
             workingPaths.push(newPath)
-            maxQueueCount = (workingPaths.length > maxQueueCount ? workingPaths.length : maxQueueCount)
           }
         }
       }
       if (!didAddToWorking && (thisPath.length >= minShows)) {
         // If the path is long enough and we didn't find longer paths
         results.paths.push(thisPath)
-        /*
-        console.log('Long enough:')
-        thisPath.map((entry) => {
-          console.log('  ', parseISO(entry.showtime), addMinutes(parseISO(entry.showtime), entry.show.duration),
-            entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
-        })
-        */
       }
     }
     if (!flush && workingPaths.length > 512) {
       // Contingency plan to stop algo from running too long. Have to find a good limit.
       flush = true
-      console.log('Flushing, reached too many working paths')
     }
   }
-  console.log('End', new Date())
-  console.log('Max queue', maxQueueCount)
-  /*
-  if (readyPaths && readyPaths.length > 0) {
-    console.log('First path')
-    readyPaths[0].map((entry) => {
-      console.log(entry.showtime, entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
-    })
-    console.log('Last path')
-    readyPaths[readyPaths.length - 1].map((entry) => {
-      console.log(entry.showtime, entry.venue.venuename, entry.show.showname, entry.show.duration, entry.ind)
-    })
-    console.log('All paths')
-    console.log(readyPaths)
-  }
-  */
 
   return results
 
