@@ -7,13 +7,22 @@ import { formatDate } from '../../utils/dates'
 
 const PlanPaths = (props) => {
 
-  const ENTRY_WIDTH = 40
-  const ENTRY_GAP = 25
+  const ENTRY_WIDTH = 60
+  const ENTRY_GAP = 20
   const showRectStyle = {
     fill: '#880088'
   }
-
-  const test = [1, 2 ,3, 4, 5, 6]
+  const showRectTextStyle = {
+    textLength: ENTRY_WIDTH,
+    color: '#fff',
+    fill: '#fff',
+    fontSize: '8px',
+    overflowY: 'auto'
+  }
+  const justifyButtons = {
+    display: 'flex', 
+    justifyContent: 'space-evenly'
+  }
 
   const { paths, entryMap, entrySets } = props.prunedPaths
 
@@ -66,7 +75,7 @@ const PlanPaths = (props) => {
             const showRect = {
               id: entry.id, x: x, y: y, width: ENTRY_WIDTH, height: entry.show.duration,
               showname: entry.show.showname, venuename: entry.venue.venuename,
-              showtime: formatDate(entry.showtime)
+              showtime: formatDate(entry.showtime), duration: entry.show.duration
             }
             showRects.push(showRect)
           })
@@ -84,6 +93,24 @@ const PlanPaths = (props) => {
     console.log('Rects changed')
   }, [rectsToDraw])
 
+  /*
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+        console.log('Rrrrreeesize!')
+        setSvgWidth(window.innerWidth)
+    })
+    return () => {
+      window.removeEventListener('resize', () => { })
+    }
+  }, [])
+  */
+
+  const handleActOnEntry = (event) => {
+    const entryId = event.target.getAttribute('id')
+    const action = event.target.getAttribute('action')
+    console.log(action, entryId)
+  }
+
   const handleMouseEnter = (event) => {
     console.log(event.target.getAttribute('showname'))
   }
@@ -100,24 +127,42 @@ const PlanPaths = (props) => {
               <Popover id={`popover-positioned-right`}>
                 <Popover.Title as="h3">{entry.showname}</Popover.Title>
                 <Popover.Content>
-                  {entry.venuename} @ {entry.showtime}
+                  {entry.venuename} @ {entry.showtime}, {entry.duration} min
                 </Popover.Content>
-                <Popover.Content>
-                  <Button variant='popover-choose'><i class='fas fa-heart'></i></Button>
+                <Popover.Content style={justifyButtons}>
+                  <Button variant='popover-choose' onClick={handleActOnEntry}
+                    action='choose' id={entry.id}>THIS!</Button>
+                  <Button variant='popover-maybe' onClick={handleActOnEntry}
+                    action='maybe' id={entry.id}>MAYBE</Button>
+                  <Button variant='popover-reject' onClick={handleActOnEntry}
+                    action='reject' id={entry.id}>NAH..</Button>
                 </Popover.Content>
               </Popover>
             } >
-            <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
-              style={showRectStyle} key={entry.id} onMouseEnter={handleMouseEnter}
-              showname={entry.showname} venuename={entry.venuename}>
+              <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
+                style={showRectStyle} key={entry.id} onMouseEnter={handleMouseEnter}
+                showname={entry.showname} venuename={entry.venuename}>
               <title>
                 {entry.showname}, {entry.venuename} @ {entry.showtime}
               </title>
-            </rect>
+              </rect>
           </OverlayTrigger>
         )
       })
     )
+  }
+
+  const drawTextInRects = () => {
+    return (
+      rectsToDraw.map((entry, index) => {
+        return (
+          <text key={entry.id} x={entry.x + (entry.width / 2)} y={entry.y + (entry.height / 2)}
+          style={showRectTextStyle} dominantBaseline='middle' textAnchor='middle'>{entry.showname}</text>
+        )
+      })
+    )
+
+
   }
 
   if (!rectsToDraw || rectsToDraw.length === 0) {
@@ -141,6 +186,7 @@ const PlanPaths = (props) => {
         <Col>
           <svg width={svgWidth} height={svgHeight}>
            {drawShowRects()}
+           {drawTextInRects()}
           </svg>
         </Col>
       </Row>
