@@ -103,7 +103,7 @@ const PlanPaths = (props) => {
                   {entry.venuename} @ {entry.showtime}
                 </Popover.Content>
                 <Popover.Content>
-                  <Button variant='primary'>OK!</Button>
+                  <Button variant='popover-choose'><i class='fas fa-heart'></i></Button>
                 </Popover.Content>
               </Popover>
             } >

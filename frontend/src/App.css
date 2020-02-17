@@ -147,3 +147,26 @@
   background-color: #660066;
   border-color: #660066;
 }
+
+.popover-header {
+  color: #fff;
+  background-color: #660066;
+  font-size: .800rem;
+}
+
+.popover-body {
+  font-size: .800rem;
+}
+
+.btn-popover-choose {
+  color: #fff;
+  background-color: #880088;
+  border-color: #880088;
+  font-size: .800rem;
+}
+
+.btn-popover-choose:hover {
+  color: #fff;
+  background-color: #660066;
+  border-color: #660066;
+}
