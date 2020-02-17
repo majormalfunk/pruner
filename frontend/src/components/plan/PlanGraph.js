@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { parseISO, addMinutes, compareAsc, differenceInMinutes, isSameDay } from 'date-fns'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
+
+import { formatDate } from '../../utils/dates'
 
 const PlanPaths = (props) => {
 
@@ -62,8 +64,9 @@ const PlanPaths = (props) => {
             const y = ENTRY_GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
             const x = ENTRY_GAP + (entryNum * (svgWidth / (entriesInSet + 1))) - (ENTRY_WIDTH / 2)
             const showRect = {
-              id: entry.id, showname: entry.show.showname,
-              x: x, y: y, width: ENTRY_WIDTH, height: entry.show.duration,
+              id: entry.id, x: x, y: y, width: ENTRY_WIDTH, height: entry.show.duration,
+              showname: entry.show.showname, venuename: entry.venue.venuename,
+              showtime: formatDate(entry.showtime)
             }
             showRects.push(showRect)
           })
@@ -81,19 +84,37 @@ const PlanPaths = (props) => {
     console.log('Rects changed')
   }, [rectsToDraw])
 
-  //
-
-  const handleMouseOver = (event) => {
-    console.log(event)
+  const handleMouseEnter = (event) => {
+    console.log(event.target.getAttribute('showname'))
   }
 
   const drawShowRects = () => {
     return (
       rectsToDraw.map((entry, index) => {
         return (
-          <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
-            style={showRectStyle} key={entry.id} showname={entry.showname} title={entry.showname}
-            onMouseEnter={handleMouseOver} value={entry.showname} />
+          <OverlayTrigger
+          trigger="click"
+          key={entry.id}
+            placement='right'
+            overlay={
+              <Popover id={`popover-positioned-right`}>
+                <Popover.Title as="h3">{entry.showname}</Popover.Title>
+                <Popover.Content>
+                  {entry.venuename} @ {entry.showtime}
+                </Popover.Content>
+                <Popover.Content>
+                  <Button variant='primary'>OK!</Button>
+                </Popover.Content>
+              </Popover>
+            } >
+            <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
+              style={showRectStyle} key={entry.id} onMouseEnter={handleMouseEnter}
+              showname={entry.showname} venuename={entry.venuename}>
+              <title>
+                {entry.showname}, {entry.venuename} @ {entry.showtime}
+              </title>
+            </rect>
+          </OverlayTrigger>
         )
       })
     )

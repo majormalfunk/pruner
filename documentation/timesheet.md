@@ -111,6 +111,8 @@
 | 16.02.2020    | Found bug in drawing of graph and not in search algorithm          |     2,0   |           |
 | 16.02.2020    | Switched to svg from canvas                                        |     6,0   |           |
 | **WEEK  7**   | **TOTAL**                                                          |  **31,0** | **257,0** |
+| 17.02.2020    | Tooltips and popovers to graph                                     |     1,0   |           |
+| **WEEK  8**   | **TOTAL**                                                          |  **32,0** | **258,0** |
 
 
 
