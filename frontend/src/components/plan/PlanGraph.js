@@ -4,6 +4,7 @@ import { parseISO, addMinutes, compareAsc, differenceInMinutes, isSameDay } from
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
+import { de } from 'date-fns/locale'
 
 const PlanPaths = (props) => {
 
@@ -19,9 +20,13 @@ const PlanPaths = (props) => {
     fontSize: '8px',
     overflowY: 'auto'
   }
-  const justifyButtons = {
+  const spaceEvenly = {
     display: 'flex', 
     justifyContent: 'space-evenly'
+  }
+  const popOverButtons = {
+    fontSize: '.800rem',
+    fontWeight: 'bold'
   }
 
   const { paths, entryMap, entrySets } = props.prunedPaths
@@ -86,12 +91,18 @@ const PlanPaths = (props) => {
       setRectsToDraw(showRects)
     }
     console.log('Should make rects')
-    handleMakeRects()
+    if (paths && paths.length > 0) {
+      handleMakeRects()
+    }
   }, [entrySets, paths, svgWidth])
 
   useEffect(() => {
     console.log('Rects changed')
   }, [rectsToDraw])
+
+  if (entrySets.length === 0) {
+    return null
+  }
 
   /*
   useEffect(() => {
@@ -108,7 +119,19 @@ const PlanPaths = (props) => {
   const handleActOnEntry = (event) => {
     const entryId = event.target.getAttribute('id')
     const action = event.target.getAttribute('action')
-    console.log(action, entryId)
+    const showname = event.target.parentNode.getAttribute('showname')
+    const showtime = event.target.parentNode.getAttribute('showtime')
+    const venuename = event.target.parentNode.getAttribute('venuename')
+    document[`overlay${entryId}`].handleHide(true)
+    let shallowEntry = { id: entryId, showname: showname, showtime: showtime, venuename: venuename }
+    switch (action) {
+      case 'reject':
+        console.log(`Rejecting ${showname} @ ${showtime}`)
+        props.handleRejectEntry(shallowEntry)
+        return
+      default:
+        console.log(`Action ${action} not yet implemented`)
+    }
   }
 
   const handleMouseEnter = (event) => {
@@ -119,29 +142,37 @@ const PlanPaths = (props) => {
     return (
       rectsToDraw.map((entry, index) => {
         return (
-          <OverlayTrigger
+          <OverlayTrigger ref={(ref) => document[`overlay${entry.id}`] = ref}
           trigger="click"
+          rootClose
           key={entry.id}
             placement='right'
             overlay={
-              <Popover id={`popover-positioned-right`}>
+              <Popover>
                 <Popover.Title as="h3">{entry.showname}</Popover.Title>
                 <Popover.Content>
                   {entry.venuename} @ {entry.showtime}, {entry.duration} min
                 </Popover.Content>
-                <Popover.Content style={justifyButtons}>
-                  <Button variant='popover-choose' onClick={handleActOnEntry}
-                    action='choose' id={entry.id}>THIS!</Button>
-                  <Button variant='popover-maybe' onClick={handleActOnEntry}
-                    action='maybe' id={entry.id}>MAYBE</Button>
-                  <Button variant='popover-reject' onClick={handleActOnEntry}
-                    action='reject' id={entry.id}>NAH..</Button>
+                <Popover.Content style={spaceEvenly} showname={entry.showname}
+                  showtime={entry.showtime} venuename={entry.venuename}>
+                  <Button variant='success' type="button" size="sm" onClick={handleActOnEntry}
+                    action='choose' id={entry.id} style={popOverButtons}>
+                      THIS!
+                  </Button>
+                  <Button variant='primary' type="button" size="sm" onClick={handleActOnEntry}
+                    action='maybe' id={entry.id} style={popOverButtons}>
+                      MAYBE
+                  </Button>
+                  <Button variant='danger' type="button" size="sm" onClick={handleActOnEntry}
+                    action='reject' id={entry.id} style={popOverButtons}>
+                      NAH..
+                  </Button>
                 </Popover.Content>
               </Popover>
             } >
               <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
                 style={showRectStyle} key={entry.id} onMouseEnter={handleMouseEnter}
-                showname={entry.showname} venuename={entry.venuename}>
+                showname={entry.showname} venuename={entry.venuename} id={`rect${entry.id}`}>
               <title>
                 {entry.showname}, {entry.venuename} @ {entry.showtime}
               </title>

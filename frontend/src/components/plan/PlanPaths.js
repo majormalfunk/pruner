@@ -11,7 +11,7 @@ import PlanGraph from './PlanGraph'
 
 const PlanPaths = (props) => {
 
-  const { displayError, prunedEntries, minShows, maxShows } = props
+  const { displayError, prunedEntries, minShows, maxShows, handleRejectEntry } = props
 
   const [prunedPaths, setPrunedPaths] = useState({})
 
@@ -75,7 +75,7 @@ const PlanPaths = (props) => {
           <Col><span>{pathfindingSummary}</span></Col>
         </Row>
         <Row>
-          <Col><PlanGraph prunedPaths={prunedPaths} /></Col>
+          <Col><PlanGraph prunedPaths={prunedPaths} handleRejectEntry={handleRejectEntry} /></Col>
         </Row>
       </Container>
     )

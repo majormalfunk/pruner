@@ -112,7 +112,9 @@
 | 16.02.2020    | Switched to svg from canvas                                        |     6,0   |           |
 | **WEEK  7**   | **TOTAL**                                                          |  **31,0** | **257,0** |
 | 17.02.2020    | Tooltips and popovers to graph                                     |     1,5   |           |
-| **WEEK  8**   | **TOTAL**                                                          |  **32,5** | **258,5** |
+| 17.02.2020    | Selecting and rejecting entries in plan graph                      |     2,5   |           |
+| 18.02.2020    | Selecting and rejecting entries in plan graph                      |     2,5   |           |
+| **WEEK  8**   | **TOTAL**                                                          |   **6,5** | **263,5** |
 
 
 

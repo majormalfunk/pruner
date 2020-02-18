@@ -14,6 +14,7 @@ import PlanEventRecurrences from './PlanEventRecurrences'
 import PlanSelectDatesForm from './PlanSelectDatesForm'
 import PlanSelectShowCountForm from './PlanSelectShowCountForm'
 import PlanPaths from './PlanPaths'
+import PlanRejectedEntries from './PlanRejectedEntries'
 
 const Plan = (props) => {
 
@@ -27,6 +28,7 @@ const Plan = (props) => {
   const [maxShows, setMaxShows] = useState(5) // What would be default max?
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
+  const [rejectedEntries, setRejectedEntries] = useState(new Set())
 
   const handleError = (error) => {
     displayError(error)
@@ -59,11 +61,26 @@ const Plan = (props) => {
     }
   }
 
+  const handleRejectEntry = (rejected) => {
+    console.log('Rejecting', rejected.showname, '@', rejected.showtime)
+    setRejectedEntries(rejectedEntries.add(rejected))
+  }
+  const handleUnrejectEntry = (rejected) => {
+    setRejectedEntries(rejectedEntries.delete(rejected))
+  }
+
   useEffect(() => {
     console.log('PLAN: Using effect')
     handleGetAvailableEvents()
     console.log('PLAN: Effect used')
     // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    // We need to stick that thing below to this effect and shove something more in the state
+    // so that this effect is run when something changes the prunedEntries. Motivation here
+    // is to narrow down the list by rejecting entries.
+
   }, [])
 
   if ((getAvailableEvents[1]).loading) {
@@ -192,12 +209,19 @@ const Plan = (props) => {
         </>
         )}
       <Row>
+        <Col>
+          <PlanRejectedEntries rejectedEntries={rejectedEntries} handleRejectEntry={handleRejectEntry}
+            handleUnrejectEntry={handleUnrejectEntry} />
+        </Col>
+      </Row>
+      <Row>
         <Col><span>&nbsp;</span></Col>
       </Row>
       <Row>
         <Col>
           {(prunedEntries.length > 0 &&
-          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows} />)}
+          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
+            handleRejectEntry={handleRejectEntry} />)}
         </Col>
       </Row>
       <Row>
