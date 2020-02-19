@@ -63,7 +63,7 @@ const PlanPaths = (props) => {
         let firstShowAt = parseISO(firstShow.showtime)
 
         setSvgWidth(maxWidth())
-        setSvgHeight(maxHeight(firstShowAt))
+        setSvgHeight(maxHeight(firstShowAt)+300)
     
         entrySets.forEach((set) => {
           let dayBreak = 0
@@ -76,7 +76,7 @@ const PlanPaths = (props) => {
               dayBreak = 600
             }
             const y = ENTRY_GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
-            const x = ENTRY_GAP + (entryNum * (svgWidth / (entriesInSet + 1))) - (ENTRY_WIDTH / 2)
+            const x = ENTRY_GAP + (entryNum * (svgWidth / (entriesInSet + 1))) - (ENTRY_WIDTH)
             const showRect = {
               id: entry.id, x: x, y: y, width: ENTRY_WIDTH, height: entry.show.duration,
               showname: entry.show.showname, venuename: entry.venue.venuename,
@@ -203,7 +203,7 @@ const PlanPaths = (props) => {
     return (
       <Container>
         <Row>
-          <Col>For some reason we can't draw the graph right now so here's a rect:</Col>
+          <Col>For some reason we can't draw the graph right now.</Col>
         </Row>
       </Container>
     )
@@ -212,16 +212,10 @@ const PlanPaths = (props) => {
   console.log('There are', rectsToDraw.length, 'rects to draw')
 
   return (
-    <Container>
-      <Row>
-        <Col>
           <svg width={svgWidth} height={svgHeight}>
            {drawShowRects()}
            {drawTextInRects()}
           </svg>
-        </Col>
-      </Row>
-    </Container>
   )
 
 }

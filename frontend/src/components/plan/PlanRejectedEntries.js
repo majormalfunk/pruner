@@ -10,28 +10,28 @@ const PlanRejectedEntries = (props) => {
 
   const { currentUser, rejectedEntries, handleRejectEntry, handleUnrejectEntry } = props
 
-  console.log('Rendering rejected entries')
-
   if (!rejectedEntries || rejectedEntries.size === 0) {
     return (
       null
     )
   }
 
+  console.log('Rendering rejected entries')
+  console.log(rejectedEntries)
+  rejectedEntries.forEach((value) => {
+    console.log(value)
+  })
+
+  const rejectedArr = [...rejectedEntries]
+
   return (
     <Container>
       <Row>
-        <Col>
-          <Container>
-            <Row>
-              <Col><span>&nbsp;</span></Col>
-            </Row>
-            <Row>
-              <Col className="Component-title">
-                You have rejected these entries
-              </Col>
-            </Row>
-          </Container>
+        <Col><span>&nbsp;</span></Col>
+      </Row>
+      <Row>
+        <Col className="Component-title">
+          You have rejected these entries
         </Col>
       </Row>
       <Row>
@@ -39,9 +39,9 @@ const PlanRejectedEntries = (props) => {
           <Container>
             <Row>
               <Col>
-                {rejectedEntries.map((entry) =>
-                  <div key={entry.id}>{entry.showname} @ {formatDate(entry.showtime)}</div>
-                )}
+                {rejectedArr.map((entry) => {
+                    return <span key={entry.id}>{entry.showname} @ {entry.showtime}</span>
+                })}
               </Col>
             </Row>
           </Container>

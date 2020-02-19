@@ -9,7 +9,7 @@ import { GET_AVAILABLE_EVENTS } from '../event/gqls'
 import { displayError } from '../../reducers/notificationReducer'
 import { setAvailableEvents } from '../../reducers/availableEventsReducer'
 
-import { pruneEntries } from '../../utils/pruneEntries'
+import { extractAvailableEntries, pruneEntries } from '../../utils/pruneEntries'
 
 import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
@@ -30,8 +30,9 @@ const Plan = (props) => {
   const [maxShows, setMaxShows] = useState(5) // What would be default max?
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
-  const [prunedEntries, setPrunedEntries] = useState({})
+  const [availableEntries, setAvailableEntries] = useState({})
   const [availableStats, setAvailableStats] = useState('No available events')
+  const [prunedEntries, setPrunedEntries] = useState({})
   const [prunedStats, setPrunedStats] = useState('Nothing to prune')
   const [rejectedEntries, setRejectedEntries] = useState(new Set())
 
@@ -65,44 +66,70 @@ const Plan = (props) => {
       displayError('Something went wrong fetching available events')
     }
   }
-
+  
+  // This is duplicate code from last useEffect should use some
+  // useCallback to be able to use from useEffect
+  const handlePruneEntries = () => {
+    if (availableEntries.entries && startTime && endTime) {
+      console.log('Should be able to prune available entries')
+      let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
+      const prunedEntriesCount = results.entries.length
+      const prunedShowsCount = results.shows.size
+      setPrunedStats( 
+        `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
+      setPrunedEntries(results)
+    }
+  }
+  
   const handleRejectEntry = (rejected) => {
     console.log('Rejecting', rejected.showname, '@', rejected.showtime)
-    setRejectedEntries(rejectedEntries.add(rejected))
+    let newRejected = rejectedEntries.add(rejected)
+    setRejectedEntries(newRejected)
+    console.log(rejectedEntries)
+    handlePruneEntries()
   }
   const handleUnrejectEntry = (rejected) => {
     setRejectedEntries(rejectedEntries.delete(rejected))
   }
 
   useEffect(() => {
-    console.log('PLAN: Using effect')
+    console.log('Using effect to get available events')
     handleGetAvailableEvents()
-    console.log('PLAN: Effect used')
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    // We need to stick that thing below to this effect and shove something more in the state
-    // so that this effect is run when something changes the prunedEntries. Motivation here
-    // is to narrow down the list by rejecting entries.
 
-    console.log('Using effect to prune')
+    console.log('Using effect to extract available events')
 
-    if (availableEvents && eventId && recurrenceId && startTime && endTime) {
-      console.log('Should be able to prune')
-      let results = pruneEntries(availableEvents, eventId, recurrenceId, startTime, endTime)
-      const availableEntriesCount = results.availableEntries.length
-      const availableShowsCount = results.availableShows.length
-      const prunedEntriesCount = results.prunedEntries.length
-      const prunedShowsCount = results.prunedShows.size
+    if (availableEvents && eventId && recurrenceId) {
+      console.log('Should be able to extract available entries')
+      let results = extractAvailableEntries(availableEvents, eventId, recurrenceId)
+      const availableEntriesCount = results.entries.length
+      const availableShowsCount = results.shows.length
       setAvailableStats( 
         `Total of ${availableEntriesCount} (${availableShowsCount} distinct) shows in the event schedule`)
+      setAvailableEntries(results)
+    }
+
+  }, [availableEvents, eventId, recurrenceId])
+
+  useEffect(() => {
+
+    console.log('Using effect to prune available events')
+    //handlePruneEntries()
+    if (availableEntries.entries && startTime && endTime) {
+      console.log('Should be able to prune available entries')
+      let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
+      const prunedEntriesCount = results.entries.length
+      const prunedShowsCount = results.shows.size
       setPrunedStats( 
         `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
       setPrunedEntries(results)
     }
 
-  }, [availableEvents, eventId, recurrenceId, startTime, endTime])
+
+  }, [availableEntries, startTime, endTime, rejectedEntries])//, handlePruneEntries])
 
   if ((getAvailableEvents[1]).loading) {
     return (
@@ -207,19 +234,19 @@ const Plan = (props) => {
           )}
         </Col>
       </Row>
-        {(eventId && recurrenceId && prunedEntries && prunedEntries.availableEntries &&
+        {(eventId && recurrenceId && availableEntries && availableEntries.entries &&
         <>
           <Row>
             <Col>
-              <PlanSelectShowCountForm totalShows={prunedEntries.availableEntries.length}
+              <PlanSelectShowCountForm totalShows={availableEntries.entries.length}
                 minShows={minShows} setMinShows={setMinShows}
                 maxShows={maxShows} setMaxShows={setMaxShows} />
             </Col>
           </Row>
           <Row>
             <Col>
-              <PlanSelectDatesForm firstEntry={prunedEntries.firstEntry}
-                lastEntry={prunedEntries.lastEndingEntry}
+              <PlanSelectDatesForm firstEntry={availableEntries.firstEntry}
+                lastEntry={availableEntries.lastEndingEntry}
                 startTime={startTime} setStartTime={setStartTime}
                 endTime={endTime} setEndTime={setEndTime} />
             </Col>
@@ -245,8 +272,8 @@ const Plan = (props) => {
       </Row>
       <Row>
         <Col>
-          {(prunedEntries && prunedEntries.prunedEntries && prunedEntries.prunedEntries.length > 0 &&
-          <PlanPaths prunedEntries={pruneEntries.prunedEntries} minShows={minShows} maxShows={maxShows}
+          {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
+          <PlanPaths prunedEntries={prunedEntries.entries} minShows={minShows} maxShows={maxShows}
             handleRejectEntry={handleRejectEntry} />)}
         </Col>
       </Row>
