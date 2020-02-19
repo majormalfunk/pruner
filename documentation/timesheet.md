@@ -114,7 +114,5 @@
 | 17.02.2020    | Tooltips and popovers to graph                                     |     1,5   |           |
 | 17.02.2020    | Selecting and rejecting entries in plan graph                      |     2,5   |           |
 | 18.02.2020    | Selecting and rejecting entries in plan graph                      |     2,5   |           |
-| **WEEK  8**   | **TOTAL**                                                          |   **6,5** | **263,5** |
-
-
-
+| 19.02.2020    | Refactoring pruning                                                |     2,0   |           |
+| **WEEK  8**   | **TOTAL**                                                          |   **8,5** | **265,5** |

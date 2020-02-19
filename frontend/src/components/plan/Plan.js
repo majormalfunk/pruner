@@ -9,6 +9,8 @@ import { GET_AVAILABLE_EVENTS } from '../event/gqls'
 import { displayError } from '../../reducers/notificationReducer'
 import { setAvailableEvents } from '../../reducers/availableEventsReducer'
 
+import { pruneEntries } from '../../utils/pruneEntries'
+
 import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
 import PlanSelectDatesForm from './PlanSelectDatesForm'
@@ -28,6 +30,9 @@ const Plan = (props) => {
   const [maxShows, setMaxShows] = useState(5) // What would be default max?
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
+  const [prunedEntries, setPrunedEntries] = useState({})
+  const [availableStats, setAvailableStats] = useState('No available events')
+  const [prunedStats, setPrunedStats] = useState('Nothing to prune')
   const [rejectedEntries, setRejectedEntries] = useState(new Set())
 
   const handleError = (error) => {
@@ -81,7 +86,23 @@ const Plan = (props) => {
     // so that this effect is run when something changes the prunedEntries. Motivation here
     // is to narrow down the list by rejecting entries.
 
-  }, [])
+    console.log('Using effect to prune')
+
+    if (availableEvents && eventId && recurrenceId && startTime && endTime) {
+      console.log('Should be able to prune')
+      let results = pruneEntries(availableEvents, eventId, recurrenceId, startTime, endTime)
+      const availableEntriesCount = results.availableEntries.length
+      const availableShowsCount = results.availableShows.length
+      const prunedEntriesCount = results.prunedEntries.length
+      const prunedShowsCount = results.prunedShows.size
+      setAvailableStats( 
+        `Total of ${availableEntriesCount} (${availableShowsCount} distinct) shows in the event schedule`)
+      setPrunedStats( 
+        `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
+      setPrunedEntries(results)
+    }
+
+  }, [availableEvents, eventId, recurrenceId, startTime, endTime])
 
   if ((getAvailableEvents[1]).loading) {
     return (
@@ -106,6 +127,7 @@ const Plan = (props) => {
     )
   }
 
+  /*
   function pruneStartTime(entry) {
     return (compareAsc(startTime, parseISO(entry.showtime)) < 1)
   }
@@ -152,6 +174,9 @@ const Plan = (props) => {
       })
     }
   }
+  */
+
+  console.log('Pruned:', prunedEntries)
 
   return (
     <Container>
@@ -182,18 +207,19 @@ const Plan = (props) => {
           )}
         </Col>
       </Row>
-        {(eventId && recurrenceId &&
+        {(eventId && recurrenceId && prunedEntries && prunedEntries.availableEntries &&
         <>
           <Row>
             <Col>
-              <PlanSelectShowCountForm totalShows={availableEntries.length}
+              <PlanSelectShowCountForm totalShows={prunedEntries.availableEntries.length}
                 minShows={minShows} setMinShows={setMinShows}
                 maxShows={maxShows} setMaxShows={setMaxShows} />
             </Col>
           </Row>
           <Row>
             <Col>
-              <PlanSelectDatesForm firstEntry={firstEntry} lastEntry={lastEndingEntry}
+              <PlanSelectDatesForm firstEntry={prunedEntries.firstEntry}
+                lastEntry={prunedEntries.lastEndingEntry}
                 startTime={startTime} setStartTime={setStartTime}
                 endTime={endTime} setEndTime={setEndTime} />
             </Col>
@@ -203,8 +229,8 @@ const Plan = (props) => {
           </Row>
           <Row className="Content-small">
             <Col><span>&nbsp;</span></Col>
-            <Col><span>Pruned {prunedCount} ({prunedDistinct.length} distinct) shows with the criteria.</span></Col>
-            <Col><span>Total of {availableEntries.length} ({distinctCount} distinct) shows in the event schedule</span></Col>
+            <Col><span>{prunedStats}</span></Col>
+            <Col><span>{availableStats}</span></Col>
           </Row>
         </>
         )}
@@ -219,8 +245,8 @@ const Plan = (props) => {
       </Row>
       <Row>
         <Col>
-          {(prunedEntries.length > 0 &&
-          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
+          {(prunedEntries && prunedEntries.prunedEntries && prunedEntries.prunedEntries.length > 0 &&
+          <PlanPaths prunedEntries={pruneEntries.prunedEntries} minShows={minShows} maxShows={maxShows}
             handleRejectEntry={handleRejectEntry} />)}
         </Col>
       </Row>

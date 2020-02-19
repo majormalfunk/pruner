@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 import { displayError } from '../../reducers/notificationReducer'
 
-import { makePaths } from '../../utils/pruner'
+import { makePaths } from '../../utils/bfsEntries'
 import { drawGraph } from '../../utils/graph'
 import PlanGraph from './PlanGraph'
 
