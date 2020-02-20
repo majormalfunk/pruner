@@ -57,16 +57,14 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntri
     return results
   }
 
-  const rejectedArr = [...rejectedEntries]
-
   results.entries = availableEntries.filter((entry) => {
     const inTimeSlot = (pruneStartTime(entry) && pruneEndTime(entry))
-    const notRejected = !(rejectedArr.some((rejected) => {
-      if (entry.id === rejected.id) {
-        console.log('Found rejected:', entry.id, rejected.id)
+    let notRejected = true
+    rejectedEntries.forEach((value, key) => {
+      if (entry.id === key) {
+        notRejected = false
       }
-      return (entry.id === rejected.id)
-    }))
+    })
     // More conditions here
     if (inTimeSlot && notRejected) {
       results.shows.set(entry.show.id, entry.show)

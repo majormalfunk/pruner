@@ -34,7 +34,7 @@ const Plan = (props) => {
   const [availableStats, setAvailableStats] = useState('No available events')
   const [prunedEntries, setPrunedEntries] = useState({})
   const [prunedStats, setPrunedStats] = useState('Nothing to prune')
-  const [rejectedEntries, setRejectedEntries] = useState(new Set())
+  const [rejectedEntries, setRejectedEntries] = useState(new Map())
 
   const handleError = (error) => {
     displayError(error)
@@ -83,9 +83,8 @@ const Plan = (props) => {
   
   const handleRejectEntry = (rejected) => {
     console.log('Rejecting', rejected.showname, '@', rejected.showtime)
-    let newRejected = rejectedEntries.add(rejected)
+    let newRejected = rejectedEntries.set(rejected.id, rejected)
     setRejectedEntries(newRejected)
-    console.log(rejectedEntries)
     handlePruneEntries()
   }
   const handleUnrejectEntry = (rejected) => {
@@ -153,55 +152,6 @@ const Plan = (props) => {
       </Container>
     )
   }
-
-  /*
-  function pruneStartTime(entry) {
-    return (compareAsc(startTime, parseISO(entry.showtime)) < 1)
-  }
-  function pruneEndTime(entry) {
-    return (compareAsc(addMinutes(parseISO(entry.showtime), entry.show.duration), endTime) < 1 )
-  }
-
-  const selectedEvent = availableEvents.find(event => event.id === eventId)
-  let firstEntry = null
-  let lastEndingEntry = null
-  let availableEntries = []
-  let prunedEntries = []
-  let distinctCount = 0
-  let prunedCount = 0
-  let prunedDistinct = new Set()
-  if (selectedEvent) {
-    const selectedRecurrence = selectedEvent.recurrences.find(recurrence => recurrence.id === recurrenceId)
-    if (selectedRecurrence) {
-      availableEntries = selectedRecurrence.entries.filter((entry) => {
-        if (lastEndingEntry === null) {
-          lastEndingEntry = entry
-        } else {
-          if (compareAsc(
-            addMinutes(parseISO(lastEndingEntry.showtime), lastEndingEntry.show.duration),
-            addMinutes(parseISO(entry.showtime), entry.show.duration)) < 1) {
-              lastEndingEntry = entry
-          }
-        }
-        return entry.recurrence === recurrenceId
-      })
-      firstEntry = availableEntries[0]
-      distinctCount = selectedRecurrence.shows.length
-      prunedEntries = availableEntries.filter((entry) => {
-        return pruneStartTime(entry) && pruneEndTime(entry)
-      })
-      prunedCount = prunedEntries.length
-      let dist = {}
-      prunedDistinct = prunedEntries.filter((entry) => {
-        if (dist[entry.show.id]) {
-          return false
-        }
-        dist[entry.show.id] = true
-        return true
-      })
-    }
-  }
-  */
 
   console.log('Pruned:', prunedEntries)
 

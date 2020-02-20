@@ -63,20 +63,35 @@ const PlanPaths = (props) => {
 
   if (prunedPaths && prunedPaths.paths) {
 
-    //drawGraph(prunedPaths)
+    let pathfindingSummary = ''
+    let pathsExist = false
 
-    const pathfindingSummary = ((prunedPaths.paths.length === 1) ? 
+    if (prunedPaths.interruptedPaths && prunedPaths.interruptedPaths.length > 0 ) {
+      if (prunedPaths.paths.length === 0) {
+        pathfindingSummary = 'These options give too many paths.'
+      } else {
+        pathfindingSummary = `Showing ${prunedPaths.paths.length} paths. Some paths were left out because there were too many.`
+        pathsExist = true
+      }
+    } else {
+      pathfindingSummary = ((prunedPaths.paths.length === 1) ? 
       'Easy to choose! Just one possible path with your selected options!' :
       `These options give you ${prunedPaths.paths.length} different paths to choose from.`)
-  
+      pathsExist = true
+    }
+
     return (
       <Container>
         <Row className="Component-title">
           <Col><span>{pathfindingSummary}</span></Col>
         </Row>
-        <Row>
-          <Col><PlanGraph prunedPaths={prunedPaths} handleRejectEntry={handleRejectEntry} /></Col>
-        </Row>
+        {(pathsExist) &&
+          <Row>
+            <Col>
+              <PlanGraph prunedPaths={prunedPaths} handleRejectEntry={handleRejectEntry} />
+            </Col>
+          </Row>
+        }
       </Container>
     )
   
