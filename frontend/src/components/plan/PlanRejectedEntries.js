@@ -37,7 +37,9 @@ const PlanRejectedEntries = (props) => {
             <Row>
               <Col>
                 {rejectedArr.map((entry) => {
-                    return <Badge pill variant='danger' key={entry.id}>{entry.showname} @ {entry.showtime}</Badge>
+                    return <Badge pill variant='danger' key={entry.id} onClick={(() => console.log('Click´d!'))}>
+                      {entry.showname} @ {entry.showtime}
+                      </Badge>
                 })}
               </Col>
             </Row>

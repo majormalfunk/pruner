@@ -158,3 +158,6 @@
   font-size: .800rem;
 }
 
+.badge:hover {
+  cursor: pointer;
+}

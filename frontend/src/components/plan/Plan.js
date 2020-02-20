@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { parseISO, compareAsc, addMinutes } from 'date-fns'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
@@ -34,6 +33,7 @@ const Plan = (props) => {
   const [availableStats, setAvailableStats] = useState('No available events')
   const [prunedEntries, setPrunedEntries] = useState({})
   const [prunedStats, setPrunedStats] = useState('Nothing to prune')
+  const [rejectedEntryIds, setRejectedEntryIds] = useState(new Set())
   const [rejectedEntries, setRejectedEntries] = useState(new Map())
 
   const handleError = (error) => {
@@ -67,23 +67,24 @@ const Plan = (props) => {
     }
   }
   
-  // This is duplicate code from last useEffect should use some
-  // useCallback to be able to use from useEffect
-  const handlePruneEntries = () => {
-    if (availableEntries.entries && startTime && endTime) {
-      console.log('Should be able to prune available entries')
-      let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
-      const prunedEntriesCount = results.entries.length
-      const prunedShowsCount = results.shows.size
-      setPrunedStats( 
-        `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
-      setPrunedEntries(results)
-    }
-  }
-  
+  const handlePruneEntries = useCallback(
+    () => {
+      if (availableEntries.entries && startTime && endTime) {
+        console.log('Should be able to prune available entries')
+        let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
+        const prunedEntriesCount = results.entries.length
+        const prunedShowsCount = results.shows.size
+        setPrunedStats( 
+          `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
+        setPrunedEntries(results)
+      }
+    }, [availableEntries, startTime, endTime, rejectedEntries],
+  );
+
   const handleRejectEntry = (rejected) => {
     console.log('Rejecting', rejected.showname, '@', rejected.showtime)
     let newRejected = rejectedEntries.set(rejected.id, rejected)
+    setRejectedEntryIds(rejectedEntryIds.add(rejected.id))
     setRejectedEntries(newRejected)
     handlePruneEntries()
   }
@@ -116,19 +117,9 @@ const Plan = (props) => {
   useEffect(() => {
 
     console.log('Using effect to prune available events')
-    //handlePruneEntries()
-    if (availableEntries.entries && startTime && endTime) {
-      console.log('Should be able to prune available entries')
-      let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
-      const prunedEntriesCount = results.entries.length
-      const prunedShowsCount = results.shows.size
-      setPrunedStats( 
-        `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
-      setPrunedEntries(results)
-    }
+    handlePruneEntries()
 
-
-  }, [availableEntries, startTime, endTime, rejectedEntries])//, handlePruneEntries])
+  }, [handlePruneEntries])
 
   if ((getAvailableEvents[1]).loading) {
     return (

@@ -4,14 +4,14 @@ import { parseISO, addMinutes, compareAsc, differenceInMinutes, isSameDay } from
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
-import { de } from 'date-fns/locale'
 
 const PlanPaths = (props) => {
 
   const ENTRY_WIDTH = 60
   const ENTRY_GAP = 20
   const showRectStyle = {
-    fill: '#880088'
+    fill: '#880088',
+    cursor: 'pointer'
   }
   const showRectTextStyle = {
     textLength: ENTRY_WIDTH,
@@ -122,12 +122,15 @@ const PlanPaths = (props) => {
     const showname = event.target.parentNode.getAttribute('showname')
     const showtime = event.target.parentNode.getAttribute('showtime')
     const venuename = event.target.parentNode.getAttribute('venuename')
-    document[`overlay${entryId}`].handleHide(true)
     let shallowEntry = { id: entryId, showname: showname, showtime: showtime, venuename: venuename }
     switch (action) {
       case 'reject':
         console.log(`Rejecting ${showname} @ ${showtime}`)
         props.handleRejectEntry(shallowEntry)
+        return
+      case 'maybe':
+        console.log(`Maybe ${showname} @ ${showtime}`)
+        document[`overlay${entryId}`].handleHide(true)
         return
       default:
         console.log(`Action ${action} not yet implemented`)
