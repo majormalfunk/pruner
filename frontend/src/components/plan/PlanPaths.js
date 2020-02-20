@@ -68,7 +68,7 @@ const PlanPaths = (props) => {
 
     if (prunedPaths.interruptedPaths && prunedPaths.interruptedPaths.length > 0 ) {
       if (prunedPaths.paths.length === 0) {
-        pathfindingSummary = 'These options give too many paths.'
+        pathfindingSummary = 'These options give too many paths. You could try with a shorter path first.'
       } else {
         pathfindingSummary = `Showing ${prunedPaths.paths.length} paths. Some paths were left out because there were too many.`
         pathsExist = true

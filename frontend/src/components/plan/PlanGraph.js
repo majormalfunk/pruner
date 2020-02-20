@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { parseISO, addMinutes, compareAsc, differenceInMinutes, isSameDay } from 'date-fns'
-
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
+import { GRAPH_PLAN } from '../../constants'
 
 const PlanPaths = (props) => {
 
@@ -126,7 +126,7 @@ const PlanPaths = (props) => {
     switch (action) {
       case 'reject':
         console.log(`Rejecting ${showname} @ ${showtime}`)
-        props.handleRejectEntry(shallowEntry)
+        props.handleRejectEntry(entryId)
         return
       case 'maybe':
         console.log(`Maybe ${showname} @ ${showtime}`)
@@ -215,7 +215,7 @@ const PlanPaths = (props) => {
   console.log('There are', rectsToDraw.length, 'rects to draw')
 
   return (
-          <svg width={svgWidth} height={svgHeight}>
+          <svg width={svgWidth} height={svgHeight} id={GRAPH_PLAN} >
            {drawShowRects()}
            {drawTextInRects()}
           </svg>

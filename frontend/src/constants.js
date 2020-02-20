@@ -134,6 +134,9 @@ export const FLD_SEL_HNT_PLA_MIN = "sel-set-pla-min"
 export const FLD_SEL_SET_PLA_MAX = "sel-set-pla-max"
 export const FLD_SEL_HNT_PLA_MAX = "sel-set-pla-max"
 
+// Graphs
+export const GRAPH_PLAN = 'graph-plan'
+
 // Navigation
 export const PAGE_HOME = "page-home"
 export const PAGE_ACCOUNT = "page-account"

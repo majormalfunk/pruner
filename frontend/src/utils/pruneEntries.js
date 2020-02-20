@@ -37,10 +37,10 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
   return results
 }
 
-export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntries) => {
+export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntryIds) => {
 
   console.log('Trying to prune entries from', availableEntries.length, 'available entries')
-  console.log('Rejected entries count is', rejectedEntries.size)
+  console.log('Rejected entries count is', rejectedEntryIds.size)
 
   function pruneStartTime(entry) {
     return (compareAsc(startTime, parseISO(entry.showtime)) < 1)
@@ -50,13 +50,24 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntri
   }
 
   let results = {}
-  results.entries = [] // A reduced list after this pruning
+  results.entries = [] // A list of entries after this pruning
+  results.rejected = [] // A list of rejected entries after this pruning
   results.shows = new Map() // A reduced set (map) of distinct shows after this pruning
 
   if (!availableEntries || availableEntries.length === 0) {
     return results
   }
 
+  availableEntries.forEach((entry) => {
+    const inTimeSlot = (pruneStartTime(entry) && pruneEndTime(entry))
+    if (rejectedEntryIds.has(entry.id)) {
+      results.rejected.push(entry)
+    } else {
+      results.entries.push(entry)
+      results.shows.set(entry.show.id, entry.show)
+    }
+  })
+  /*
   results.entries = availableEntries.filter((entry) => {
     const inTimeSlot = (pruneStartTime(entry) && pruneEndTime(entry))
     let notRejected = true
@@ -72,6 +83,7 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntri
     }
     return false
   })
+  */
 
   return results
 

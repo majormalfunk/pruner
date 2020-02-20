@@ -34,7 +34,7 @@ const Plan = (props) => {
   const [prunedEntries, setPrunedEntries] = useState({})
   const [prunedStats, setPrunedStats] = useState('Nothing to prune')
   const [rejectedEntryIds, setRejectedEntryIds] = useState(new Set())
-  const [rejectedEntries, setRejectedEntries] = useState(new Map())
+  //const [rejectedEntries, setRejectedEntries] = useState(new Map())
 
   const handleError = (error) => {
     displayError(error)
@@ -71,25 +71,27 @@ const Plan = (props) => {
     () => {
       if (availableEntries.entries && startTime && endTime) {
         console.log('Should be able to prune available entries')
-        let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntries)
+        let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntryIds)
         const prunedEntriesCount = results.entries.length
         const prunedShowsCount = results.shows.size
         setPrunedStats( 
           `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
         setPrunedEntries(results)
       }
-    }, [availableEntries, startTime, endTime, rejectedEntries],
+    }, [availableEntries, startTime, endTime, rejectedEntryIds],
   );
 
   const handleRejectEntry = (rejected) => {
-    console.log('Rejecting', rejected.showname, '@', rejected.showtime)
-    let newRejected = rejectedEntries.set(rejected.id, rejected)
-    setRejectedEntryIds(rejectedEntryIds.add(rejected.id))
-    setRejectedEntries(newRejected)
+    setRejectedEntryIds(rejectedEntryIds.add(rejected))
     handlePruneEntries()
   }
-  const handleUnrejectEntry = (rejected) => {
-    setRejectedEntries(rejectedEntries.delete(rejected))
+  const handleUnrejectEntry = (event) => {
+    const id = event.target.getAttribute('id')
+    console.log('Unreject', id)
+    rejectedEntryIds.delete(id)
+    setRejectedEntryIds(rejectedEntryIds)
+    console.log('Rejects', rejectedEntryIds)
+    handlePruneEntries()
   }
 
   useEffect(() => {
@@ -204,7 +206,8 @@ const Plan = (props) => {
         )}
       <Row>
         <Col>
-          <PlanRejectedEntries rejectedEntries={rejectedEntries} handleRejectEntry={handleRejectEntry}
+          <PlanRejectedEntries rejectedEntries={prunedEntries.rejected}
+            handleRejectEntry={handleRejectEntry}
             handleUnrejectEntry={handleUnrejectEntry} />
         </Col>
       </Row>

@@ -118,4 +118,5 @@
 | 19.02.2020    | Rejecting entries in plan graph                                    |     2,5   |           |
 | 20.02.2020    | Rejecting entries in plan graph                                    |     1,5   |           |
 | 20.02.2020    | Fixed bug when rejecting in plan graph                             |     1,5   |           |
-| **WEEK  8**   | **TOTAL**                                                          |  **11,0** | **269,5** |
+| 20.02.2020    | Unrejecting entries and found a new bug                            |     1,0   |           |
+| **WEEK  8**   | **TOTAL**                                                          |  **12,0** | **271,5** |

@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { formatDate } from '../../utils/dates'
-
 import { Container, Row, Col, Badge } from 'react-bootstrap'
 
+import { formatDate } from '../../utils/dates'
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
-import NavbarCollapse from 'react-bootstrap/NavbarCollapse'
 
 const PlanRejectedEntries = (props) => {
 
   const { currentUser, rejectedEntries, handleRejectEntry, handleUnrejectEntry } = props
 
-  if (!rejectedEntries || rejectedEntries.size === 0) {
+  console.log('Rejected entries =', rejectedEntries)
+
+  if (!rejectedEntries || rejectedEntries.length === 0) {
     return (
       null
     )
@@ -19,7 +19,7 @@ const PlanRejectedEntries = (props) => {
 
   console.log('Rendering rejected entries')
 
-  const rejectedArr = Array.from(rejectedEntries.values())
+  //const rejectedArr = Array.from(rejectedEntries.values())
 
   return (
     <Container>
@@ -28,7 +28,7 @@ const PlanRejectedEntries = (props) => {
       </Row>
       <Row>
         <Col className="Component-title">
-          You have rejected these entries
+          You have rejected these entries (Click name badge to un-reject it)
         </Col>
       </Row>
       <Row>
@@ -36,9 +36,9 @@ const PlanRejectedEntries = (props) => {
           <Container>
             <Row>
               <Col>
-                {rejectedArr.map((entry) => {
-                    return <Badge pill variant='danger' key={entry.id} onClick={(() => console.log('Click´d!'))}>
-                      {entry.showname} @ {entry.showtime}
+                {rejectedEntries.map((entry) => {
+                    return <Badge pill variant='danger' key={entry.id} id={entry.id} onClick={handleUnrejectEntry}>
+                      {entry.show.showname} @ {formatDate(entry.showtime)}
                       </Badge>
                 })}
               </Col>
