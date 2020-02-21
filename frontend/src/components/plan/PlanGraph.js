@@ -7,14 +7,14 @@ import { GRAPH_PLAN } from '../../constants'
 
 const PlanPaths = (props) => {
 
-  const ENTRY_WIDTH = 60
-  const ENTRY_GAP = 20
+  const GAP = 25
+
   const showRectStyle = {
     fill: '#880088',
     cursor: 'pointer'
   }
   const showRectTextStyle = {
-    textLength: ENTRY_WIDTH,
+    textLength: 60,
     color: '#fff',
     fill: '#fff',
     fontSize: '8px',
@@ -29,7 +29,7 @@ const PlanPaths = (props) => {
     fontWeight: 'bold'
   }
 
-  const { paths, entryMap, entrySets } = props.prunedPaths
+  const { venues, paths, entryMap, entrySets } = props.prunedPaths
 
   const [rectsToDraw, setRectsToDraw] = useState([])
   const [svgHeight, setSvgHeight] = useState(window.innerHeight)
@@ -43,13 +43,13 @@ const PlanPaths = (props) => {
   
       if (entrySets && entrySets.length > 0) {
 
-        function maxWidth() {
-          let maxEntries = 0
-          entrySets.forEach((slot) => {
-            maxEntries = (slot.size > maxEntries ? slot.size : maxEntries)
-          })
-          return ENTRY_GAP + (maxEntries * (ENTRY_WIDTH + ENTRY_GAP))
-        }
+        //function maxWidth() {
+          //let maxEntries = 0
+          //entrySets.forEach((slot) => {
+          //  maxEntries = (slot.size > maxEntries ? slot.size : maxEntries)
+          //})
+        //  return ENTRY_GAP + (venues.size * (ENTRY_WIDTH + ENTRY_GAP))
+        //}
         function maxHeight(firstShowAt) {
           let lastEndingTime = firstShowAt
           paths[paths.length - 1].forEach((entry) => {
@@ -59,26 +59,34 @@ const PlanPaths = (props) => {
           return differenceInMinutes(lastEndingTime, firstShowAt)
         }
 
+        console.log('Window width', svgWidth)
+
         let firstShow = paths[0][0]
         let firstShowAt = parseISO(firstShow.showtime)
 
-        setSvgWidth(maxWidth())
+        //setSvgWidth(maxWidth())
         setSvgHeight(maxHeight(firstShowAt)+300)
-    
+        
+        const venuesArr = Array.from(venues.values())
+        venuesArr.sort((a, b) => (a.venuename > b.venuename) ? 1 : -1)
         entrySets.forEach((set) => {
           let dayBreak = 0
           const entriesInSet = set.size
           let entryNum = 0
           set.forEach((entry) => {
-            entryNum++
+            venuesArr.forEach((venue, index) => {
+              entryNum = (venue.id === entry.venue.id ? index : entryNum)
+            })
             let showStartAt = parseISO(entry.showtime)
             if (!isSameDay(showStartAt, firstShowAt)) {
               dayBreak = 600
             }
-            const y = ENTRY_GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
-            const x = ENTRY_GAP + (entryNum * (svgWidth / (entriesInSet + 1))) - (ENTRY_WIDTH)
+            const y = GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
+            const entryWidth = (((svgWidth - GAP) / (venuesArr.length)) * 0.75)
+            const entryGap = (((svgWidth - GAP) / (venuesArr.length)) * 0.10)
+            const x = GAP + ((entryWidth + entryGap) * entryNum)
             const showRect = {
-              id: entry.id, x: x, y: y, width: ENTRY_WIDTH, height: entry.show.duration,
+              id: entry.id, x: x, y: y, width: entryWidth, height: entry.show.duration,
               showname: entry.show.showname, venuename: entry.venue.venuename,
               showtime: formatDate(entry.showtime), duration: entry.show.duration
             }
@@ -90,11 +98,10 @@ const PlanPaths = (props) => {
 
       setRectsToDraw(showRects)
     }
-    console.log('Should make rects')
     if (paths && paths.length > 0) {
       handleMakeRects()
     }
-  }, [entrySets, paths, svgWidth])
+  }, [entrySets, venues, paths, svgWidth])
 
   useEffect(() => {
     console.log('Rects changed')
@@ -149,7 +156,7 @@ const PlanPaths = (props) => {
           trigger="click"
           rootClose
           key={entry.id}
-            placement='right'
+            placement='auto'
             overlay={
               <Popover>
                 <Popover.Title as="h3">{entry.showname}</Popover.Title>

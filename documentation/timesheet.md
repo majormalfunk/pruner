@@ -120,4 +120,5 @@
 | 20.02.2020    | Fixed bug when rejecting in plan graph                             |     1,5   |           |
 | 20.02.2020    | Unrejecting entries and found a new bug                            |     1,0   |           |
 | 21.02.2020    | Fixed bfs to find all next day first entries and not just the first|     1,0   |           |
-| **WEEK  8**   | **TOTAL**                                                          |  **13,0** | **272,5** |
+| 21.02.2020    | Align entries to venue columns in plan graph                       |     2,0   |           |
+| **WEEK  8**   | **TOTAL**                                                          |  **18,0** | **275,0** |

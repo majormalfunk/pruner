@@ -4,7 +4,8 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
 
   let results = {}
   results.entries = [] // Available entries in this event's this recurrence
-  results.shows = [] // Availlable distinct shows in this event's this recurrence
+  results.shows = [] // Available distinct shows in this event's this recurrence
+  results.venues = [] // Available venues in this event's this recurrence
   results.firstEntry = null
   results.lastEndingEntry = null
 
@@ -18,6 +19,7 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
     const selectedRecurrence = selectedEvent.recurrences.find(recurrence => recurrence.id === recurrenceId)
     if (selectedRecurrence) {
       results.shows = selectedRecurrence.shows
+      results.venues = selectedRecurrence.venues
       results.entries = selectedRecurrence.entries.filter((entry) => {
         if (results.lastEndingEntry === null) {
           results.lastEndingEntry = entry
@@ -53,37 +55,23 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
   results.entries = [] // A list of entries after this pruning
   results.rejected = [] // A list of rejected entries after this pruning
   results.shows = new Map() // A reduced set (map) of distinct shows after this pruning
+  results.venues = new Map() // A reduced set (map) of distinct venues after this pruning
 
   if (!availableEntries || availableEntries.length === 0) {
     return results
   }
 
   availableEntries.forEach((entry) => {
-    const inTimeSlot = (pruneStartTime(entry) && pruneEndTime(entry))
-    if (rejectedEntryIds.has(entry.id)) {
-      results.rejected.push(entry)
-    } else {
-      results.entries.push(entry)
-      results.shows.set(entry.show.id, entry.show)
-    }
-  })
-  /*
-  results.entries = availableEntries.filter((entry) => {
-    const inTimeSlot = (pruneStartTime(entry) && pruneEndTime(entry))
-    let notRejected = true
-    rejectedEntries.forEach((value, key) => {
-      if (entry.id === key) {
-        notRejected = false
+    if (pruneStartTime(entry) && pruneEndTime(entry)) {
+      if (rejectedEntryIds.has(entry.id)) {
+        results.rejected.push(entry)
+      } else {
+        results.entries.push(entry)
+        results.shows.set(entry.show.id, entry.show)
+        results.venues.set(entry.venue.id, entry.venue)
       }
-    })
-    // More conditions here
-    if (inTimeSlot && notRejected) {
-      results.shows.set(entry.show.id, entry.show)
-      return true
     }
-    return false
   })
-  */
 
   return results
 

@@ -217,7 +217,7 @@ const Plan = (props) => {
       <Row>
         <Col>
           {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
-          <PlanPaths prunedEntries={prunedEntries.entries} minShows={minShows} maxShows={maxShows}
+          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
             handleRejectEntry={handleRejectEntry} />)}
         </Col>
       </Row>

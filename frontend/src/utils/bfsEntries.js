@@ -1,16 +1,17 @@
 import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
 
-export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
+export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
 
-  console.log ('Trying to make paths of', entries.length, 'entries')
+  console.log ('Trying to make paths of', prunedEntries.entries.length, 'entries')
 
   let results = {}
   results.paths = [] // All paths
   results.interruptedPaths = [] // Interrupted paths
   results.entryMap = new Map() // As keys each entry and as values count of show in paths
   results.entrySets = [] // Sets of all entries at each path slot
+  results.venues = new Map() // Map of distinct venues of these paths
 
-  if (!entries || entries.length === 0) {
+  if (!prunedEntries.entries || prunedEntries.entries.length === 0) {
     return results
   }
 
@@ -24,8 +25,8 @@ export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOf
 
   // First add all starting nodes to the "queue" (We're actually using an array like a queue)
   let workingPaths = []
-  const firstStartTime = parseISO(entries[0].showtime)
-  entries.some((entry, index) => {
+  const firstStartTime = parseISO(prunedEntries.entries[0].showtime)
+  prunedEntries.entries.some((entry, index) => {
     let nextStartTime = parseISO(entry.showtime)
     if (compareAsc(firstStartTime, nextStartTime) === 0) {
       // All shows as paths starting at the same time as the first show on the list are added
@@ -47,6 +48,7 @@ export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOf
       // Add to ready list if number of maximum shows is reached
       results.paths.push(thisPath)
       thisPath.forEach((entry, index) => {
+        results.venues.set(entry.venue.id, entry.venue)
         if (results.entryMap.has(entry)) {
           results.entryMap.set(entry, (results.entryMap.get(entry) + 1))
         } else {
@@ -64,11 +66,11 @@ export const makePaths = (entries, minShows, maxShows, minBreak, maxBreak, cutOf
       let first = true // So we know to add tomorrows first show(s) or not
       let timeOfFirst = null
       let didAddToWorking = false // So we know if we should add paths long enough to ready list
-      for (let e = lastEntry.ind + 1; e < entries.length; e++) {
+      for (let e = lastEntry.ind + 1; e < prunedEntries.entries.length; e++) {
         // Now take the next from the original list. We use the added ind of entry
         // so we know where it was int the orginal list and don't have to go through
         // the list from the beginning.
-        let nextEntry = entries[e]
+        let nextEntry = prunedEntries.entries[e]
         nextEntry.ind = e
         if (nextEntry.id !== lastEntry.id) {
           // Don't add start node again (if we made a mistake)
