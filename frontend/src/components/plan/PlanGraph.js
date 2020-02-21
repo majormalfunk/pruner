@@ -137,9 +137,9 @@ const PlanPaths = (props) => {
     }
   }
 
-  const handleMouseEnter = (event) => {
-    console.log(event.target.getAttribute('showname'))
-  }
+  //const handleMouseEnter = (event) => {
+  //  console.log(event.target.getAttribute('showname'))
+  //}
 
   const drawShowRects = () => {
     return (
@@ -174,7 +174,7 @@ const PlanPaths = (props) => {
               </Popover>
             } >
               <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
-                style={showRectStyle} key={entry.id} onMouseEnter={handleMouseEnter}
+                style={showRectStyle} key={entry.id} //onMouseEnter={handleMouseEnter}
                 showname={entry.showname} venuename={entry.venuename} id={`rect${entry.id}`}>
               <title>
                 {entry.showname}, {entry.venuename} @ {entry.showtime}
