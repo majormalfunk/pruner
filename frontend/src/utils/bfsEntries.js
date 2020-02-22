@@ -8,17 +8,10 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
   results.paths = [] // All paths
   results.interruptedPaths = [] // Interrupted paths
   results.entryMap = new Map() // As keys each entry and as values count of show in paths
-  results.entrySets = [] // Sets of all entries at each path slot
   results.venues = new Map() // Map of distinct venues of these paths
 
   if (!prunedEntries.entries || prunedEntries.entries.length === 0) {
     return results
-  }
-
-  let shows = 0
-  while (shows < maxShows) {
-    results.entrySets.push(new Set())
-    shows++
   }
 
   // We're relying on the shows being in ascending order by showtime
@@ -54,7 +47,6 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
         } else {
           results.entryMap.set(entry, 1)
         }
-        results.entrySets[index].add(entry)
       })
     } else if (flush) {
       results.interruptedPaths.push(thisPath)

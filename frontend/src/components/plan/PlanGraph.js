@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { parseISO, addMinutes, compareAsc, differenceInMinutes, isSameDay } from 'date-fns'
+import { parseISO, addMinutes, compareAsc, differenceInMinutes, endOfDay, isSameDay, differenceInDays } from 'date-fns'
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
@@ -8,6 +8,7 @@ import { GRAPH_PLAN } from '../../constants'
 const PlanPaths = (props) => {
 
   const GAP = 25
+  const DAYBREAK = 600
 
   const showRectStyle = {
     fill: '#880088',
@@ -29,7 +30,7 @@ const PlanPaths = (props) => {
     fontWeight: 'bold'
   }
 
-  const { venues, paths, entryMap, entrySets } = props.prunedPaths
+  const { venues, paths, entryMap } = props.prunedPaths
 
   const [rectsToDraw, setRectsToDraw] = useState([])
   const [svgHeight, setSvgHeight] = useState(window.innerHeight)
@@ -40,74 +41,75 @@ const PlanPaths = (props) => {
     const handleMakeRects = () => {
 
       let showRects = []
-  
-      if (entrySets && entrySets.length > 0) {
 
-        //function maxWidth() {
-          //let maxEntries = 0
-          //entrySets.forEach((slot) => {
-          //  maxEntries = (slot.size > maxEntries ? slot.size : maxEntries)
-          //})
-        //  return ENTRY_GAP + (venues.size * (ENTRY_WIDTH + ENTRY_GAP))
-        //}
+      if (paths && paths.length > 0) {
+
         function maxHeight(firstShowAt) {
           let lastEndingTime = firstShowAt
           paths[paths.length - 1].forEach((entry) => {
             let thisEndingTime = addMinutes(parseISO(entry.showtime), entry.show.duration)
             lastEndingTime = (compareAsc(lastEndingTime, thisEndingTime) < 0 ? thisEndingTime : lastEndingTime)
           })
-          return differenceInMinutes(lastEndingTime, firstShowAt)
+          const fullDifference = differenceInMinutes(lastEndingTime, firstShowAt)
+          const dayBreaks = differenceInDays(endOfDay(lastEndingTime), firstShowAt) * DAYBREAK
+          console.log('Total day breaks:', dayBreaks)
+          return (fullDifference - dayBreaks)
         }
 
-        console.log('Window width', svgWidth)
+        function graphCols() {
+          const venuesArr = Array.from(venues.values())
+          venuesArr.sort((a, b) => (a.venuename > b.venuename) ? 1 : -1)
+          return venuesArr
+        }
 
         let firstShow = paths[0][0]
         let firstShowAt = parseISO(firstShow.showtime)
-
-        //setSvgWidth(maxWidth())
         setSvgHeight(maxHeight(firstShowAt)+300)
-        
-        const venuesArr = Array.from(venues.values())
-        venuesArr.sort((a, b) => (a.venuename > b.venuename) ? 1 : -1)
-        entrySets.forEach((set) => {
+        const venueCols = graphCols()
+        let visited = new Set()
+        let venueCol = 0
+        paths.forEach((path) => {
           let dayBreak = 0
-          const entriesInSet = set.size
-          let entryNum = 0
-          set.forEach((entry) => {
-            venuesArr.forEach((venue, index) => {
-              entryNum = (venue.id === entry.venue.id ? index : entryNum)
+          path.forEach((entry) => {
+            venueCols.forEach((venue, index) => {
+              venueCol = (venue.id === entry.venue.id ? index : venueCol)
             })
             let showStartAt = parseISO(entry.showtime)
             if (!isSameDay(showStartAt, firstShowAt)) {
               dayBreak = 600
             }
-            const y = GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
-            const entryWidth = (((svgWidth - GAP) / (venuesArr.length)) * 0.75)
-            const entryGap = (((svgWidth - GAP) / (venuesArr.length)) * 0.10)
-            const x = GAP + ((entryWidth + entryGap) * entryNum)
-            const showRect = {
-              id: entry.id, x: x, y: y, width: entryWidth, height: entry.show.duration,
-              showname: entry.show.showname, venuename: entry.venue.venuename,
-              showtime: formatDate(entry.showtime), duration: entry.show.duration
+            if (!visited.has(entry.id)) {
+              visited.add(entry.id)
+              console.log('First', formatDate(firstShowAt), 'This', formatDate(showStartAt), dayBreak)
+              const y = GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
+              const entryWidth = (((svgWidth - GAP) / (venueCols.length)) * 0.75)
+              const entryGap = (((svgWidth - GAP) / (venueCols.length)) * 0.10)
+              const x = GAP + ((entryWidth + entryGap) * venueCol)
+              const showRect = {
+                id: entry.id, x: x, y: y, width: entryWidth, height: entry.show.duration,
+                showname: entry.show.showname, venuename: entry.venue.venuename,
+                showtime: formatDate(entry.showtime), duration: entry.show.duration
+              }
+              showRects.push(showRect)
             }
-            showRects.push(showRect)
           })
         })
-    
+
       }
 
       setRectsToDraw(showRects)
     }
+
     if (paths && paths.length > 0) {
       handleMakeRects()
     }
-  }, [entrySets, venues, paths, svgWidth])
+  }, [venues, paths, svgWidth])
 
   useEffect(() => {
     console.log('Rects changed')
   }, [rectsToDraw])
 
-  if (entrySets.length === 0) {
+  if (paths.length === 0) {
     return null
   }
 
