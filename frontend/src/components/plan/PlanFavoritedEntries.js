@@ -5,21 +5,19 @@ import { Container, Row, Col, Badge } from 'react-bootstrap'
 import { formatDate } from '../../utils/dates'
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
-const PlanRejectedEntries = (props) => {
+const PlanFavoritedEntries = (props) => {
 
-  const { currentUser, rejectedEntries, handleUnrejectEntry } = props
+  const { currentUser, favoritedEntries, handleUnfavoriteEntry } = props
 
-  console.log('Rejected entries =', rejectedEntries)
+  console.log('Favorited entries =', favoritedEntries)
 
-  if (!rejectedEntries || rejectedEntries.length === 0) {
+  if (!favoritedEntries || favoritedEntries.length === 0) {
     return (
       null
     )
   }
 
-  console.log('Rendering rejected entries')
-
-  //const rejectedArr = Array.from(rejectedEntries.values())
+  console.log('Rendering favorited entries')
 
   return (
     <Container>
@@ -28,7 +26,7 @@ const PlanRejectedEntries = (props) => {
       </Row>
       <Row>
         <Col className="Component-title">
-          You have rejected these entries (Click name badge to un-reject it)
+          You have favorited these entries (Click name badge to un-favorite it)
         </Col>
       </Row>
       <Row>
@@ -36,8 +34,8 @@ const PlanRejectedEntries = (props) => {
           <Container>
             <Row>
               <Col>
-                {rejectedEntries.map((entry) => {
-                    return <Badge pill variant='danger' key={entry.id} id={entry.id} onClick={handleUnrejectEntry}>
+                {favoritedEntries.map((entry) => {
+                    return <Badge pill variant='success' key={entry.id} id={entry.id} onClick={handleUnfavoriteEntry}>
                       {entry.show.showname} @ {formatDate(entry.showtime)}
                       </Badge>
                 })}
@@ -53,8 +51,7 @@ const PlanRejectedEntries = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
-    ownEvents: state.ownEvents
+    currentUser: state.currentUser
   }
 }
 
@@ -64,4 +61,4 @@ const mapDispatchToProps = {
   displayError
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlanRejectedEntries)
+export default connect(mapStateToProps, mapDispatchToProps)(PlanFavoritedEntries)

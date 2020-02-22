@@ -7,11 +7,18 @@ import { GRAPH_PLAN } from '../../constants'
 
 const PlanPaths = (props) => {
 
+  const { prunedPaths, handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
+  const { venues, paths, entryMap } = prunedPaths
+
   const GAP = 25
   const DAYBREAK = 600
 
   const showRectStyle = {
     fill: '#880088',
+    cursor: 'pointer'
+  }
+  const showFavoriteStyle = {
+    fill: '#008800',
     cursor: 'pointer'
   }
   const showRectTextStyle = {
@@ -29,8 +36,6 @@ const PlanPaths = (props) => {
     fontSize: '.800rem',
     fontWeight: 'bold'
   }
-
-  const { venues, paths, entryMap } = props.prunedPaths
 
   const [rectsToDraw, setRectsToDraw] = useState([])
   const [svgHeight, setSvgHeight] = useState(window.innerHeight)
@@ -87,7 +92,7 @@ const PlanPaths = (props) => {
               const x = GAP + ((entryWidth + entryGap) * venueCol)
               const showRect = {
                 id: entry.id, x: x, y: y, width: entryWidth, height: entry.show.duration,
-                showname: entry.show.showname, venuename: entry.venue.venuename,
+                favorited: entry.favorited, showname: entry.show.showname, venuename: entry.venue.venuename,
                 showtime: formatDate(entry.showtime), duration: entry.show.duration
               }
               showRects.push(showRect)
@@ -130,16 +135,19 @@ const PlanPaths = (props) => {
     const action = event.target.getAttribute('action')
     const showname = event.target.parentNode.getAttribute('showname')
     const showtime = event.target.parentNode.getAttribute('showtime')
-    const venuename = event.target.parentNode.getAttribute('venuename')
-    let shallowEntry = { id: entryId, showname: showname, showtime: showtime, venuename: venuename }
     switch (action) {
       case 'reject':
         console.log(`Rejecting ${showname} @ ${showtime}`)
-        props.handleRejectEntry(entryId)
+        handleRejectEntry(entryId)
         return
       case 'maybe':
         console.log(`Maybe ${showname} @ ${showtime}`)
-        document[`overlay${entryId}`].handleHide(true)
+        handleMaybeEntry(entryId)
+        //document[`overlay${entryId}`].handleHide(true)
+        return
+      case 'choose':
+        console.log(`Wanna see this ${showname} @ ${showtime}!`)
+        handleFavoriteEntry(entryId)
         return
       default:
         console.log(`Action ${action} not yet implemented`)
@@ -183,7 +191,8 @@ const PlanPaths = (props) => {
               </Popover>
             } >
               <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
-                style={showRectStyle} key={entry.id} //onMouseEnter={handleMouseEnter}
+                style={entry.favorited ? showFavoriteStyle : showRectStyle} key={entry.id}
+                //onMouseEnter={handleMouseEnter}
                 showname={entry.showname} venuename={entry.venuename} id={`rect${entry.id}`}>
               <title>
                 {entry.showname}, {entry.venuename} @ {entry.showtime}

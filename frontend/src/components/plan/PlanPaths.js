@@ -6,12 +6,12 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { displayError } from '../../reducers/notificationReducer'
 
 import { makePaths } from '../../utils/bfsEntries'
-import { drawGraph } from '../../utils/graph'
 import PlanGraph from './PlanGraph'
 
 const PlanPaths = (props) => {
 
-  const { displayError, prunedEntries, minShows, maxShows, handleRejectEntry } = props
+  const { displayError, prunedEntries, minShows, maxShows,
+    handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
 
   const [prunedPaths, setPrunedPaths] = useState({})
 
@@ -34,7 +34,6 @@ const PlanPaths = (props) => {
 
   if (!prunedEntries.entries || prunedEntries.entries.length === 0) {
     console.log('No shows to display')
-    drawGraph([])
     return (
       <Container>
         <Row>
@@ -90,7 +89,10 @@ const PlanPaths = (props) => {
         {(pathsExist && prunedPaths.paths.length > 0) &&
           <Row>
             <Col>
-              <PlanGraph prunedPaths={prunedPaths} handleRejectEntry={handleRejectEntry} />
+              <PlanGraph prunedPaths={prunedPaths}
+                handleRejectEntry={handleRejectEntry}
+                handleFavoriteEntry={handleFavoriteEntry}
+                handleMaybeEntry={handleMaybeEntry} />
             </Col>
           </Row>
         }
@@ -109,7 +111,6 @@ const PlanPaths = (props) => {
       </Row>
     </Container>
   )
-
 
 }
 

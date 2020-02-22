@@ -122,4 +122,5 @@
 | 21.02.2020    | Fixed bfs to find all next day first entries and not just the first|     1,0   |           |
 | 21.02.2020    | Align entries to venue columns in plan graph                       |     2,0   |           |
 | 22.02.2020    | Fixed bug caused by an entry in multiple path slots                |     2,0   |           |
-| **WEEK  8**   | **TOTAL**                                                          |  **20,0** | **277,0** |
+| 22.02.2020    | Favoriting and unfavoriting entries                                |     2,0   |           |
+| **WEEK  8**   | **TOTAL**                                                          |  **22,0** | **279,0** |

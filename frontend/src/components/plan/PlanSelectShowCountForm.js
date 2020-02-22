@@ -13,7 +13,6 @@ const PlanSelectShowCountForm = (props) => {
   const { minShows, setMinShows, maxShows, setMaxShows, totalShows } = props
 
   const controlShowCount = () => {
-    //console.log('Controlling min and max shows')
     if (document.getElementById(FLD_SEL_HNT_PLA_MIN)) {
       if (!isNaN(minShows)) {
         document.getElementById(FLD_SEL_HNT_PLA_MIN).innerHTML = 'Select min number of shows'
@@ -36,16 +35,7 @@ const PlanSelectShowCountForm = (props) => {
   }
 
   useEffect(() => {
-    /*
-    if (minShows === null) {
-      setMinShows(1)
-    }
-    if (maxShows === null) {
-      setMaxShows(5)
-    }
-    */
-    const timeOk = controlShowCount()
-    //console.log('SHOW COUNT: Effect used')
+    controlShowCount()
   })
 
   const handleSelectMinShows = async (event) => {

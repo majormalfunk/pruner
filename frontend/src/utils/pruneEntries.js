@@ -1,4 +1,4 @@
-import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
+import { parseISO, compareAsc, addMinutes } from 'date-fns'
 
 export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) => {
 
@@ -14,7 +14,6 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
   }
 
   const selectedEvent = availableEvents.find(event => event.id === eventId)
-  let entries = []
   if (selectedEvent) {
     const selectedRecurrence = selectedEvent.recurrences.find(recurrence => recurrence.id === recurrenceId)
     if (selectedRecurrence) {
@@ -39,7 +38,7 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
   return results
 }
 
-export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntryIds) => {
+export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntryIds, favoritedEntryIds) => {
 
   console.log('Trying to prune entries from', availableEntries.length, 'available entries')
   console.log('Rejected entries count is', rejectedEntryIds.size)
@@ -54,6 +53,7 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
   let results = {}
   results.entries = [] // A list of entries after this pruning
   results.rejected = [] // A list of rejected entries after this pruning
+  results.favorited = [] // A list of favorited entries after this pruning
   results.shows = new Map() // A reduced set (map) of distinct shows after this pruning
   results.venues = new Map() // A reduced set (map) of distinct venues after this pruning
 
@@ -63,6 +63,12 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
 
   availableEntries.forEach((entry) => {
     if (pruneStartTime(entry) && pruneEndTime(entry)) {
+      if (favoritedEntryIds.has(entry.id)) {
+        entry.favorited = true
+        results.favorited.push(entry)
+      } else {
+        entry.favorited = false
+      }
       if (rejectedEntryIds.has(entry.id)) {
         results.rejected.push(entry)
       } else {

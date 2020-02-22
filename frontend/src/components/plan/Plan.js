@@ -16,6 +16,7 @@ import PlanSelectDatesForm from './PlanSelectDatesForm'
 import PlanSelectShowCountForm from './PlanSelectShowCountForm'
 import PlanPaths from './PlanPaths'
 import PlanRejectedEntries from './PlanRejectedEntries'
+import PlanFavoritedEntries from './PlanFavoritedEntries'
 
 const Plan = (props) => {
 
@@ -34,7 +35,7 @@ const Plan = (props) => {
   const [prunedEntries, setPrunedEntries] = useState({})
   const [prunedStats, setPrunedStats] = useState('Nothing to prune')
   const [rejectedEntryIds, setRejectedEntryIds] = useState(new Set())
-  //const [rejectedEntries, setRejectedEntries] = useState(new Map())
+  const [favoritedEntryIds, setFavoritedEntryIds] = useState(new Set())
 
   const handleError = (error) => {
     displayError(error)
@@ -71,26 +72,41 @@ const Plan = (props) => {
     () => {
       if (availableEntries.entries && startTime && endTime) {
         console.log('Should be able to prune available entries')
-        let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntryIds)
+        let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntryIds, favoritedEntryIds)
         const prunedEntriesCount = results.entries.length
         const prunedShowsCount = results.shows.size
         setPrunedStats( 
           `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
         setPrunedEntries(results)
       }
-    }, [availableEntries, startTime, endTime, rejectedEntryIds],
+    }, [availableEntries, startTime, endTime, rejectedEntryIds, favoritedEntryIds],
   );
 
   const handleRejectEntry = (rejected) => {
     setRejectedEntryIds(rejectedEntryIds.add(rejected))
+    favoritedEntryIds.delete(rejected)
+    setFavoritedEntryIds(favoritedEntryIds)
     handlePruneEntries()
   }
   const handleUnrejectEntry = (event) => {
     const id = event.target.getAttribute('id')
-    console.log('Unreject', id)
     rejectedEntryIds.delete(id)
     setRejectedEntryIds(rejectedEntryIds)
-    console.log('Rejects', rejectedEntryIds)
+    handlePruneEntries()
+  }
+  const handleFavoriteEntry = (favorited) => {
+    setFavoritedEntryIds(favoritedEntryIds.add(favorited))
+    handlePruneEntries()
+  }
+  const handleUnfavoriteEntry = (event) => {
+    const id = event.target.getAttribute('id')
+    favoritedEntryIds.delete(id)
+    setFavoritedEntryIds(favoritedEntryIds)
+    handlePruneEntries()
+  }
+  const handleMaybeEntry = (maybed) => {
+    favoritedEntryIds.delete(maybed)
+    setFavoritedEntryIds(favoritedEntryIds)
     handlePruneEntries()
   }
 
@@ -207,8 +223,13 @@ const Plan = (props) => {
       <Row>
         <Col>
           <PlanRejectedEntries rejectedEntries={prunedEntries.rejected}
-            handleRejectEntry={handleRejectEntry}
             handleUnrejectEntry={handleUnrejectEntry} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <PlanFavoritedEntries favoritedEntries={prunedEntries.favorited}
+            handleUnfavoriteEntry={handleUnfavoriteEntry} />
         </Col>
       </Row>
       <Row>
@@ -218,7 +239,8 @@ const Plan = (props) => {
         <Col>
           {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
           <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
-            handleRejectEntry={handleRejectEntry} />)}
+            handleRejectEntry={handleRejectEntry} handleFavoriteEntry={handleFavoriteEntry}
+            handleMaybeEntry={handleMaybeEntry} />)}
         </Col>
       </Row>
       <Row>

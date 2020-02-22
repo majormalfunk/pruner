@@ -50,16 +50,14 @@ const PlanSelectDatesForm = (props) => {
   }
 
   useEffect(() => {
-    //console.log('DATES: Using effect')
     if (startTime === null) {
       setStartTime(firstShowStarts)
     }
     if (endTime === null) {
       setEndTime(lastShowEnds)
     }
-    const timeOk = controlShowtime()
-    //console.log('DATES: Effect used')
-  })//, [setStartTime, setEndTime, firstEntry, lastEntry])
+    controlShowtime()
+  })
 
   const handleSelectStartTime = async (event) => {
     try {
