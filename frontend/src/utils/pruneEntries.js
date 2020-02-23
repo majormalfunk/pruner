@@ -1,4 +1,4 @@
-import { parseISO, compareAsc, addMinutes } from 'date-fns'
+import { parseISO, compareAsc, addMinutes, isWithinInterval, isBefore, areIntervalsOverlapping } from 'date-fns'
 
 export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) => {
 
@@ -54,6 +54,7 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
   results.entries = [] // A list of entries after this pruning
   results.rejected = [] // A list of rejected entries after this pruning
   results.favorited = [] // A list of favorited entries after this pruning
+  results.sidelined = [] // A list of entries sidelined due to favoriting others
   results.shows = new Map() // A reduced set (map) of distinct shows after this pruning
   results.venues = new Map() // A reduced set (map) of distinct venues after this pruning
 
@@ -61,23 +62,54 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
     return results
   }
 
+  let favoritedSlots = []
+  let tempEntries = []
+
   availableEntries.forEach((entry) => {
     if (pruneStartTime(entry) && pruneEndTime(entry)) {
       if (favoritedEntryIds.has(entry.id)) {
         entry.favorited = true
         results.favorited.push(entry)
+        favoritedSlots.push({
+          start: parseISO(entry.showtime),
+          end: addMinutes(parseISO(entry.showtime), entry.show.duration)
+        })
       } else {
         entry.favorited = false
       }
       if (rejectedEntryIds.has(entry.id)) {
         results.rejected.push(entry)
       } else {
-        results.entries.push(entry)
+        tempEntries.push(entry)
         results.shows.set(entry.show.id, entry.show)
         results.venues.set(entry.venue.id, entry.venue)
       }
     }
   })
+  let counter = 0
+  while (tempEntries.length) {
+    let entry = tempEntries.shift()
+    let addedToSidelined = false
+    let addedToEntries = false
+    entry.sidelined = false
+    favoritedSlots.forEach((slot) => {
+      if (!(entry.favorited)) {
+        const show = { start: parseISO(entry.showtime), end: addMinutes(parseISO(entry.showtime), entry.show.duration) }
+        if (areIntervalsOverlapping(slot, show)) {
+          entry.sidelined = true
+          results.sidelined.push(entry)
+          addedToSidelined = true
+        }
+      }
+    })
+    if (!(entry.sidelined)) {
+      results.entries.push(entry)
+      addedToEntries = true
+    }
+    if (addedToSidelined && addedToEntries) {
+      console.log(entry.show.showname, '@', entry.showtime, 'was added to both')
+    }
+  }
 
   return results
 

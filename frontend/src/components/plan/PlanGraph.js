@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { parseISO, addMinutes, compareAsc, differenceInMinutes, endOfDay, isSameDay, differenceInDays } from 'date-fns'
+import { parseISO, addMinutes, compareAsc, endOfDay, isSameDay, startOfHour,
+  differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
@@ -12,6 +13,12 @@ const PlanPaths = (props) => {
 
   const GAP = 25
   const DAYBREAK = 600
+
+  const hourBlockStyle = {
+    fill: '#330033',
+    stroke: '#550055',
+    strokeWidth: 2
+  }
 
   const showRectStyle = {
     fill: '#880088',
@@ -67,9 +74,11 @@ const PlanPaths = (props) => {
           return venuesArr
         }
 
-        let firstShow = paths[0][0]
-        let firstShowAt = parseISO(firstShow.showtime)
+        const firstShow = paths[0][0]
+        const firstShowAt = parseISO(firstShow.showtime)
+        const firstHour = startOfHour(firstShowAt)
         setSvgHeight(maxHeight(firstShowAt)+300)
+        console.log('Height set')
         const venueCols = graphCols()
         let visited = new Set()
         let venueCol = 0
@@ -81,19 +90,19 @@ const PlanPaths = (props) => {
             })
             let showStartAt = parseISO(entry.showtime)
             if (!isSameDay(showStartAt, firstShowAt)) {
-              dayBreak = 600
+              dayBreak = differenceInDays(endOfDay(showStartAt), firstShowAt) * DAYBREAK
             }
             if (!visited.has(entry.id)) {
               visited.add(entry.id)
-              console.log('First', formatDate(firstShowAt), 'This', formatDate(showStartAt), dayBreak)
-              const y = GAP + differenceInMinutes(showStartAt, firstShowAt) - dayBreak
+              const y = GAP + differenceInMinutes(showStartAt, firstHour) - dayBreak
               const entryWidth = (((svgWidth - GAP) / (venueCols.length)) * 0.75)
               const entryGap = (((svgWidth - GAP) / (venueCols.length)) * 0.10)
               const x = GAP + ((entryWidth + entryGap) * venueCol)
+              //console.log('First', formatDate(firstShowAt), 'This', formatDate(showStartAt), dayBreak, y)
               const showRect = {
                 id: entry.id, x: x, y: y, width: entryWidth, height: entry.show.duration,
                 favorited: entry.favorited, showname: entry.show.showname, venuename: entry.venue.venuename,
-                showtime: formatDate(entry.showtime), duration: entry.show.duration
+                showtime: entry.showtime, duration: entry.show.duration
               }
               showRects.push(showRect)
             }
@@ -107,6 +116,7 @@ const PlanPaths = (props) => {
 
     if (paths && paths.length > 0) {
       handleMakeRects()
+      console.log('Rects done')
     }
   }, [venues, paths, svgWidth])
 
@@ -135,28 +145,62 @@ const PlanPaths = (props) => {
     const action = event.target.getAttribute('action')
     const showname = event.target.parentNode.getAttribute('showname')
     const showtime = event.target.parentNode.getAttribute('showtime')
+    const favorited = event.target.getAttribute('favorited')
     switch (action) {
       case 'reject':
         console.log(`Rejecting ${showname} @ ${showtime}`)
         handleRejectEntry(entryId)
-        return
+        break
       case 'maybe':
-        console.log(`Maybe ${showname} @ ${showtime}`)
-        handleMaybeEntry(entryId)
-        //document[`overlay${entryId}`].handleHide(true)
-        return
+        console.log(`Maybe ${showname} @ ${showtime} (${favorited})`)
+        if (favorited === 'true') {
+          handleMaybeEntry(entryId)
+        }
+        document[`overlay${entryId}`].handleHide(true)
+        break
       case 'choose':
         console.log(`Wanna see this ${showname} @ ${showtime}!`)
         handleFavoriteEntry(entryId)
-        return
+        document[`overlay${entryId}`].handleHide(true)
+        break
       default:
         console.log(`Action ${action} not yet implemented`)
+        break
     }
   }
 
   //const handleMouseEnter = (event) => {
   //  console.log(event.target.getAttribute('showname'))
   //}
+
+  function makeHourSlots() {
+    const startHour = startOfHour(parseISO((rectsToDraw[0]).showtime))
+    let lastHour = startHour
+    console.log(lastHour)
+    rectsToDraw.map((entry) => {
+      const entryEnds = addMinutes(parseISO(entry.showtime), entry.duration)
+      if (compareAsc(lastHour, entryEnds) < 1) {
+        lastHour = entryEnds
+      }
+    })
+    let hours = []
+    const hourSlots = differenceInHours(lastHour, startHour)
+    for (let h = 0; h < hourSlots; h++) {
+      hours.push({ x: 0, y: (GAP + (h * 60)), width: svgWidth, height: 60 })
+    }
+    return hours
+  }
+
+  const drawBackGround = () => {
+    const slots = makeHourSlots()
+    return (
+      slots.map((slot, index) => {
+        return (
+          <rect key={`hour${index}`} x={slot.x} y={slot.y} width={slot.width*0.875} height={slot.height} style={hourBlockStyle} />
+        )
+      })
+    )
+  }
 
   const drawShowRects = () => {
     return (
@@ -171,31 +215,30 @@ const PlanPaths = (props) => {
               <Popover>
                 <Popover.Title as="h3">{entry.showname}</Popover.Title>
                 <Popover.Content>
-                  {entry.venuename} @ {entry.showtime}, {entry.duration} min
+                  {entry.venuename} @ {formatDate(entry.showtime)}, {entry.duration} min
                 </Popover.Content>
                 <Popover.Content style={spaceEvenly} showname={entry.showname}
-                  showtime={entry.showtime} venuename={entry.venuename}>
+                  showtime={formatDate(entry.showtime)} venuename={entry.venuename}>
                   <Button variant='success' type="button" size="sm" onClick={handleActOnEntry}
-                    action='choose' id={entry.id} style={popOverButtons}>
+                    action='choose' id={entry.id} favorited={entry.favorited.toString()} style={popOverButtons}>
                       THIS!
                   </Button>
                   <Button variant='primary' type="button" size="sm" onClick={handleActOnEntry}
-                    action='maybe' id={entry.id} style={popOverButtons}>
+                    action='maybe' id={entry.id} favorited={entry.favorited.toString()} style={popOverButtons}>
                       MAYBE
                   </Button>
                   <Button variant='danger' type="button" size="sm" onClick={handleActOnEntry}
-                    action='reject' id={entry.id} style={popOverButtons}>
+                    action='reject' id={entry.id} favorited={entry.favorited.toString()} style={popOverButtons}>
                       NAH..
                   </Button>
                 </Popover.Content>
               </Popover>
             } >
-              <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height}
-                style={entry.favorited ? showFavoriteStyle : showRectStyle} key={entry.id}
-                //onMouseEnter={handleMouseEnter}
+              <rect x={entry.x} y={entry.y} width={entry.width} height={entry.height} key={entry.id}
+                style={entry.favorited ? showFavoriteStyle : showRectStyle} //onMouseEnter={handleMouseEnter}
                 showname={entry.showname} venuename={entry.venuename} id={`rect${entry.id}`}>
               <title>
-                {entry.showname}, {entry.venuename} @ {entry.showtime}
+                {entry.showname}, {entry.venuename} @ {formatDate(entry.showtime)}
               </title>
               </rect>
           </OverlayTrigger>
@@ -234,8 +277,9 @@ const PlanPaths = (props) => {
 
   return (
           <svg width={svgWidth} height={svgHeight} id={GRAPH_PLAN} >
-           {drawShowRects()}
-           {drawTextInRects()}
+            {drawBackGround()}
+            {drawShowRects()}
+            {drawTextInRects()}
           </svg>
   )
 

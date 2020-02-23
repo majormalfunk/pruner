@@ -2,6 +2,8 @@ import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
 
 export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
 
+  const MAX_PATHS = 2048
+
   console.log ('Trying to make paths of', prunedEntries.entries.length, 'entries')
 
   let results = {}
@@ -98,7 +100,7 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
         results.paths.push(thisPath)
       }
     }
-    if (!flush && workingPaths.length > 512) {
+    if (!flush && workingPaths.length > MAX_PATHS) {
       // Contingency plan to stop algo from running too long. Have to find a good limit.
       flush = true
     }
