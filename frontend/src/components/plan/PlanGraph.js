@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { parseISO, addMinutes, compareAsc, endOfDay, isSameDay, startOfHour,
-  differenceInMinutes, differenceInHours, differenceInDays } from 'date-fns'
+import { parseISO, format, addMinutes, compareAsc, endOfDay, isSameDay, startOfHour, endOfHour,
+  differenceInMinutes, differenceInHours, differenceInDays, startOfDay } from 'date-fns'
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
@@ -63,7 +63,8 @@ const PlanPaths = (props) => {
             lastEndingTime = (compareAsc(lastEndingTime, thisEndingTime) < 0 ? thisEndingTime : lastEndingTime)
           })
           const fullDifference = differenceInMinutes(lastEndingTime, firstShowAt)
-          const dayBreaks = differenceInDays(endOfDay(lastEndingTime), firstShowAt) * DAYBREAK
+          let dayCount = differenceInDays(endOfDay(lastEndingTime), firstShowAt)
+          const dayBreaks = dayCount * DAYBREAK
           console.log('Total day breaks:', dayBreaks)
           return (fullDifference - dayBreaks)
         }
@@ -110,7 +111,6 @@ const PlanPaths = (props) => {
         })
 
       }
-
       setRectsToDraw(showRects)
     }
 
@@ -174,6 +174,37 @@ const PlanPaths = (props) => {
   //}
 
   function makeHourSlots() {
+
+    function graphRows() {
+      let entryArr = Array.from(entryMap.keys())
+      let daySlots = []
+      const firstEntry = entryArr[0]
+      let prevStart = startOfHour(parseISO(firstEntry.showtime))
+      let prevEnd = endOfHour(addMinutes(parseISO(firstEntry.showtime), firstEntry.show.duration))
+      let newDay = true
+      entryArr.forEach((entry, index) => {
+        let thisStart = startOfHour(parseISO(entry.showtime))
+        let thisEnd = endOfHour(addMinutes(parseISO(entry.showtime), entry.show.duration))
+        if (isSameDay(prevStart, thisStart)) {
+          if (compareAsc(prevEnd, thisEnd) < 0) {
+            prevEnd = thisEnd
+          }
+          if (index === (entryArr.length - 1)) {
+            const daySlot = { start: prevStart, end: prevEnd }
+            daySlots.push(daySlot)
+          }
+        } else {
+          const daySlot = { start: prevStart, end: prevEnd }
+          daySlots.push(daySlot)
+          prevStart = thisStart
+          prevEnd = thisEnd
+        }
+      })
+      console.log('Day slots:', daySlots)
+    }
+
+    graphRows()
+
     const startHour = startOfHour(parseISO((rectsToDraw[0]).showtime))
     let lastHour = startHour
     console.log(lastHour)
@@ -186,7 +217,7 @@ const PlanPaths = (props) => {
     let hours = []
     const hourSlots = differenceInHours(lastHour, startHour)
     for (let h = 0; h < hourSlots; h++) {
-      hours.push({ x: 0, y: (GAP + (h * 60)), width: svgWidth, height: 60 })
+      hours.push({ x: 0, y: (GAP + (h * 60)), width: svgWidth, height: 60, text: lastHour })
     }
     return hours
   }
@@ -196,11 +227,17 @@ const PlanPaths = (props) => {
     return (
       slots.map((slot, index) => {
         return (
-          <rect key={`hour${index}`} x={slot.x} y={slot.y} width={slot.width*0.875} height={slot.height} style={hourBlockStyle} />
+          <g key={index}>
+            <rect key={`line${index}`} x={slot.x} y={slot.y} width={slot.width*0.875} height={slot.height} style={hourBlockStyle} />
+            <text key={`hour${index}`} x={slot.x} y={slot.y} style={showRectTextStyle}
+              dominantBaseline='bottom' textAnchor='left'>{formatDate(slot.text)}</text>
+          </g>
         )
       })
     )
   }
+  //<text key={`hour${index}`} x={slot.x} y={slot.y} style={showRectTextStyle}
+  //dominantBaseline='middle' textAnchor='middle'>{slot.text}</text>
 
   const drawShowRects = () => {
     return (
