@@ -22,10 +22,12 @@ const PlanPaths = (props) => {
 
   const showRectStyle = {
     fill: '#880088',
+    opacity: 0.5,
     cursor: 'pointer'
   }
   const showFavoriteStyle = {
     fill: '#008800',
+    opacity: 0.75,
     cursor: 'pointer'
   }
   const showRectTextStyle = {
@@ -181,7 +183,6 @@ const PlanPaths = (props) => {
       const firstEntry = entryArr[0]
       let prevStart = startOfHour(parseISO(firstEntry.showtime))
       let prevEnd = endOfHour(addMinutes(parseISO(firstEntry.showtime), firstEntry.show.duration))
-      let newDay = true
       entryArr.forEach((entry, index) => {
         let thisStart = startOfHour(parseISO(entry.showtime))
         let thisEnd = endOfHour(addMinutes(parseISO(entry.showtime), entry.show.duration))
@@ -200,26 +201,24 @@ const PlanPaths = (props) => {
           prevEnd = thisEnd
         }
       })
-      console.log('Day slots:', daySlots)
+      return daySlots
     }
 
-    graphRows()
+    const daySlots = graphRows()
 
-    const startHour = startOfHour(parseISO((rectsToDraw[0]).showtime))
-    let lastHour = startHour
-    console.log(lastHour)
-    rectsToDraw.map((entry) => {
-      const entryEnds = addMinutes(parseISO(entry.showtime), entry.duration)
-      if (compareAsc(lastHour, entryEnds) < 1) {
-        lastHour = entryEnds
+    let hourSlots = []
+    const first = daySlots[0]
+    daySlots.forEach((slot, index) => {
+      const fromStart = differenceInMinutes(slot.start, first.start)
+      const slotInMinutes = differenceInMinutes(slot.end, slot.start)
+      hourSlots.push({ x: 0, y: (GAP + fromStart - (index * DAYBREAK)),
+        width: svgWidth, height: 60, text: slot.start })
+      for (let h = 1; h < (slotInMinutes / 60); h ++) {
+        hourSlots.push({ x: 0, y: (GAP + fromStart + (h * 60) - (index * DAYBREAK)),
+          width: svgWidth, height: 60, text: addMinutes(slot.start, h * 60) })
       }
     })
-    let hours = []
-    const hourSlots = differenceInHours(lastHour, startHour)
-    for (let h = 0; h < hourSlots; h++) {
-      hours.push({ x: 0, y: (GAP + (h * 60)), width: svgWidth, height: 60, text: lastHour })
-    }
-    return hours
+    return hourSlots
   }
 
   const drawBackGround = () => {
@@ -236,8 +235,6 @@ const PlanPaths = (props) => {
       })
     )
   }
-  //<text key={`hour${index}`} x={slot.x} y={slot.y} style={showRectTextStyle}
-  //dominantBaseline='middle' textAnchor='middle'>{slot.text}</text>
 
   const drawShowRects = () => {
     return (

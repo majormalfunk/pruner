@@ -125,5 +125,6 @@
 | 22.02.2020    | Favoriting and unfavoriting entries                                |     2,0   |           |
 | 23.02.2020    | Favoriting, unfavoriting entries, hour slots in background         |     4,0   |           |
 | **WEEK  8**   | **TOTAL**                                                          |  **26,0** | **283,0** |
-| 24.02.2020    | Day and hour slots in background                                   |     2,0   |           |
+| 24.02.2020    | Day and hour slots in graph background                             |     2,0   |           |
+| 25.02.2020    | Day and hour slots in graph background                             |     1,0   |           |
 | **WEEK  9**   | **TOTAL**                                                          |   **2,0** | **285,0** |
