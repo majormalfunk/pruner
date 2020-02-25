@@ -14,13 +14,10 @@ module.exports = {
     Mutation: {
       getAvailableEvents: async (root, args, { currentUser, userId }) => {
 
-        //console.log('Trying to get own events for', args.username)
-        //checkCurrentUserIsCorrect({ currentUser }, args.username, 'get available events')
-
         try {
           try {
             const eventsFromDB = await Event.find({ liveevent: true, launched: true }).
-              or([{ owner: userId }, { public: true }]).
+              or([{ owner: userId }, { publicevent: true }]).
               sort({ eventname: 1 })
             return eventsFromDB
           } catch (error) {

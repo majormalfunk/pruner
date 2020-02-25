@@ -14,6 +14,7 @@ const User = require('./models/user')
 const { typeDefs, resolvers } = require('./graphql')
 
 mongoose.set('useFindAndModify', false)
+mongoose.set('useUnifiedTopology', true)
 
 const DB_URL = process.env.DB_URL
 const JWT_SECRET = process.env.JWT_SECRET
