@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { parseISO, format, addMinutes, compareAsc, endOfDay, isSameDay, startOfHour, endOfHour,
-  differenceInMinutes, differenceInHours, differenceInDays, startOfDay } from 'date-fns'
+import { parseISO, addMinutes, compareAsc, endOfDay, isSameDay, startOfHour, endOfHour,
+  differenceInMinutes, differenceInDays } from 'date-fns'
 import { Container, Row, Col, OverlayTrigger, Popover, Button } from 'react-bootstrap'
 
 import { formatDate } from '../../utils/dates'
@@ -9,7 +9,7 @@ import { GRAPH_PLAN } from '../../constants'
 const PlanPaths = (props) => {
 
   const { prunedPaths, handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
-  const { venues, paths, entryMap } = prunedPaths
+  const { venues, paths, interruptedPaths, entryMap } = prunedPaths
 
   const GAP = 25
   const DAYBREAK = 600
@@ -85,7 +85,8 @@ const PlanPaths = (props) => {
         const venueCols = graphCols()
         let visited = new Set()
         let venueCol = 0
-        paths.forEach((path) => {
+        let pathsToDraw = paths.concat(interruptedPaths)
+        pathsToDraw.forEach((path) => {
           let dayBreak = 0
           path.forEach((entry) => {
             venueCols.forEach((venue, index) => {

@@ -59,7 +59,7 @@ const Plan = (props) => {
         variables: { username }
       })
       if (eventsResult.data) {
-        console.log('Ava:', eventsResult.data.getAvailableEvents)
+        //console.log('Ava:', eventsResult.data.getAvailableEvents)
         setAvailableEvents(eventsResult.data.getAvailableEvents)
       }
     } catch (error) {

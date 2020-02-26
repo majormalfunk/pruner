@@ -127,4 +127,5 @@
 | **WEEK  8**   | **TOTAL**                                                          |  **26,0** | **283,0** |
 | 24.02.2020    | Day and hour slots in graph background                             |     2,0   |           |
 | 25.02.2020    | Day and hour slots in graph background                             |     1,0   |           |
-| **WEEK  9**   | **TOTAL**                                                          |   **2,0** | **285,0** |
+| 26.02.2020    | Some bug fixing in bfs                                             |     2,0   |           |
+| **WEEK  9**   | **TOTAL**                                                          |   **5,0** | **288,0** |
