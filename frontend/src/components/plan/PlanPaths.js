@@ -10,7 +10,7 @@ import PlanGraph from './PlanGraph'
 
 const PlanPaths = (props) => {
 
-  const { displayError, prunedEntries, minShows, maxShows,
+  const { displayError, prunedEntries, minShows, maxShows, minGap, maxGap,
     handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
 
   const [prunedPaths, setPrunedPaths] = useState({})
@@ -19,14 +19,12 @@ const PlanPaths = (props) => {
 
   useEffect(() => {
     const handleMakePaths = () => {
-      const minBreak = 5 // minutes
-      const maxBreak = 150 // minutes
       const cutOffAfterMidnight = 0 // minutes
-      const results = makePaths(prunedEntries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight)
+      const results = makePaths(prunedEntries, minShows, maxShows, minGap, maxGap, cutOffAfterMidnight)
       setPrunedPaths(results)
     }
     handleMakePaths()
-  }, [prunedEntries, minShows, maxShows])
+  }, [prunedEntries, minShows, maxShows, minGap, maxGap])
 
   useEffect(() => {
     console.log('Plans changed')
@@ -67,11 +65,12 @@ const PlanPaths = (props) => {
     let pathfindingSummary = ''
     let pathsExist = false
 
-    if (prunedPaths.interruptedPaths && prunedPaths.interruptedPaths.length > 0 ) {
-      if (prunedPaths.paths.length === 0) {
-        pathfindingSummary = 'These options give too many paths. You could try with a shorter path first.'
+    if (prunedPaths.interruptedPaths > 0 ) {
+      if (prunedPaths.fullPaths === 0) {
+        pathfindingSummary = 'There were too many variations with the given options. Not possible to show any full paths.'
+        pathsExist = true
       } else {
-        pathfindingSummary = `Showing ${prunedPaths.paths.length} paths. Some paths were left out because there were too many.`
+        pathfindingSummary = `Showing ${prunedPaths.paths.length} paths. Some paths are not full.`
         pathsExist = true
       }
     } else {
@@ -86,7 +85,7 @@ const PlanPaths = (props) => {
         <Row className="Component-title">
           <Col><span>{pathfindingSummary}</span></Col>
         </Row>
-        {(pathsExist && prunedPaths.paths.length > 0) &&
+        {(pathsExist && prunedPaths.paths.length) &&
           <Row>
             <Col>
               <PlanGraph prunedPaths={prunedPaths}

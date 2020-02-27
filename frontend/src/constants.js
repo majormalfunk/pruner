@@ -133,6 +133,10 @@ export const FLD_SEL_SET_PLA_MIN = "sel-set-pla-min"
 export const FLD_SEL_HNT_PLA_MIN = "sel-set-pla-min"
 export const FLD_SEL_SET_PLA_MAX = "sel-set-pla-max"
 export const FLD_SEL_HNT_PLA_MAX = "sel-set-pla-max"
+export const FLD_SEL_SET_PLA_GMI = "sel-set-pla-gmi"
+export const FLD_SEL_HNT_PLA_GMI = "sel-set-pla-gmi"
+export const FLD_SEL_SET_PLA_GMX = "sel-set-pla-gmx"
+export const FLD_SEL_HNT_PLA_GMX = "sel-set-pla-gmx"
 
 // Graphs
 export const GRAPH_PLAN = 'graph-plan'

@@ -1,16 +1,17 @@
 import { parseISO, compareAsc, addMinutes, endOfDay } from 'date-fns'
 import { formatDate } from './dates'
 
-export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak, cutOffAfterMidnight) => {
+export const makePaths = (prunedEntries, minShows, maxShows, minGap, maxGap, cutOffAfterMidnight) => {
 
   const MAX_PATHS = 2048
 
   console.log ('Trying to make paths of', prunedEntries.entries.length, 'entries')
 
   let results = {}
-  results.paths = [] // All paths
-  results.interruptedPaths = [] // Interrupted paths
-  results.entryMap = new Map() // As keys each entry and as values count of show in paths
+  results.paths = [] // All paths (Full and interrupted)
+  results.fullPaths = 0 // Count of full paths
+  results.interruptedPaths = 0 // Count of interrupted paths
+  results.entryMap = new Map() // As keys entry ids and as values the entries
   results.venues = new Map() // Map of distinct venues of these paths
 
   if (!prunedEntries.entries || prunedEntries.entries.length === 0) {
@@ -24,11 +25,7 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
   }
   function addToEntryMap(thisPath) {
     thisPath.forEach((entry, index) => {
-      if (results.entryMap.has(entry)) {
-        results.entryMap.set(entry, (results.entryMap.get(entry) + 1))
-      } else {
-        results.entryMap.set(entry, 1)
-      }
+      results.entryMap.set(entry.id, entry)
     })
   }
 
@@ -47,9 +44,7 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
       newEntry.ind = index // Mark entry with the index of its place in the orginal list. More of that later.
       path.push(newEntry)
       workingPaths.push(path)
-      //return false
     }
-    //return true
   })
 
   // Then we start going through the "queue" of paths (Array of arrays)
@@ -58,12 +53,15 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
     let thisPath = workingPaths.shift()
     if (thisPath.length >= maxShows) {
       // Add to ready list if number of maximum shows is reached
+      results.fullPaths += thisPath.length
       results.paths.push(thisPath)
       addToVenues(thisPath)
       addToEntryMap(thisPath)
     } else if (flush) {
-      results.interruptedPaths.push(thisPath)
+      results.interruptedPaths += thisPath.length
+      results.paths.push(thisPath)
       addToVenues(thisPath)
+      addToEntryMap(thisPath)
     } else { 
       let lastEntry = thisPath[(thisPath.length - 1)]
       // Take the last show of this path to know when it ends
@@ -81,8 +79,8 @@ export const makePaths = (prunedEntries, minShows, maxShows, minBreak, maxBreak,
         if (nextEntry.id !== lastEntry.id) {
           // Don't add start node again (if we made a mistake)
           let nextStartTime = parseISO(nextEntry.showtime)
-          const tooSoon = compareAsc(nextStartTime, addMinutes(thisEndTime, minBreak)) < 1
-          const tooLate = compareAsc(addMinutes(thisEndTime, maxBreak), nextStartTime) < 1
+          const tooSoon = compareAsc(nextStartTime, addMinutes(thisEndTime, minGap)) < 1
+          const tooLate = compareAsc(addMinutes(thisEndTime, maxGap), nextStartTime) < 1
           let nextDaysFirsts = false
           const laterDate = compareAsc(addMinutes(endOfDay(thisEndTime), cutOffAfterMidnight), nextStartTime) < 1
           if ((laterDate)) {

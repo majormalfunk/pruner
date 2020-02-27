@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Form } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 import { GET_AVAILABLE_EVENTS } from '../event/gqls'
 
@@ -14,6 +14,7 @@ import PlanEvents from './PlanEvents'
 import PlanEventRecurrences from './PlanEventRecurrences'
 import PlanSelectDatesForm from './PlanSelectDatesForm'
 import PlanSelectShowCountForm from './PlanSelectShowCountForm'
+import PlanSelectShowGapForm from './PlanSelectShowGapForm'
 import PlanPaths from './PlanPaths'
 import PlanRejectedEntries from './PlanRejectedEntries'
 import PlanFavoritedEntries from './PlanFavoritedEntries'
@@ -28,6 +29,8 @@ const Plan = (props) => {
   const [displayRecurrences, setDisplayRecurrences] = useState(true)
   const [minShows, setMinShows] = useState(1)
   const [maxShows, setMaxShows] = useState(5) // What would be default max?
+  const [minGap, setMinGap] = useState(5)
+  const [maxGap, setMaxGap] = useState(150) // What would be default max?
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
   const [availableEntries, setAvailableEntries] = useState({})
@@ -197,17 +200,24 @@ const Plan = (props) => {
         <>
           <Row>
             <Col>
-              <PlanSelectShowCountForm totalShows={availableEntries.entries.length}
-                minShows={minShows} setMinShows={setMinShows}
-                maxShows={maxShows} setMaxShows={setMaxShows} />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
               <PlanSelectDatesForm firstEntry={availableEntries.firstEntry}
                 lastEntry={availableEntries.lastEndingEntry}
                 startTime={startTime} setStartTime={setStartTime}
                 endTime={endTime} setEndTime={setEndTime} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlanSelectShowGapForm
+                minGap={minGap} setMinGap={setMinGap}
+                maxGap={maxGap} setMaxGap={setMaxGap} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlanSelectShowCountForm totalShows={availableEntries.entries.length}
+                minShows={minShows} setMinShows={setMinShows}
+                maxShows={maxShows} setMaxShows={setMaxShows} />
             </Col>
           </Row>
           <Row>
@@ -239,6 +249,7 @@ const Plan = (props) => {
         <Col>
           {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
           <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
+            minGap={minGap} maxGap={maxGap}
             handleRejectEntry={handleRejectEntry} handleFavoriteEntry={handleFavoriteEntry}
             handleMaybeEntry={handleMaybeEntry} />)}
         </Col>

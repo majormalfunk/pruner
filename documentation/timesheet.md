@@ -128,4 +128,5 @@
 | 24.02.2020    | Day and hour slots in graph background                             |     2,0   |           |
 | 25.02.2020    | Day and hour slots in graph background                             |     1,0   |           |
 | 26.02.2020    | Some bug fixing in bfs                                             |     2,0   |           |
-| **WEEK  9**   | **TOTAL**                                                          |   **5,0** | **288,0** |
+| 27.02.2020    | Some bug fixing and entry gap selection                            |     2,0   |           |
+| **WEEK  9**   | **TOTAL**                                                          |   **7,0** | **290,0** |

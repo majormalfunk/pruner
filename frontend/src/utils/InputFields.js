@@ -230,11 +230,12 @@ export const NumberSelectField = (props) => {
     <Form.Group as={Row}>
       <Col>
         <Form.Label>{props.label}</Form.Label>&nbsp;
-        <Form.Control style={{width: '50%'}} type="number" step="1" min="1" max={props.totalShows}
+        <Form.Control style={{width: '50%'}} type="number" step={props.step ? props.step : 1}
+          min={props.min ? props.min : 1} max={props.totalShows}
           required placeholder="Select" name="selectNumberField" id={props.setnumber}
           defaultValue={props.number} onChange={props.trigger} />
+        <Form.Text className="text-muted" id={props.numberhint}></Form.Text>
       </Col>
-      <Form.Text className="text-muted" id={props.numberhint}></Form.Text>
     </Form.Group>
   )
 }

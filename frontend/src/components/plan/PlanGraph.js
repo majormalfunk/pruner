@@ -9,7 +9,7 @@ import { GRAPH_PLAN } from '../../constants'
 const PlanPaths = (props) => {
 
   const { prunedPaths, handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
-  const { venues, paths, interruptedPaths, entryMap } = prunedPaths
+  const { venues, paths, entryMap } = prunedPaths
 
   const GAP = 25
   const DAYBREAK = 600
@@ -85,8 +85,7 @@ const PlanPaths = (props) => {
         const venueCols = graphCols()
         let visited = new Set()
         let venueCol = 0
-        let pathsToDraw = paths.concat(interruptedPaths)
-        pathsToDraw.forEach((path) => {
+        paths.forEach((path) => {
           let dayBreak = 0
           path.forEach((entry) => {
             venueCols.forEach((venue, index) => {
@@ -98,6 +97,8 @@ const PlanPaths = (props) => {
             }
             if (!visited.has(entry.id)) {
               visited.add(entry.id)
+              // const fromStart = differenceInMinutes(slot.start, first.start)
+              // y: (GAP + fromStart - (index * DAYBREAK))
               const y = GAP + differenceInMinutes(showStartAt, firstHour) - dayBreak
               const entryWidth = (((svgWidth - GAP) / (venueCols.length)) * 0.75)
               const entryGap = (((svgWidth - GAP) / (venueCols.length)) * 0.10)
@@ -179,9 +180,12 @@ const PlanPaths = (props) => {
   function makeHourSlots() {
 
     function graphRows() {
-      let entryArr = Array.from(entryMap.keys())
+      let entryArr = Array.from(entryMap.values())
+      entryArr.sort((a, b) => {
+        return compareAsc(parseISO(a.showtime), parseISO(b.showtime))
+      })
       let daySlots = []
-      const firstEntry = entryArr[0]
+      const firstEntry = entryArr[0] // Now assuming the entries are in ascending order
       let prevStart = startOfHour(parseISO(firstEntry.showtime))
       let prevEnd = endOfHour(addMinutes(parseISO(firstEntry.showtime), firstEntry.show.duration))
       entryArr.forEach((entry, index) => {
@@ -210,6 +214,7 @@ const PlanPaths = (props) => {
     let hourSlots = []
     const first = daySlots[0]
     daySlots.forEach((slot, index) => {
+      console.log('Day slot', slot.start, slot.end)
       const fromStart = differenceInMinutes(slot.start, first.start)
       const slotInMinutes = differenceInMinutes(slot.end, slot.start)
       hourSlots.push({ x: 0, y: (GAP + fromStart - (index * DAYBREAK)),
