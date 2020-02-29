@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
-import { ACTION_TOGGLE_RECURRENCE } from '../../constants'
+//import { ACTION_TOGGLE_RECURRENCE } from '../../constants'
 import PlanSelectEventRecurrenceForm from './PlanSelectEventRecurrenceForm'
 import { displaySuccess, displayInfo, displayError } from '../../reducers/notificationReducer'
 
 const PlanEventRecurrences = (props) => {
 
-  const { availableEvents, eventId, handleDisplayRecurrences,
+  const { availableEvents, eventId, //handleDisplayRecurrences,
     recurrenceId, setRecurrenceId } = props
 
   const selectedEvent = availableEvents.find(event => event.id === eventId)
@@ -51,6 +51,10 @@ const PlanEventRecurrences = (props) => {
       </Container>
     )
   } else {
+
+    // <Button variant="primary" type="button" size="sm" value={ACTION_TOGGLE_RECURRENCE}
+    // onClick={handleDisplayRecurrences}>Hide</Button>
+
     return (
       <Container>
         <Row>
@@ -86,9 +90,7 @@ const PlanEventRecurrences = (props) => {
                 <Container>
                   <Row>
                     <Col className="Content-large">
-                      <Button variant="primary" type="button" size="sm"
-                        value={ACTION_TOGGLE_RECURRENCE}
-                        onClick={handleDisplayRecurrences}>Hide</Button>
+
                     </Col>
                   </Row>
                 </Container>

@@ -4,7 +4,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap'
 import { useApolloClient } from 'react-apollo-hooks'
 import './App.css'
 
-import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE, PAGE_PLAN_CREATE } from './constants'
+import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE, PAGE_PLAN_CREATE, PAGE_NOT_IMPLEMENTED } from './constants'
 
 import Notification from './components/Notification'
 import { displayInfo } from './reducers/notificationReducer'
@@ -16,6 +16,7 @@ import Home from './components/home/Home'
 import Account from './components/account/Account'
 import Event from './components/event/event/Event'
 import Plan from './components/plan/Plan'
+import NotImplemented from './components/home/NotImplemented'
 
 const App = (props) => {
 
@@ -63,6 +64,7 @@ const App = (props) => {
         {( currentPage === PAGE_ACCOUNT && <Account logout={logout} />)}
         {( currentPage === PAGE_EVENT_CREATE && <Event /> )}
         {( currentPage === PAGE_PLAN_CREATE && <Plan /> )}
+        {( currentPage === PAGE_NOT_IMPLEMENTED && <NotImplemented /> )}
 
       </div>
     </div>

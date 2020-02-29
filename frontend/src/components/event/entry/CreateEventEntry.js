@@ -100,20 +100,15 @@ const CreateEventEntry = (props) => {
   }
 
   const handleShow = (event) => {
-    console.log('Selected show:', event.target.value)
     setShow(event.target.value)
   }
   const handleVenue = (event) => {
-    console.log('Selected venue:', event.target.value)
     setVenue(event.target.value)
   }
   const handleShowtime = (event) => {
     try {
       if (isValidDate(event)) {
         setShowtime(event)
-        console.log('Selected showtime:', event)
-      } else {
-        console.log(event, 'was not a valid showtime')
       }
     } catch (error) {
       console.log("Error with showtime", event)
@@ -137,16 +132,11 @@ const CreateEventEntry = (props) => {
 
   const handleCreateEntry = async (event) => {
     event.preventDefault()
-    console.log('Create entry at', showtime)
     if (show !== '' && venue !== '' && isValidDate(showtime)) {
       try {
-        console.log('Trying')
-        console.log('Event:', unfinishedEvent)
-        console.log('Recurrence:', unfinishedRecurrence)
         const eventId = unfinishedEvent.id
         const recurrenceId = unfinishedRecurrence.id
         const showtimeint = showtime.getTime()
-        console.log('Parameters ready')
         const result = await createEventEntry[0]({
           variables: { eventId, recurrenceId, venue, show, showtimeint }
         })
@@ -155,7 +145,6 @@ const CreateEventEntry = (props) => {
           const createdEntry = result.data.createEventEntry
           clearFields()
           addEntryToOwnEvents(eventId, recurrenceId, createdEntry)
-          console.log('Entry was added:')
           displaySuccess(`New entry created`)
         } else {
           displayError('Entry was not created')

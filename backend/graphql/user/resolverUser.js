@@ -14,8 +14,6 @@ module.exports = {
     Mutation: {
       createAccount: async (root, args) => {
 
-        console.log('Creating account')
-
         const saltRounds = 10
         const passwordHash = await bcrypt.hash(args.password, saltRounds)
         const trimmedUsername = args.username.trim()

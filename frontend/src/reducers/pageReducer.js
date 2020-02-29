@@ -1,4 +1,5 @@
 import { PAGE_HOME, PAGE_ACCOUNT, PAGE_EVENT_CREATE, PAGE_PLAN_CREATE } from '../constants'
+import { PAGE_NOT_IMPLEMENTED } from '../constants'
 
 export const setPageHome = () => {
   return async dispatch => {
@@ -8,7 +9,6 @@ export const setPageHome = () => {
     })
   }
 }
-
 export const setPageAccount = () => {
   return async dispatch => {
     dispatch({
@@ -17,7 +17,6 @@ export const setPageAccount = () => {
     })
   }
 }
-
 export const setPageEventCreate = () => {
   return async dispatch => {
     dispatch({
@@ -26,12 +25,43 @@ export const setPageEventCreate = () => {
     })
   }
 }
-
+export const setPageMyEvents = () => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: PAGE_NOT_IMPLEMENTED
+    })
+  }
+}
 export const setPagePlanCreate = () => {
   return async dispatch => {
     dispatch({
       type: 'SET_PAGE',
       data: PAGE_PLAN_CREATE
+    })
+  }
+}
+export const setPageMyPlans = () => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: PAGE_NOT_IMPLEMENTED
+    })
+  }
+}
+export const setPageUpcomingEvents = () => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: PAGE_NOT_IMPLEMENTED
+    })
+  }
+}
+export const setPagePastEvents = () => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_PAGE',
+      data: PAGE_NOT_IMPLEMENTED
     })
   }
 }

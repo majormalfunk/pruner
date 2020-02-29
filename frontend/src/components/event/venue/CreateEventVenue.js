@@ -67,7 +67,6 @@ const CreateEventVenue = (props) => {
 
   const handleCreateVenue = async (event) => {
     event.preventDefault()
-    console.log('Create venue', venuename)
     if (venuename.trim().length >= VENUENAME_LENGTH) {
       try {
         const eventId = unfinishedEvent.id
@@ -79,7 +78,6 @@ const CreateEventVenue = (props) => {
           const createdVenue = result.data.createEventVenue
           clearFields()
           addVenueToOwnEvents(eventId, recurrenceId, createdVenue)
-          console.log('Venue was added:')
           displaySuccess(`New venue created`)
           //setEvent(updatedEvent)
         } else {

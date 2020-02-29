@@ -131,7 +131,6 @@ const CreateEventShow = (props) => {
 
   const handleCreateShow = async (event) => {
     event.preventDefault()
-    console.log('Create show', showname)
     if (showname.trim().length >= SHOWNAME_LENGTH && !isNaN(duration) && duration >= 0) {
       try {
         const eventId = unfinishedEvent.id
@@ -143,7 +142,6 @@ const CreateEventShow = (props) => {
           const createdShow = result.data.createEventShow
           clearFields()
           addShowToOwnEvents(eventId, recurrenceId, createdShow)
-          console.log('Show was added:')
           displaySuccess(`New show created`)
         } else {
           displayError('Show was not created')

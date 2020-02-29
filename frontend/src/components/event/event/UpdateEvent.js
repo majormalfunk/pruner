@@ -97,10 +97,12 @@ const UpdateEvent = (props) => {
     unfinishedRecurrence = unfinishedEvent.recurrences.find(function (recurrence) {
       return !(recurrence.launched)
     })
-    const venuesExist = unfinishedRecurrence.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
-    const showsExist = unfinishedRecurrence.shows.some(show => show.recurrence === unfinishedRecurrence.id)
-    const entriesExist = unfinishedRecurrence.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
-    readyToLaunch = (unfinishedRecurrence && venuesExist && showsExist && entriesExist)
+    if (unfinishedRecurrence) {
+      const venuesExist = unfinishedRecurrence.venues.some(venue => venue.recurrence === unfinishedRecurrence.id)
+      const showsExist = unfinishedRecurrence.shows.some(show => show.recurrence === unfinishedRecurrence.id)
+      const entriesExist = unfinishedRecurrence.entries.some(entry => entry.recurrence === unfinishedRecurrence.id)
+      readyToLaunch = (unfinishedRecurrence && venuesExist && showsExist && entriesExist)
+    }
   }
   
   if (!currentUser) {
@@ -161,13 +163,9 @@ const UpdateEvent = (props) => {
           })
           if (result) {
             const launchedEvent = result.data.launchEvent
-            console.log('Next update in own')
             updateInOwnEvents(launchedEvent)
-            console.log('Next clear')
             handleClear()
-            console.log('Next set page')
             setPageHome()
-            console.log('Display success')
             displaySuccess('Event was launched')
           } else {
             displayError('Event was not launched')
@@ -188,7 +186,6 @@ const UpdateEvent = (props) => {
 
   const handleUpdateEvent = async (event) => {
     event.preventDefault()
-    console.log('Update event to', eventname, '(', description, ')')
     if (eventname.trim().length >= EVENTNAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
         const id = unfinishedEvent.id

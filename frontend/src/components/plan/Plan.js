@@ -21,7 +21,7 @@ import PlanFavoritedEntries from './PlanFavoritedEntries'
 
 const Plan = (props) => {
 
-  const { displayError, availableEvents, setAvailableEvents } = props
+  const { currentUser, displayError, availableEvents, setAvailableEvents } = props
 
   const [eventId, setEventId] = useState(null) // Here we are usind ids not objects
   const [displayEvents, setDisplayEvents] = useState(true)
@@ -54,7 +54,7 @@ const Plan = (props) => {
     options: { fetchPolicy: 'network-only' }
   })
 
-  let username = null
+  let username = (currentUser ? currentUser.username : null)
 
   const handleGetAvailableEvents = async () => {
     try {
@@ -62,7 +62,6 @@ const Plan = (props) => {
         variables: { username }
       })
       if (eventsResult.data) {
-        //console.log('Ava:', eventsResult.data.getAvailableEvents)
         setAvailableEvents(eventsResult.data.getAvailableEvents)
       }
     } catch (error) {

@@ -16,16 +16,26 @@ module.exports = {
 
         try {
           try {
-            const eventsFromDB = await Event.find({ liveevent: true, launched: true }).
+            let eventsFromDB = await Event.find({ liveevent: true, launched: true }).
               or([{ owner: userId }, { publicevent: true }]).
               sort({ eventname: 1 })
+
+            const loggedAndValid = checkCurrentUserIsCorrect({ currentUser }, args.username, 'get available events')
+            if (!loggedAndValid) {
+
+              return eventsFromDB.map((event) => {
+                event.owner = { _id: "*****", nickname: event.owner.nickname }
+                return event
+              })
+            }
+
             return eventsFromDB
           } catch (error) {
-            console.log('Error trying to get own events from database')
+            console.log('Error trying to get available events from database')
             throw error
           }
         } catch (error) {
-          console.log('Error getting current user from database')
+          console.log('Error getting available events from database')
           console.log(error)
           throw error
         }
@@ -38,7 +48,7 @@ module.exports = {
 
         if (currentUser) {
 
-          checkCurrentUserIsCorrect({ currentUser }, args.username, 'get own events')
+          const valid = checkCurrentUserIsCorrect({ currentUser }, args.username, 'get own events')
 
           try {
             if (userId) {

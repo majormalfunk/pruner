@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
-import { ACTION_TOGGLE_EVENT } from '../../constants'
+//import { ACTION_TOGGLE_EVENT } from '../../constants'
 
 import PlanSelectEventForm from './PlanSelectEventForm'
 
@@ -11,7 +11,7 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const PlanEvents = (props) => {
 
-  const { availableEvents, handleDisplayEvents,
+  const { availableEvents, //handleDisplayEvents,
     eventId, setEventId } = props
 
   const eventsToDisplay = () => {
@@ -50,6 +50,8 @@ const PlanEvents = (props) => {
       </Container>
     )
   } else {
+    // <Button variant="primary" type="button" size="sm" value={ACTION_TOGGLE_EVENT}
+    // onClick={handleDisplayEvents}>Hide</Button>
     return (
       <Container>
         <Row>
@@ -85,9 +87,6 @@ const PlanEvents = (props) => {
                 <Container>
                   <Row>
                     <Col className="Content-large">
-                      <Button variant="primary" type="button" size="sm"
-                        value={ACTION_TOGGLE_EVENT}
-                        onClick={handleDisplayEvents}>Hide</Button>
                     </Col>
                   </Row>
                 </Container>

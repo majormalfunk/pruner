@@ -149,6 +149,7 @@ export const PAGE_LOGIN = "page-login"
 export const PAGE_EVENT = "page-event"
 export const PAGE_EVENT_CREATE = "page-event-create"
 export const PAGE_PLAN_CREATE = "page-plan-create"
+export const PAGE_NOT_IMPLEMENTED = "page-not-implemented"
 
 // Notification types
 export const NOTIF_SUCCESS = 'notif-success'

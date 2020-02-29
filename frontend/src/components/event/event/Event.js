@@ -149,11 +149,7 @@ const Event = (props) => {
   })
 
   useEffect(() => {
-    console.log('EVENT: Effect was used')
     if (ownEvents && ownEvents.length > 0) {
-      //const unfinishedEvent = ownEvents.find(function (event) {
-      //  return ((event.recurrences && event.recurrences.length === 0) || !event.liveevent)
-      //})
       if (unfinishedEvent) {
         setEvent(unfinishedEvent)
         if (unfinishedEvent.recurrences.length > 0) {
@@ -166,7 +162,6 @@ const Event = (props) => {
       } else {
         setEvent(null)
       }
-      console.log('Own events is', ownEvents)
     }
   }, [currentUser, ownEvents, unfinishedEvent, recurrence, venue, show, entry])
 
@@ -216,9 +211,6 @@ const Event = (props) => {
     )
   }
 
-  console.log('Event is', event)
-  console.log('Unfinished event is', unfinishedEvent)
-  
   if (!event || unfinishedEvent === undefined) {
     return (
       <Container>

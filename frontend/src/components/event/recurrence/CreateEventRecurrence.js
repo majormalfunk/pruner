@@ -58,28 +58,24 @@ const CreateEventRecurrence = (props) => {
     }
   }
   const controlPublicrecurrence = () => {
-    if (publicrecurrence) {
-      if (document.getElementById(FLD_CRE_HNT_REC_PUB)) {
-        if (publicrecurrence === false) {
-          document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence private'
-        } else {
-          document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence visible to all'
-        }
+    if (document.getElementById(FLD_CRE_HNT_REC_PUB)) {
+      if (publicrecurrence === false) {
+        document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence private'
+      } else {
+        document.getElementById(FLD_CRE_HNT_REC_PUB).innerHTML = 'You have chosen to make the recurrence visible to all'
       }
-      return
     }
+    return
   }
   const controlLiverecurrence = () => {
-    if (liverecurrence) {
-      if (document.getElementById(FLD_CRE_HNT_REC_LIV)) {
-        if (liverecurrence === false) {
-          document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen not to make the recurrence live'
-        } else {
-          document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen to make the recurrence live'
-        }
+    if (document.getElementById(FLD_CRE_HNT_REC_LIV)) {
+      if (liverecurrence === false) {
+        document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen not to make the recurrence live'
+      } else {
+        document.getElementById(FLD_CRE_HNT_REC_LIV).innerHTML = 'You have chosen to make the recurrence live'
       }
-      return
     }
+    return
   }
 
   useEffect(() => {
@@ -127,19 +123,15 @@ const CreateEventRecurrence = (props) => {
 
   const handleCreateRecurrence = async (event) => {
     event.preventDefault()
-    console.log('Create recurrence', recurrencename)
     if (recurrencename.trim().length >= RECURRENCENAME_LENGTH && description.trim().length >= DESCRIPTION_LENGTH) {
       try {
-        //window.alert(`Create event ${eventname}`)
         const eventId = unfinishedEvent.id
         const result = await createEventRecurrence[0]({
           variables: { eventId, recurrencename, description, publicrecurrence, liverecurrence }
         })
         if (result) {
           const createdRecurrence = result.data.createEventRecurrence
-          console.log('Created recurrence', createdRecurrence)
           addRecurrenceToOwnEvents(eventId, createdRecurrence)
-          console.log('Recurrence was added:', createdRecurrence)
           displaySuccess(`New recurrence created`)
           //setEvent(unfinishedEvent)
         } else {
