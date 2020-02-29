@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -11,13 +11,13 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const PlanEvents = (props) => {
 
-  const { currentUser, availableEvents, displayEvents, handleDisplayEvents,
+  const { availableEvents, handleDisplayEvents,
     eventId, setEventId } = props
 
   const eventsToDisplay = () => {
     if (availableEvents !== undefined && availableEvents !== null && availableEvents.length > 0) {
       return (
-        availableEvents.map((event, index) => {
+        availableEvents.map((event) => {
           return (
             <Row key={event.id}>
               <Col>

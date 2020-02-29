@@ -33,8 +33,6 @@ const App = (props) => {
     displayInfo('Logged out')
   }
 
-  console.log('Current page is', currentPage)
-
   return (
     <div className="App">
       <header className="App-header">

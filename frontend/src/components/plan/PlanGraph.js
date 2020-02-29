@@ -67,7 +67,7 @@ const PlanPaths = (props) => {
           const fullDifference = differenceInMinutes(lastEndingTime, firstShowAt)
           let dayCount = differenceInDays(endOfDay(lastEndingTime), firstShowAt)
           const dayBreaks = dayCount * DAYBREAK
-          console.log('Total day breaks:', dayBreaks)
+          //console.log('Total day breaks:', dayBreaks)
           return (fullDifference - dayBreaks)
         }
 
@@ -77,11 +77,18 @@ const PlanPaths = (props) => {
           return venuesArr
         }
 
-        const firstShow = paths[0][0]
-        const firstShowAt = parseISO(firstShow.showtime)
+        let entryArr = Array.from(entryMap.values())
+        entryArr.sort((a, b) => {
+          return compareAsc(parseISO(a.showtime), parseISO(b.showtime))
+        })
+
+        let firstShowAt = parseISO((paths[0][0]).showtime)
+        entryMap.forEach((value, key) => {
+          const thisStart = parseISO(value.showtime)
+          firstShowAt = (compareAsc(thisStart, firstShowAt) < 1 ? thisStart : firstShowAt)
+        })
         const firstHour = startOfHour(firstShowAt)
         setSvgHeight(maxHeight(firstShowAt)+300)
-        console.log('Height set')
         const venueCols = graphCols()
         let visited = new Set()
         let venueCol = 0
@@ -120,50 +127,40 @@ const PlanPaths = (props) => {
 
     if (paths && paths.length > 0) {
       handleMakeRects()
-      console.log('Rects done')
     }
-  }, [venues, paths, svgWidth])
+  }, [venues, paths, entryMap, svgWidth])
 
   useEffect(() => {
-    console.log('Rects changed')
   }, [rectsToDraw])
 
-  if (paths.length === 0) {
-    return null
-  }
-
-  /*
   useEffect(() => {
     window.addEventListener('resize', () => {
-        console.log('Rrrrreeesize!')
         setSvgWidth(window.innerWidth)
     })
     return () => {
       window.removeEventListener('resize', () => { })
     }
   }, [])
-  */
+
+  if (paths.length === 0) {
+    return null
+  }
 
   const handleActOnEntry = (event) => {
     const entryId = event.target.getAttribute('id')
     const action = event.target.getAttribute('action')
-    const showname = event.target.parentNode.getAttribute('showname')
-    const showtime = event.target.parentNode.getAttribute('showtime')
     const favorited = event.target.getAttribute('favorited')
     switch (action) {
       case 'reject':
-        console.log(`Rejecting ${showname} @ ${showtime}`)
         handleRejectEntry(entryId)
         break
       case 'maybe':
-        console.log(`Maybe ${showname} @ ${showtime} (${favorited})`)
         if (favorited === 'true') {
           handleMaybeEntry(entryId)
         }
         document[`overlay${entryId}`].handleHide(true)
         break
       case 'choose':
-        console.log(`Wanna see this ${showname} @ ${showtime}!`)
         handleFavoriteEntry(entryId)
         document[`overlay${entryId}`].handleHide(true)
         break
@@ -204,6 +201,10 @@ const PlanPaths = (props) => {
           daySlots.push(daySlot)
           prevStart = thisStart
           prevEnd = thisEnd
+          if (index === (entryArr.length - 1)) {
+            const daySlot = { start: thisStart, end: thisEnd }
+            daySlots.push(daySlot)
+          }
         }
       })
       return daySlots
@@ -214,7 +215,6 @@ const PlanPaths = (props) => {
     let hourSlots = []
     const first = daySlots[0]
     daySlots.forEach((slot, index) => {
-      console.log('Day slot', slot.start, slot.end)
       const fromStart = differenceInMinutes(slot.start, first.start)
       const slotInMinutes = differenceInMinutes(slot.end, slot.start)
       hourSlots.push({ x: 0, y: (GAP + fromStart - (index * DAYBREAK)),
@@ -302,8 +302,6 @@ const PlanPaths = (props) => {
 
   if (!rectsToDraw || rectsToDraw.length === 0) {
 
-    console.log('No graph to draw')
-
     return (
       <Container>
         <Row>
@@ -312,8 +310,6 @@ const PlanPaths = (props) => {
       </Container>
     )
   }
-
-  console.log('There are', rectsToDraw.length, 'rects to draw')
 
   return (
           <svg width={svgWidth} height={svgHeight} id={GRAPH_PLAN} >

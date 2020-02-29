@@ -63,13 +63,9 @@ const PlanSelectDatesForm = (props) => {
     try {
       if (isValidDate(event)) {
         setStartTime(event)
-        console.log('Selected start time:', startTime)
         if (startTime > endTime) {
           setEndTime(lastShowEnds)
-          console.log('End time moved to:', endTime)
         }
-      } else {
-        console.log(event, 'was not a valid start time')
       }
     } catch (error) {
       console.log("Error with start time", event)
@@ -81,9 +77,6 @@ const PlanSelectDatesForm = (props) => {
     try {
       if (isValidDate(event)) {
         setEndTime(event)
-        console.log('Selected end time:', endTime)
-      } else {
-        console.log(event, 'was not a valid end time')
       }
     } catch (error) {
       console.log("Error with end time", event)

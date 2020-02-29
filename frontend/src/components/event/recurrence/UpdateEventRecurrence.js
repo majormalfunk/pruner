@@ -30,6 +30,7 @@ const UpdateEventRecurrence = (props) => {
   const [description, setDescription] = useState(unfinishedRecurrence.description)
   const [publicrecurrence, setPublicrecurrence] = useState(unfinishedRecurrence.publicrecurrence)
   const [liverecurrence, setLiverecurrence] = useState(unfinishedRecurrence.liverecurrence)
+  // eslint-disable-next-line
   const [launched, setLaunched] = useState(unfinishedRecurrence.launched)
 
   const controlRecurrencename = () => {

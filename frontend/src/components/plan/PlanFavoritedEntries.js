@@ -7,17 +7,13 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const PlanFavoritedEntries = (props) => {
 
-  const { currentUser, favoritedEntries, handleUnfavoriteEntry } = props
-
-  console.log('Favorited entries =', favoritedEntries)
+  const { favoritedEntries, handleUnfavoriteEntry } = props
 
   if (!favoritedEntries || favoritedEntries.length === 0) {
     return (
       null
     )
   }
-
-  console.log('Rendering favorited entries')
 
   return (
     <Container>

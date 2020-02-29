@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -15,7 +15,7 @@ const UpdateEventEntries = (props) => {
     updateEventEntry, deleteEventEntry, entries,
     selectedEntry, setSelectedEntry } = props
 
-  const [currentPage, setCurrentPage] = useState(1)
+  //const [currentPage, setCurrentPage] = useState(1)
 
   if (!currentUser) {
     return null
@@ -23,19 +23,19 @@ const UpdateEventEntries = (props) => {
 
   let filteredEntries = entries
 
-  const itemsOnPage = 2000
-  const pages = Math.ceil(filteredEntries.length / itemsOnPage)
+  //const itemsOnPage = 2000
+  //const pages = Math.ceil(filteredEntries.length / itemsOnPage)
 
   const entriesToDisplay = () => {
-    var offset = (currentPage - 1) * itemsOnPage
+    //var offset = (currentPage - 1) * itemsOnPage
     if (filteredEntries === undefined || filteredEntries === null || filteredEntries.length === 0) {
       return null
     }
     return (
       filteredEntries.map((entry, index) => {
-        if (index < offset || index >= (offset + itemsOnPage)) {
-          return null
-        } 
+        //if (index < offset || index >= (offset + itemsOnPage)) {
+        //  return null
+        //} 
         if (selectedEntry && entry.id === selectedEntry.id) {
           return (
             <Row key={entry.id}>

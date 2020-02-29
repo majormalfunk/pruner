@@ -1,4 +1,4 @@
-import { parseISO, compareAsc, addMinutes, isWithinInterval, isBefore, areIntervalsOverlapping } from 'date-fns'
+import { parseISO, compareAsc, addMinutes, areIntervalsOverlapping } from 'date-fns'
 
 export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) => {
 
@@ -40,8 +40,8 @@ export const extractAvailableEntries = (availableEvents, eventId, recurrenceId) 
 
 export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntryIds, favoritedEntryIds) => {
 
-  console.log('Trying to prune entries from', availableEntries.length, 'available entries')
-  console.log('Rejected entries count is', rejectedEntryIds.size)
+  //console.log('Trying to prune entries from', availableEntries.length, 'available entries')
+  //console.log('Rejected entries count is', rejectedEntryIds.size)
 
   function pruneStartTime(entry) {
     return (compareAsc(startTime, parseISO(entry.showtime)) < 1)
@@ -86,11 +86,8 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
       }
     }
   })
-  let counter = 0
   while (tempEntries.length) {
     let entry = tempEntries.shift()
-    let addedToSidelined = false
-    let addedToEntries = false
     entry.sidelined = false
     favoritedSlots.forEach((slot) => {
       if (!(entry.favorited)) {
@@ -98,16 +95,11 @@ export const pruneEntries = (availableEntries, startTime, endTime, rejectedEntry
         if (areIntervalsOverlapping(slot, show)) {
           entry.sidelined = true
           results.sidelined.push(entry)
-          addedToSidelined = true
         }
       }
     })
     if (!(entry.sidelined)) {
       results.entries.push(entry)
-      addedToEntries = true
-    }
-    if (addedToSidelined && addedToEntries) {
-      console.log(entry.show.showname, '@', entry.showtime, 'was added to both')
     }
   }
 

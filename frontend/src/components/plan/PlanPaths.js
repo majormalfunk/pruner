@@ -10,7 +10,7 @@ import PlanGraph from './PlanGraph'
 
 const PlanPaths = (props) => {
 
-  const { displayError, prunedEntries, minShows, maxShows, minGap, maxGap,
+  const { prunedEntries, minShows, maxShows, minGap, maxGap, favoritedEntryIds,
     handleRejectEntry, handleFavoriteEntry, handleMaybeEntry } = props
 
   const [prunedPaths, setPrunedPaths] = useState({})
@@ -20,18 +20,18 @@ const PlanPaths = (props) => {
   useEffect(() => {
     const handleMakePaths = () => {
       const cutOffAfterMidnight = 0 // minutes
-      const results = makePaths(prunedEntries, minShows, maxShows, minGap, maxGap, cutOffAfterMidnight)
+      const results = makePaths(prunedEntries, minShows, maxShows, minGap, maxGap, favoritedEntryIds, cutOffAfterMidnight)
       setPrunedPaths(results)
     }
     handleMakePaths()
-  }, [prunedEntries, minShows, maxShows, minGap, maxGap])
+  }, [prunedEntries, minShows, maxShows, minGap, maxGap, favoritedEntryIds])
 
   useEffect(() => {
-    console.log('Plans changed')
+    //console.log('Plans changed')
   }, [prunedPaths])
 
   if (!prunedEntries.entries || prunedEntries.entries.length === 0) {
-    console.log('No shows to display')
+    //console.log('No shows to display')
     return (
       <Container>
         <Row>
@@ -45,7 +45,7 @@ const PlanPaths = (props) => {
   }
 
   if (!prunedPaths || !prunedPaths.paths) {
-    console.log('No paths to display')
+    //console.log('No paths to display')
     return (
       <Container>
         <Row>
@@ -57,8 +57,6 @@ const PlanPaths = (props) => {
       </Container>
     )
   }
-
-  console.log('We got something')
 
   if (prunedPaths && prunedPaths.paths) {
 
@@ -85,7 +83,7 @@ const PlanPaths = (props) => {
         <Row className="Component-title">
           <Col><span>{pathfindingSummary}</span></Col>
         </Row>
-        {(pathsExist && prunedPaths.paths.length) &&
+        {(pathsExist && prunedPaths.paths.length > 0) &&
           <Row>
             <Col>
               <PlanGraph prunedPaths={prunedPaths}

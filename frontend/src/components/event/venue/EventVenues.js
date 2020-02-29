@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -26,7 +26,7 @@ const EventVenues = (props) => {
   })
   const venues = unfinishedRecurrence.venues
 
-  const [currentPage, setCurrentPage] = useState(1)
+  //const [currentPage, setCurrentPage] = useState(1)
 
   if (!currentUser) {
     return null
@@ -34,15 +34,15 @@ const EventVenues = (props) => {
 
   let filteredVenues = venues
 
-  const itemsOnPage = 2000
-  const pages = Math.ceil(filteredVenues.length / itemsOnPage)
+  //const itemsOnPage = 2000
+  //const pages = Math.ceil(filteredVenues.length / itemsOnPage)
 
   const venuesToDisplay = () => {
-    var offset = (currentPage - 1) * itemsOnPage
+    //var offset = (currentPage - 1) * itemsOnPage
     if (filteredVenues !== undefined && filteredVenues !== null) {
       return (
         filteredVenues.map((venue, index) => {
-          if (index >= offset && index < (offset + itemsOnPage)) {
+          //if (index >= offset && index < (offset + itemsOnPage)) {
             if (selectedVenue && venue.id === selectedVenue.id) {
               return (
                 <Row key={venue.id}>
@@ -62,9 +62,9 @@ const EventVenues = (props) => {
                 </Row>
               )
             }
-          } else {
-            return null
-          }
+          //} else {
+          //  return null
+          //}
         })
       )
     } else {

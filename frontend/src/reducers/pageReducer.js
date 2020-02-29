@@ -39,7 +39,6 @@ export const setPagePlanCreate = () => {
 const pageReducer = (state = PAGE_HOME, action) => {
   switch (action.type) {
     case 'SET_PAGE':
-      console.log('Setting page to', action.data)
       return action.data
     default:
       return state

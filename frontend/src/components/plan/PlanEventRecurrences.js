@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -9,7 +9,7 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const PlanEventRecurrences = (props) => {
 
-  const { currentUser, availableEvents, eventId, displayRecurrences, handleDisplayRecurrences,
+  const { availableEvents, eventId, handleDisplayRecurrences,
     recurrenceId, setRecurrenceId } = props
 
   const selectedEvent = availableEvents.find(event => event.id === eventId)
@@ -17,7 +17,7 @@ const PlanEventRecurrences = (props) => {
   const recurrencesToDisplay = () => {
     if (selectedEvent !== undefined && selectedEvent !== null) {
       return (
-        selectedEvent.recurrences.map((recurrence, index) => {
+        selectedEvent.recurrences.map((recurrence) => {
           return (
             <Row key={recurrence.id}>
               <Col>

@@ -89,6 +89,7 @@ const UpdateEvent = (props) => {
   const [description, setDescription] = useState(unfinishedEvent ? unfinishedEvent.description : '')
   const [publicevent, setPublicevent] = useState(unfinishedEvent ? unfinishedEvent.publicevent : false)
   const [liveevent, setLiveevent] = useState(unfinishedEvent ? unfinishedEvent.liveevent : false)
+  // eslint-disable-next-line
   const [launched, setLaunched] = useState(unfinishedEvent ? unfinishedEvent.launched : false)
 
   let unfinishedRecurrence = undefined

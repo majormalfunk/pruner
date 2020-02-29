@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -26,7 +26,7 @@ const EventShows = (props) => {
   })
   const shows = unfinishedRecurrence.shows
 
-  const [currentPage, setCurrentPage] = useState(1)
+  //const [currentPage, setCurrentPage] = useState(1)
 
   if (!currentUser) {
     return null
@@ -34,15 +34,15 @@ const EventShows = (props) => {
 
   let filteredShows = shows
 
-  const itemsOnPage = 2000
-  const pages = Math.ceil(filteredShows.length / itemsOnPage)
+  //const itemsOnPage = 2000
+  //const pages = Math.ceil(filteredShows.length / itemsOnPage)
 
   const showsToDisplay = () => {
-    var offset = (currentPage - 1) * itemsOnPage
+    //var offset = (currentPage - 1) * itemsOnPage
     if (filteredShows !== undefined && filteredShows !== null) {
       return (
         filteredShows.map((show, index) => {
-          if (index >= offset && index < (offset + itemsOnPage)) {
+          //if (index >= offset && index < (offset + itemsOnPage)) {
             if (selectedShow && show.id === selectedShow.id) {
               return (
                 <Row key={show.id}>
@@ -62,9 +62,9 @@ const EventShows = (props) => {
                 </Row>
               )
             }
-          } else {
-            return null
-          }
+          //} else {
+          //  return null
+          //}
         })
       )
     } else {

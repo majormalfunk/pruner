@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 
-import { Container, Row, Col, Form } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation } from 'react-apollo-hooks'
 import { GET_AVAILABLE_EVENTS } from '../event/gqls'
 
@@ -21,7 +21,7 @@ import PlanFavoritedEntries from './PlanFavoritedEntries'
 
 const Plan = (props) => {
 
-  const { displayError, currentUser, availableEvents, setAvailableEvents } = props
+  const { displayError, availableEvents, setAvailableEvents } = props
 
   const [eventId, setEventId] = useState(null) // Here we are usind ids not objects
   const [displayEvents, setDisplayEvents] = useState(true)
@@ -70,11 +70,10 @@ const Plan = (props) => {
       displayError('Something went wrong fetching available events')
     }
   }
-  
+
   const handlePruneEntries = useCallback(
     () => {
       if (availableEntries.entries && startTime && endTime) {
-        console.log('Should be able to prune available entries')
         let results = pruneEntries(availableEntries.entries, startTime, endTime, rejectedEntryIds, favoritedEntryIds)
         const prunedEntriesCount = results.entries.length
         const prunedShowsCount = results.shows.size
@@ -82,8 +81,7 @@ const Plan = (props) => {
           `Pruned ${prunedEntriesCount} (${prunedShowsCount} distinct) shows with the criteria.`)
         setPrunedEntries(results)
       }
-    }, [availableEntries, startTime, endTime, rejectedEntryIds, favoritedEntryIds],
-  );
+    }, [availableEntries, startTime, endTime, rejectedEntryIds, favoritedEntryIds])
 
   const handleRejectEntry = (rejected) => {
     setRejectedEntryIds(rejectedEntryIds.add(rejected))
@@ -114,17 +112,13 @@ const Plan = (props) => {
   }
 
   useEffect(() => {
-    console.log('Using effect to get available events')
     handleGetAvailableEvents()
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-
-    console.log('Using effect to extract available events')
-
     if (availableEvents && eventId && recurrenceId) {
-      console.log('Should be able to extract available entries')
+      //console.log('Should be able to extract available entries')
       let results = extractAvailableEntries(availableEvents, eventId, recurrenceId)
       const availableEntriesCount = results.entries.length
       const availableShowsCount = results.shows.length
@@ -132,14 +126,10 @@ const Plan = (props) => {
         `Total of ${availableEntriesCount} (${availableShowsCount} distinct) shows in the event schedule`)
       setAvailableEntries(results)
     }
-
   }, [availableEvents, eventId, recurrenceId])
 
   useEffect(() => {
-
-    console.log('Using effect to prune available events')
     handlePruneEntries()
-
   }, [handlePruneEntries])
 
   if ((getAvailableEvents[1]).loading) {
@@ -164,8 +154,6 @@ const Plan = (props) => {
       </Container>
     )
   }
-
-  console.log('Pruned:', prunedEntries)
 
   return (
     <Container>
@@ -196,7 +184,7 @@ const Plan = (props) => {
           )}
         </Col>
       </Row>
-        {(eventId && recurrenceId && availableEntries && availableEntries.entries &&
+      {(eventId && recurrenceId && availableEntries && availableEntries.entries &&
         <>
           <Row>
             <Col>
@@ -229,31 +217,35 @@ const Plan = (props) => {
             <Col><span>{availableStats}</span></Col>
           </Row>
         </>
-        )}
-      <Row>
-        <Col>
-          <PlanRejectedEntries rejectedEntries={prunedEntries.rejected}
-            handleUnrejectEntry={handleUnrejectEntry} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <PlanFavoritedEntries favoritedEntries={prunedEntries.favorited}
-            handleUnfavoriteEntry={handleUnfavoriteEntry} />
-        </Col>
-      </Row>
-      <Row>
-        <Col><span>&nbsp;</span></Col>
-      </Row>
-      <Row>
-        <Col>
-          {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
-          <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
-            minGap={minGap} maxGap={maxGap}
-            handleRejectEntry={handleRejectEntry} handleFavoriteEntry={handleFavoriteEntry}
-            handleMaybeEntry={handleMaybeEntry} />)}
-        </Col>
-      </Row>
+      )}
+
+      {(prunedEntries && prunedEntries.entries && prunedEntries.entries.length > 0 &&
+        <>
+          <Row>
+            <Col>
+              <PlanRejectedEntries rejectedEntries={prunedEntries.rejected}
+                handleUnrejectEntry={handleUnrejectEntry} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlanFavoritedEntries favoritedEntries={prunedEntries.favorited}
+                handleUnfavoriteEntry={handleUnfavoriteEntry} />
+            </Col>
+          </Row>
+          <Row>
+            <Col><span>&nbsp;</span></Col>
+          </Row>
+          <Row>
+            <Col>
+              <PlanPaths prunedEntries={prunedEntries} minShows={minShows} maxShows={maxShows}
+                minGap={minGap} maxGap={maxGap} favoritedEntryIds={favoritedEntryIds}
+                handleRejectEntry={handleRejectEntry} handleFavoriteEntry={handleFavoriteEntry}
+                handleMaybeEntry={handleMaybeEntry} />
+            </Col>
+          </Row>
+        </>
+      )}
       <Row>
         <Col><span>&nbsp;</span></Col>
       </Row>

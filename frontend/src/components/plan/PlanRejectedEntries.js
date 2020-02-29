@@ -7,19 +7,13 @@ import { displaySuccess, displayInfo, displayError } from '../../reducers/notifi
 
 const PlanRejectedEntries = (props) => {
 
-  const { currentUser, rejectedEntries, handleUnrejectEntry } = props
-
-  console.log('Rejected entries =', rejectedEntries)
+  const { rejectedEntries, handleUnrejectEntry } = props
 
   if (!rejectedEntries || rejectedEntries.length === 0) {
     return (
       null
     )
   }
-
-  console.log('Rendering rejected entries')
-
-  //const rejectedArr = Array.from(rejectedEntries.values())
 
   return (
     <Container>
